@@ -1,0 +1,78 @@
+.Login {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-style-4 {
+    width: 300px;
+    font-size: 16px;
+    background: #495C70;
+    padding: 15px 30px 15px 30px;
+    border: 5px solid #53687E;
+    display: flex;
+    flex-direction: column;
+}
+.form-style-4 input[type=submit],
+.form-style-4 input[type=button],
+.form-style-4 input[type=text],
+.form-style-4 input[type=password],
+.form-style-4 textarea {
+    color: #FFF;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 16px;
+}
+
+.form-style-4 input[type=text],
+.form-style-4 input[type=password]
+{
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed #83A4C5;
+    width: 300px;
+    outline: none;
+    padding: 10px 0;
+    font-style: italic;
+    text-align: center;
+}
+
+.form-style-4 input[type=text]:focus,
+.form-style-4 input[type=email]:focus,
+.form-style-4 input[type=password]:focus
+{
+    border-bottom: 1px dashed #0f2d3f;
+}
+
+.form-style-4 input[type=submit],
+.form-style-4 input[type=button]{
+    background: #576E86;
+    border: none;
+    padding: 8px 10px 8px 10px;
+    border-radius: 5px;
+    color: #A8BACE;
+    margin-top: 15px;
+}
+
+.form-style-4 ::placeholder {
+    color: #A8BACE;
+}
+
+.form-style-4 input[type=submit]:hover,
+.form-style-4 input[type=button]:hover{
+    background: #394D61;
+    cursor: pointer;
+}
+
+input:focus::-webkit-input-placeholder { color:transparent; }
+input:focus:-moz-placeholder { color:transparent; } /* FF 4-18 */
+input:focus::-moz-placeholder { color:transparent; } /* FF 19+ */
+input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
+
+.form-style-4 .error {
+    margin-top: 15px;
+    text-align: center;
+    color: #f26726;
+    display: none;
+}

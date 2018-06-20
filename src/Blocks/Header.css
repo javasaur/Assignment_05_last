@@ -1,0 +1,25 @@
+.header {
+    color: #FCFCFC;
+    text-align: center;
+    padding: 17px;
+    background-color: #2176AE;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    display: flex;
+}
+
+.header .logout {
+    text-align: right;
+    flex: 1 1;
+    justify-self: end;
+}
+
+.header a {
+    color: #FCFCFC;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.header a:hover {
+    text-decoration: underline;
+}
