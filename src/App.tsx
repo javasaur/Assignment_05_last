@@ -2,35 +2,25 @@ import * as React from 'react';
 import {BrowserRouter, Route, Redirect} from "react-router-dom";
 
 import './App.css';
-import {IUser} from "./Store/IUser";
-import {IStateStore} from "./Store/IStateStore";
-import {StateStore} from "./Store/StateStore";
-import {Login} from "./Other/Login";
 import {ChatWindow} from "./Blocks/ChatWindow";
 import {Switch} from "react-router";
+import {AppState} from "./Store-Redux/appState";
+import {connect} from "react-redux";
+import Login from "./Other/Login";
 
-interface IAppState {
-  users: IUser[];
-  userInSession: IUser | null;
-}
-
-class App extends React.Component<any, IAppState> {
-    private store: IStateStore;
-
+class App extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
-        this.store = StateStore.getInstance();
-        this.store.set('appRefForceUpdate', this.forceUpdate.bind(this));
     }
 
     public render() {
+        const logged = this.props.loggedUserID;
+
        const login = () => {
-            const logged = this.store.get('loggedUserId');
             return !!logged ? <Redirect to='/chat' /> : <Login />;
        }
 
        const chatWindow = () => {
-           const logged = this.store.get('loggedUserId');
            return !!logged ? <ChatWindow/> : <Login />;
        }
 
@@ -48,4 +38,10 @@ class App extends React.Component<any, IAppState> {
     }
 }
 
-export default App;
+const mapStateToProps = (state: AppState) => {
+    return {
+        loggedUserID: state.loggedUserID,
+    }
+}
+
+export default connect(mapStateToProps, {})(App);

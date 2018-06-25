@@ -1,34 +1,38 @@
 import * as React from 'react';
 
 import './Login.css';
-import {IStateStore} from "../Store/IStateStore";
-import {StateStore} from "../Store/StateStore";
+import {store} from "../Store-Redux/store";
+import {AppState} from "../Store-Redux/appState";
+import {connect} from "react-redux";
+import {nullLoginError} from "../Store-Redux/actions/login";
+import {checkMatch} from "../Store-Redux/thunks/login";
 
-interface ILoginState {
-    inputUsername: string;
-    inputPassword: string;
+interface LoginProps {
+    loginError: boolean,
+    inputUsernameRef: any,
+    inputPasswordRef: any
 }
 
-export class Login extends React.Component<{}, ILoginState> {
-    store: IStateStore;
+class Login extends React.Component<LoginProps, any> {
+    private inputUsernameRef;
+    private inputPasswordRef;
 
     constructor(props: any) {
         super(props);
-        this.state = {
-            inputUsername: '',
-            inputPassword: ''
-        };
-        this.store = StateStore.getInstance();
+        this.inputUsernameRef = React.createRef();
+        this.inputPasswordRef = React.createRef();
     }
 
     public render() {
+        let error = this.props.loginError ? (<div className="error">No match found</div>) : null;
+
         return (
             <div className="Login">
-                <form className="form-style-4" action="" method="post">
-                    <input onChange={this.handleUserNameChange} placeholder='username' type="text" name="username" autoComplete='off' />
-                    <input onChange={this.handlePassChange} placeholder='password' type="password" name="password" autoComplete='off' />
+                <form className="form-style-4" action="" method="post" onChange={this.handleFormChange}>
+                    <input  ref={this.inputUsernameRef} placeholder='username' type="text" name="username" autoComplete='off' />
+                    <input ref={this.inputPasswordRef} placeholder='password' type="password" name="password" autoComplete='off' />
                     <input onClick={this.handleClick} type="submit" value="Sign in"/>
-                    <div className="error" >No match found</div>
+                    {error}
                 </form>
             </div>
         );
@@ -36,48 +40,24 @@ export class Login extends React.Component<{}, ILoginState> {
 
     private handleClick = (event: any) => {
         event.preventDefault();
-        const body = JSON.stringify({username: this.state.inputUsername, password: this.state.inputPassword});
-        fetch('http://localhost:4000/login', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: body})
-                .then((data) => data.json().then(accessAllowed => {
-                    if(!accessAllowed) {
-                        this.showError();
-                        return;
-                    }
-                    this.store.authenticate(this.state.inputUsername, this.state.inputPassword);
-                    StateStore.forceUpdateOfMainComponent();
-
-                }))
-                .catch((err) => {
-                    this.showError();
-                });
+        store.dispatch(checkMatch(this.inputUsernameRef.current.value, this.inputPasswordRef.current.value));
     }
 
-    private handlePassChange = (event: any) => {
-        this.hideError();
-        this.setState({inputPassword: event.target.value});
+    private handleFormChange = () => {
+        this.nullLoginError();
     }
 
-    private handleUserNameChange = (event: any) => {
-        this.hideError();
-        this.setState({inputUsername: event.target.value});
-    }
-
-    private showError() {
-        const elem = document.querySelector('div.error') as HTMLElement;
-        if(!!elem) {
-            elem.style.display = 'block';
-        }
-    }
-
-    private hideError() {
-        const elem = document.querySelector('div.error') as HTMLElement;
-        if(!!elem) {
-            elem.style.display = 'none';
+    private nullLoginError() {
+        if(this.props.loginError) {
+            store.dispatch(nullLoginError());
         }
     }
 }
+
+const mapStateToProps = (state: AppState) => {
+    return {
+        loginError: state.loginError,
+    }
+}
+
+export default connect(mapStateToProps, {})(Login);

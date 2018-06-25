@@ -2,16 +2,21 @@ import * as React from 'react';
 
 import './IOScreen.css';
 import {InputBlock} from "./InputBlock";
-import { Message } from "../Messages/Message";
-import { StateStore } from '../Store/StateStore';
+import {Message} from "../Messages/Message";
+import {StateStore} from '../Store/StateStore';
 import {IStateStore} from "../Store/IStateStore";
+import {AppState} from "../Store-Redux/appState";
+import {connect} from "react-redux";
 
-export class IOScreen extends React.Component {
+export class IOScreen extends React.Component<{}, {messages: any}> {
     private store: IStateStore;
 
     constructor(props: any) {
         super(props);
         this.store = StateStore.getInstance();
+        this.state = {
+            messages: []
+        }
     }
 
     scrollDown(){
@@ -25,18 +30,24 @@ export class IOScreen extends React.Component {
         const dialogId = this.store.get('currentDialogueOwnerId');
         const dialogType = this.store.get('currentDialogueOwnerType');
         const authorId = this.store.get('loggedUserId');
+        let messages = [];
 
         let res;
         if(!this.store.get('currentDialogueOwnerId')) {
             res = null;
         } else {
-            const messages = this.store.getAllMessagesByOwnerId(dialogType, dialogId, authorId).map((elem, index) => {
-                const me = elem.authorId === this.store.get('loggedUserId');
-                const alignClass = me ? 'right' : 'left';
-                return (
-                    <Message key={index} keyValue={index} message={elem} alignClass={alignClass} showAuthor={!me} />
-                )
-            });
+            this.store.getAllMessagesByOwnerId(dialogType, dialogId, authorId)
+                .then(msgs => {this.setState({messages: msgs})})
+
+                this.state.messages.map((elem: any, index) => {
+                    console.log(elem);
+                    const me = elem.authorId === this.store.get('loggedUserId');
+                    const alignClass = me ? 'right' : 'left';
+                    return (
+                        <Message key={index} keyValue={index} message={elem} alignClass={alignClass} showAuthor={!me} />
+                    )
+                });
+            }
 
             res = (
                 <div className="ioScreen">
@@ -44,8 +55,6 @@ export class IOScreen extends React.Component {
                     <InputBlock operation={this.scrollDown}/>
                 </div>
             )
-        }
-
         return res;
     }
 
@@ -53,3 +62,11 @@ export class IOScreen extends React.Component {
         this.scrollDown();
     }
 }
+
+// const mapStateToProps = (state: AppState) => {
+//     return {
+//         messages: state.loggedUserName,
+//     }
+// }
+//
+// export default connect(mapStateToProps, {})(Header);

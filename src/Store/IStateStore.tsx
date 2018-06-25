@@ -1,5 +1,5 @@
 import {IState} from "./IState";
-import {IMessage} from "../Messages/IMessage";
+
 
 export interface IStateStore {
     state: IState;
@@ -8,6 +8,6 @@ export interface IStateStore {
     get(key: string): any | null
     addMessage(msg: string): void
     authenticate(username: string, password: string): void
-    getAllMessagesByOwnerId(ownerType: string, ownerId: number, authorId: number): IMessage[]
+    getAllMessagesByOwnerId(ownerType: string, ownerId: number, authorId: number): any
     getUsername(userId: number): string
 }

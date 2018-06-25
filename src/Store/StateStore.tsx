@@ -53,9 +53,22 @@ export class StateStore implements IStateStore {
         }
     }
 
-    getAllMessagesByOwnerId(ownerType: string, ownerId: number, authorId: number) {
-        return this.messageStore.getAllMessagesForId(ownerType, ownerId, authorId);
+    async getAllMessagesByOwnerId(ownerType: string, ownerId: number, authorId: number) {
+        try {
+            const httpResponse = await fetch('http://localhost:4000/messages', {
+                method: "POST",
+                body: JSON.stringify({dialogueID: ownerId}),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            const messages = await httpResponse.json();
+            return messages;
+        } catch (err) {
+            console.log(err);
+        }
     }
+
 
     getUsername(userId: number) {
         return this.usersStore.getUsername(userId);
@@ -71,9 +84,9 @@ export class StateStore implements IStateStore {
     }
 
     static changeActiveDialogue(index: number, type: string) {
-        StateStore.getInstance().set('currentDialogueOwnerId', +index);
-        StateStore.getInstance().set('currentDialogueOwnerType', type);
-        StateStore.forceUpdateOfMainComponent();
+        // StateStore.getInstance().set('currentDialogueOwnerId', index);
+        // StateStore.getInstance().set('currentDialogueOwnerType', type);
+        // StateStore.forceUpdateOfMainComponent();
     }
 
     static forceUpdateOfMainComponent() {

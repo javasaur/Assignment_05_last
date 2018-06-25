@@ -246,9 +246,9 @@ export function ChatTree(element) {
 
         // Provide the parent with new element details
         const id = getActiveElem().getAttribute('id');
-        const type = getActiveElem().getAttribute('type');
+        // const type = getActiveElem().getAttribute('type');
         if(switchCurrentElementCallback) {
-            switchCurrentElementCallback.apply(null, [id, type]);
+            switchCurrentElementCallback.apply(null, [id]);
         }
     }
 

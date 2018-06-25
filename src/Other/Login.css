@@ -74,5 +74,4 @@ input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
     margin-top: 15px;
     text-align: center;
     color: #f26726;
-    display: none;
 }
