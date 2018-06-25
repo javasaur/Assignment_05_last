@@ -2,12 +2,12 @@ import * as React from 'react';
 import * as moment from 'moment';
 
 import './Message.css';
-import {IMessage} from "./IMessage";
+// import {IMessage} from "./IMessage";
 import {IStateStore} from "../Store/IStateStore";
 import {StateStore} from "../Store/StateStore";
 
 interface IMessageComponentProps {
-    message: IMessage,
+    message: any,
     alignClass: string,
     showAuthor: boolean;
     keyValue: number
@@ -17,7 +17,7 @@ export class Message extends React.Component<IMessageComponentProps, {}> {
     store: IStateStore;
 
     constructor(props: {
-        message: IMessage,
+        message: any,
         alignClass: string,
         showAuthor: boolean,
         keyValue: number

@@ -6,8 +6,6 @@ import {AppState} from "../Store-Redux/appState";
 import {connect} from "react-redux";
 import {store} from "../Store-Redux/store";
 import {switchDialogue} from "../Store-Redux/thunks/dialogues";
-// import {store} from "../Store-Redux/store";
-// import {switchDialogue} from "../Store-Redux/thunks/dialogues";
 
 interface LeftNavProps {
     navTree: any

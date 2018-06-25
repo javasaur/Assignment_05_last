@@ -2,10 +2,10 @@ import * as React from 'react';
 
 import './ChatWindow.css';
 import LeftNav from "../Navigation/LeftNav";
-import {IOScreen} from "../IO/IOScreen";
 import {StateStore} from '../Store/StateStore';
 import {IStateStore} from "../Store/IStateStore";
 import Header from "./Header";
+import IOScreen from "../IO/IOScreen";
 
 export class ChatWindow extends React.Component {
     store: IStateStore;

@@ -65,6 +65,12 @@
       "authorId": 2,
       "content": "message3",
       "dateTimestamp": 1528134398
+    },
+    {
+      "ownerId": 1,
+      "authorId": 3,
+      "content": "other message",
+      "dateTimestamp": 1528134398
     }
   ],
   "1_5": [{
