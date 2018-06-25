@@ -1,5 +1,6 @@
 import MessagesDB from "../lib/messagesdb";
 import {rethrow} from '../util/helpers';
+import * as services from '../services/';
 
 export default class Messages {
     static async addMessageToDialogue(dialogueID, message) {
@@ -7,6 +8,19 @@ export default class Messages {
     }
 
     static async getAllDialogueMessages(dialogueID) {
-        return MessagesDB.getInstance().getAllDialogueMessages(dialogueID).catch(rethrow);
+        try {
+            let messages = await MessagesDB.getInstance().getAllDialogueMessages(dialogueID);
+            messages = messages.map(async msg => {
+                const author = await services.Users.getUserByID(msg.authorId);
+                const name = author ? author.name : 'UNEXISTING_USER';
+                return {
+                    ...msg,
+                    authorName: name
+                }
+            });
+            return Promise.all(messages);
+        } catch (err) {
+            throw err;
+        }
     }
 }

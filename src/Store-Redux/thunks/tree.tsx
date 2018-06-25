@@ -1,4 +1,5 @@
 import {setTree} from "../actions/tree";
+import {subscribeToGroups} from "./socket";
 
 export function getNavTree(userID) {
     return async function(dispatch) {
@@ -13,6 +14,7 @@ export function getNavTree(userID) {
             const treeJSON = await httpResponse.json();
 
            dispatch(setTree(treeJSON));
+           dispatch(subscribeToGroups());
         } catch (err) {
             console.log(err);
         }

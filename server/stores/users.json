@@ -9,6 +9,20 @@
     },
     {
       "type": "user",
+      "id": "2",
+      "name": "Geralt",
+      "password": "",
+      "age": 105
+    },
+    {
+      "type": "user",
+      "id": "3",
+      "name": "Ciri",
+      "password": "",
+      "age": 23
+    },
+    {
+      "type": "user",
       "id": "4",
       "name": "Udi",
       "password": "abc123",

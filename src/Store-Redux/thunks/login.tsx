@@ -1,5 +1,6 @@
 import {nullLoginError, raiseLoginError, setLoggedUser} from "../actions/login";
 import {getNavTree} from "./tree";
+import {openSocket} from "./socket";
 
 export function checkMatch(username, password) {
     return async function(dispatch) {
@@ -14,6 +15,7 @@ export function checkMatch(username, password) {
             const res = await httpResponse.json();
             if(res.foundMatch) {
                 dispatch(setLoggedUser(username, res.id));
+                dispatch(openSocket());
                 dispatch(getNavTree(res.id));
                 return;
             }

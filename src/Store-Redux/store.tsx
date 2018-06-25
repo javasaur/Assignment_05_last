@@ -5,14 +5,17 @@ import {
     LOG_OUT,
     NULL_LOGIN_ERROR,
     RAISE_LOGIN_ERROR,
-    SET_LOGGED_USER, SET_MESSAGES,
+    SET_LOGGED_USER,
+    SET_MESSAGES,
     SET_NAV_TREE,
+    SET_SOCKET,
     SWITCH_DIALOGUE
 } from "./actions/actionTypes";
 import {AppState} from "./appState";
 import {logout, nullLoginError, raiseLoginError, setLoggedUser} from "./reducers/login";
 import {setNavTree} from "./reducers/tree";
 import {setMessages, switchDialogue} from "./reducers/dialogues";
+import {setSocket} from "./reducers/socket";
 
 export const initialState: AppState = {
     loggedUserID: null,
@@ -20,7 +23,8 @@ export const initialState: AppState = {
     loginError: false,
     navTree: null,
     activeDialogueID: null,
-    messages: []
+    messages: [],
+    socket: null
 };
 
 function rootReducer(state: AppState, action: AnyAction): AppState {
@@ -37,6 +41,8 @@ function rootReducer(state: AppState, action: AnyAction): AppState {
             return setNavTree(state, action.payload);
         case SET_MESSAGES:
             return setMessages(state, action.payload);
+        case SET_SOCKET:
+            return setSocket(state, action.payload);
         case SWITCH_DIALOGUE:
             return switchDialogue(state, action.payload);
         default:

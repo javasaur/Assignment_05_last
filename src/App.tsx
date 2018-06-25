@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {BrowserRouter, Route, Redirect} from "react-router-dom";
-import socketIOClient from 'socket.io-client'
 
 import './App.css';
 import {ChatWindow} from "./Blocks/ChatWindow";
@@ -15,13 +14,6 @@ class App extends React.Component<any, any> {
     }
 
     public render() {
-        const socket = socketIOClient('http://localhost:4000');
-        socket.on('test', msg => {
-            console.log(`got message from server: ${msg}`);
-        })
-
-        this.send();
-
         const logged = this.props.loggedUserID;
 
         const login = () => {
@@ -42,11 +34,6 @@ class App extends React.Component<any, any> {
                 </div>
             </BrowserRouter>
         );
-    }
-
-    send = () => {
-        const socket = socketIOClient('http://localhost:4000');
-        socket.emit('test', 'blabla');
     }
 }
 

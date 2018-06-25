@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const messagesdb_1 = require("../lib/messagesdb");
 const helpers_1 = require("../util/helpers");
+const services = require("../services/");
 class Messages {
     static addMessageToDialogue(dialogueID, message) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -18,7 +19,18 @@ class Messages {
     }
     static getAllDialogueMessages(dialogueID) {
         return __awaiter(this, void 0, void 0, function* () {
-            return messagesdb_1.default.getInstance().getAllDialogueMessages(dialogueID).catch(helpers_1.rethrow);
+            try {
+                let messages = yield messagesdb_1.default.getInstance().getAllDialogueMessages(dialogueID);
+                messages = messages.map((msg) => __awaiter(this, void 0, void 0, function* () {
+                    const author = yield services.Users.getUserByID(msg.authorId);
+                    const name = author ? author.name : 'UNEXISTING_USER';
+                    return Object.assign({}, msg, { authorName: name });
+                }));
+                return Promise.all(messages);
+            }
+            catch (err) {
+                throw err;
+            }
         });
     }
 }

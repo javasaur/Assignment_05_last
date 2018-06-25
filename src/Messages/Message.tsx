@@ -30,7 +30,7 @@ export class Message extends React.Component<IMessageComponentProps, {}> {
         const date = moment.unix(this.props.message.dateTimestamp).fromNow();
         let author;
         if(this.props.showAuthor) {
-            const a = this.store.getUsername(this.props.message.authorId);
+            const a = this.props.message.authorName;
             author = (
                 <>
                 <div className="author">{a}</div>

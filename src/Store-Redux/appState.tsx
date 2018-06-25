@@ -4,5 +4,6 @@ export interface AppState {
     loginError: boolean,
     navTree: any // not precise,
     activeDialogueID: string | null,
-    messages: Array<any>
+    messages: Array<any>,
+    socket: any
 }

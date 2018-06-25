@@ -3,18 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const http = require("http");
 const app_1 = require("./app");
 const dbmanager_1 = require("./lib/dbmanager");
-const sio = require("socket.io");
+const services = require("./services/");
 const db = dbmanager_1.default.getInstance();
 const server = http.createServer(app_1.default);
 const port = 4000;
-const io = sio(server);
-io.on('connection', socket => {
-    console.log('someone connected');
-    socket.on('test', msg => {
-        console.log(`got message from client: ${msg}`);
-    });
-    socket.emit('test', 'hello from server');
-});
+services.Socket.init(server);
 setTimeout(() => {
     db.initStores();
 }, 2000);

@@ -10,4 +10,6 @@ const groups_1 = require("./groups");
 exports.Groups = groups_1.default;
 const usersgroups_1 = require("./usersgroups");
 exports.UsersGroups = usersgroups_1.default;
+const socket_1 = require("./socket");
+exports.Socket = socket_1.default;
 //# sourceMappingURL=index.js.map
