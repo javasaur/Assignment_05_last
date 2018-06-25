@@ -1,0 +1,48 @@
+{
+  "groups": [
+    {
+      "type": "group",
+      "name": "Friends",
+      "id": "1",
+      "parentID": null,
+      "items": []
+    },
+    {
+      "type": "group",
+      "name": "Best Friends",
+      "id": "2",
+      "parentID": 1,
+      "items": []
+    },
+    {
+      "type": "group",
+      "name": "Not friends, but brothers!",
+      "id": "3",
+      "parentID": 2,
+      "items": []
+    },
+    {
+      "type": "group",
+      "name": "Colleagues",
+      "id": "4",
+      "parentID": null,
+      "items": []
+    },
+    {
+      "type": "group",
+      "name": "Cyberpunk 2077",
+      "id": "5",
+      "parentID": null,
+      "items": [
+        "1", "5"
+      ]
+    },
+    {
+      "type": "group",
+      "name": "PM",
+      "id": "1_5",
+      "parentID": null,
+      "items": []
+    }
+  ]
+}

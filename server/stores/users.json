@@ -1,0 +1,53 @@
+{
+  "users": [
+    {
+      "type": "user",
+      "id": "1",
+      "name": "Feo",
+      "password": "123123",
+      "age" : 25
+    },
+    {
+      "type": "user",
+      "id": "4",
+      "name": "Udi",
+      "password": "abc123",
+      "age": 22
+    },
+    {
+      "type": "user",
+      "id": "5",
+      "name": "Ori",
+      "password": "",
+      "age": 22
+    },
+    {
+      "type": "user",
+      "id": "6",
+      "name": "Roni",
+      "password": "",
+      "age": 22
+    },
+    {
+      "type": "user",
+      "id": "7",
+      "name": "Moshe",
+      "password": "",
+      "age": 22
+    },
+    {
+      "type": "user",
+      "id": "8",
+      "name": "David",
+      "password": "",
+      "age": 22
+    },
+    {
+      "type": "user",
+      "name": "newUser",
+      "password": "newPassword",
+      "age": 25,
+      "id": "1529316160862"
+    }
+  ]
+}
