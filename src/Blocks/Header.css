@@ -1,8 +1,8 @@
 .header {
-    color: #FCFCFC;
+    color: #87888c;
     text-align: center;
     padding: 17px;
-    background-color: #2176AE;
+    background-color: #212226;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     display: flex;
@@ -15,7 +15,7 @@
 }
 
 .header a {
-    color: #FCFCFC;
+    color: #87888c;
     font-size: 16px;
     cursor: pointer;
 }

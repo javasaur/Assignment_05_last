@@ -1,5 +1,7 @@
 .inputBlock {
     display: flex;
+    padding: 15px;
+    border-top: 1px solid #222328;
 }
 
 .inputBlock textarea {
@@ -7,14 +9,20 @@
     resize: none;
     rows: 40;
     padding: 7px;
+    background-color: #484b54;
+    border: none;
+    color: #FFF;
+    outline: none;
 }
 
 .inputBlock button {
     max-width: 80px;
     flex: 1 1 auto;
-    background-color: #1B4965;
-    color: #FFF;
+    background-color: #212226;
+    color: #9b9ca0;
     border: 1px solid #000;
+    border-bottom-right-radius: 25%;
+    border-top-right-radius: 25%;
 }
 
 .inputBlock button:hover {

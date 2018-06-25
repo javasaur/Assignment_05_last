@@ -69,7 +69,13 @@
     {
       "ownerId": 1,
       "authorId": 3,
-      "content": "other message",
+      "content": "other message that is so long it will break your indentation and padding",
+      "dateTimestamp": 1528134398
+    },
+    {
+      "ownerId": 1,
+      "authorId": 1,
+      "content": "My message should be shown on the right",
       "dateTimestamp": 1528134398
     }
   ],
@@ -78,5 +84,31 @@
     "authorId": 5,
     "content": "Hello, tomorrow we are going to learn Redux!",
     "dateTimestamp": 1528134398
-  }]
+  }],
+  "6": [
+    {
+      "ownerId": 1,
+      "authorId": 4,
+      "content": "Hey guys, welcome to our group!",
+      "dateTimestamp": 1528134398
+    },
+    {
+      "ownerId": 1,
+      "authorId": 5,
+      "content": "Hello!",
+      "dateTimestamp": 1528134398
+    },
+    {
+      "ownerId": 1,
+      "authorId": 6,
+      "content": "I Love javascript",
+      "dateTimestamp": 1528134398
+    },
+    {
+      "ownerId": 1,
+      "authorId": 1,
+      "content": "Hello, world!",
+      "dateTimestamp": 1528134398
+    }
+  ]
 }

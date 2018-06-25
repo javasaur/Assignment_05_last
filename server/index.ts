@@ -10,7 +10,15 @@ const io = sio(server);
 
 io.on('connection', socket => {
     console.log('someone connected');
+
+    socket.on('test', msg => {
+        console.log(`got message from client: ${msg}`)
+    })
+
+    socket.emit('test', 'hello from server');
 })
+
+
 
 setTimeout(() => {
     db.initStores();

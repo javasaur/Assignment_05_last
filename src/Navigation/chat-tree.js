@@ -56,9 +56,9 @@ export function ChatTree(element) {
     }
 
     // Internal functions
-    function addClassToElement(elem, classname) {
+    function addClassesToElement(elem, classnames) {
         if(!!elem) {
-            elem.classList.add(classname);
+            elem.classList.add(...classnames);
         }
     }
 
@@ -88,6 +88,14 @@ export function ChatTree(element) {
             // Create and configure the li and div elements
             let li = createDomElement("li", "");
             let div = createDomElement("div", item.name);
+            let icon = createDomElement("i", "");
+            addClassesToElement(icon, ["icon", "fas"])
+            if(item.type === 'user') {
+                addClassesToElement(icon, ["fa-user"]);
+            } else if(item.type === 'group') {
+                addClassesToElement(icon, ["fa-angle-right"])
+            }
+            div.insertAdjacentElement('afterbegin', icon);
             div.classList.add("left-tree-div"); // for mouse-event filtering
 
             // Added for REACT
@@ -99,7 +107,7 @@ export function ChatTree(element) {
             let pathLength = path.split(",").length;
             div.setAttribute("style", "padding-left: " + pathLength * paddingPerLevel + "em;");
             li.appendChild(div);
-            addClassToElement(div, item.type);
+            addClassesToElement(div, [item.type]);
 
             // Add li directly to the "root" ul or new ul
             if(elem === element) {
@@ -126,6 +134,7 @@ export function ChatTree(element) {
         let children = getChildrenForElem(elem);
         if(children.length > 0) {
             decompose(children, elem);
+            setExpandedIcon(elem);
         }
     }
 
@@ -137,6 +146,7 @@ export function ChatTree(element) {
         let elemUl = elem.querySelector("ul");
         elemList.splice(currIndex + 1, closedCount);
         elemUl.remove();
+        setNonExpandedIcon(elem);
     }
 
     function getActiveElem() {
@@ -235,6 +245,18 @@ export function ChatTree(element) {
         }
     }
 
+    function setNonExpandedIcon(elem) {
+        const icon = elem.querySelector("i");
+        icon.className = '';
+        addClassesToElement(icon, ["icon", "fas", "fa-angle-right"]);
+    }
+
+    function setExpandedIcon(elem) {
+        const icon = elem.querySelector("i");
+        icon.className = '';
+        addClassesToElement(icon, ["icon", "fas", "fa-angle-down"]);
+    }
+
     function subscribeToElementSwitch(callback) {
         switchCurrentElementCallback = callback;
     }
@@ -254,7 +276,7 @@ export function ChatTree(element) {
 
     function toggleClasses(oldElem, newElem, className) {
         removeClassFromElement(oldElem, className);
-        addClassToElement(newElem, className);
+        addClassesToElement(newElem, [className]);
     }
 
     function traverseDown() {

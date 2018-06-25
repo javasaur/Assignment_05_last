@@ -3,11 +3,12 @@ body, html {
   box-sizing: border-box;
   height: 100vh;
   font-size: 15px;
-  font-family: Calibri sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 body {
-  background: linear-gradient(to bottom right, #1B4965, #0f2d3f);
+  /*background: linear-gradient(to bottom right, #1B4965, #0f2d3f);*/
+  background-color: #4f535c;
   padding: 40px;
 }
 

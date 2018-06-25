@@ -46,7 +46,7 @@ export class Message extends React.Component<IMessageComponentProps, {}> {
             <div className="messageContainer" key={this.props.keyValue}>
                 <div className={`message ${this.props.alignClass}`}>
                     {author}
-                    <div className="msg">{this.props.message.content}</div>
+                    <div className="content">{this.props.message.content}</div>
                     <div className="date">{date}</div>
                 </div>
             </div>

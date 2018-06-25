@@ -1,18 +1,27 @@
 .leftNav {
-    background-color: blue;
     padding: 0;
     margin: 0;
     flex: 1 1;
     max-width: 250px;
+    border-right: 1px solid #222328;
+}
+
+.leftNav .search {
+    background-color: #4b4c51;
+    outline: none;
+    border: none;
+    color: #7f8085;
+
 }
 
 .tree {
-    background-color: #BEE9E8;
+    background-color: #303136;
     height: 100%;
-    padding: 0;
+    padding: 5px 0 0 0;
     margin: 0;
     list-style: none;
     outline: none;
+    box-sizing: border-box;
 
     /* Prevent the double click selection */
     -webkit-user-select: none; /* webkit (safari, chrome) browsers */
@@ -24,6 +33,10 @@
 .tree ul, .tree li {
     padding: 0;
     margin: 0;
+}
+
+.tree li {
+    padding: 0.1em 0;
 }
 
 .tree ul {
@@ -39,12 +52,17 @@
     cursor: pointer;
 }
 
+.tree .icon {
+    padding: 0 10px;
+}
+
 .tree div.group {
-    color: #000;
+    color: #e3e4e8;
+    background-color: #212226;
 }
 
 .tree div.user {
-    color: #000;
+    color: #64656a;
     font-size: 0.9em;
     font-style: italic;
 }
@@ -55,8 +73,8 @@
 
 /* Avoid coloring the whole node, only first div */
 .tree .selected > div.group, .tree .selected > div.user {
-    background-color: #62B6CB;
-    color: #FFF;
+    background-color: #42464f;
+    color: #e6e9ee;
 }
 
 

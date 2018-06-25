@@ -20,7 +20,8 @@ class Header extends React.Component<HeaderProps, {}> {
             <div className="header">
                 Welcome, {this.props.username}!
                 <div className="logout">
-                    <a onClick={this.logout}>Logout</a>
+                    <a onClick={this.logout}>Logout <i className="fas fa-sign-out-alt" /></a>
+
                 </div>
             </div>
         )

@@ -43,6 +43,15 @@
       "id": "1_5",
       "parentID": null,
       "items": []
+    },
+    {
+      "type": "group",
+      "name": "Random",
+      "id": "6",
+      "parentID": null,
+      "items": [
+        "1", "4", "5", "6"
+      ]
     }
   ]
 }

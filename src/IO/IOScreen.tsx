@@ -31,7 +31,7 @@ class IOScreen extends React.Component<IOScreenProps, any> {
             res = null;
         } else {
             messages.forEach((elem, index) => {
-                const me = elem.authorId === this.props.loggedUserID;
+                const me = +elem.authorId === +this.props.loggedUserID;
                 const alignClass = me ? 'right' : 'left';
                 const el = (
                     <Message key={index} keyValue={index} message={elem} alignClass={alignClass} showAuthor={!me} />
