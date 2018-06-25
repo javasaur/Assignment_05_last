@@ -1,22 +1,27 @@
 import * as React from 'react';
 
 import './InputBlock.css';
-import {StateStore} from "../Store/StateStore";
-import {IStateStore} from "../Store/IStateStore";
+import {sendMessage} from "../Store-Redux/thunks/dialogues";
+import {store} from "../Store-Redux/store";
+import {connect} from "react-redux";
+import {AppState} from "../Store-Redux/appState";
+// import {StateStore} from "../Store/StateStore";
+// import {IStateStore} from "../Store/IStateStore";
 
-interface IInputBlockState {
-    message: string;
+interface InputBlockProps {
+    activeDialogueID: string;
+    loggedUserID: number
 }
 
-export class InputBlock extends React.Component<{operation: any}, IInputBlockState> {
-    store: IStateStore;
+class InputBlock extends React.Component<InputBlockProps, any> {
+    // store: IStateStore;
 
     constructor(props: any) {
         super(props);
         this.state = {
             message: ''
         }
-        this.store = StateStore.getInstance();
+        // this.store = StateStore.getInstance();
     }
 
     handleChange = (event: any) => {
@@ -35,7 +40,8 @@ export class InputBlock extends React.Component<{operation: any}, IInputBlockSta
         this.setState({
             message: ''
         });
-        this.store.addMessage(this.state.message);
+        // this.store.addMessage(this.state.message);
+        store.dispatch(sendMessage(this.props.activeDialogueID, this.props.loggedUserID, this.state.message));
     }
 
     public render() {
@@ -48,6 +54,15 @@ export class InputBlock extends React.Component<{operation: any}, IInputBlockSta
     }
 
     componentDidUpdate() {
-        this.props.operation();
+        // this.props.operation();
     }
 }
+
+const mapStateToProps = (state: AppState) => {
+    return {
+        loggedUserID: state.loggedUserID,
+        activeDialogueID: state.activeDialogueID,
+    }
+}
+
+export default connect(mapStateToProps, {})(InputBlock);

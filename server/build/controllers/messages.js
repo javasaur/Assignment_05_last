@@ -10,6 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const services = require("../services");
 class Messages {
+    static addMessage(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            services.Messages.addMessageToDialogue(req.body.dialogueID, req.body.message)
+                .then(() => res.status(200).send('yes'))
+                .catch((error) => res.status(400).send(error));
+        });
+    }
     static getAllDialogueMessages(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             services.Messages.getAllDialogueMessages(req.body.dialogueID)

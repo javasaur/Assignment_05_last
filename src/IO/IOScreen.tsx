@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import './IOScreen.css';
-import {InputBlock} from "./InputBlock";
+import InputBlock from "./InputBlock";
 import {AppState} from "../Store-Redux/appState";
 import {connect} from "react-redux";
 import {Message} from "../Messages/Message";
@@ -42,7 +42,8 @@ class IOScreen extends React.Component<IOScreenProps, any> {
             res = (
                 <div className="ioScreen">
                     <div className="messages">{messagesLI}</div>
-                    <InputBlock operation={this.scrollDown}/>
+                    {/*<InputBlock operation={this.scrollDown}/>*/}
+                    <InputBlock />
                 </div>
             )
         }

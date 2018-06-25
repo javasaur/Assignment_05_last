@@ -3,6 +3,6 @@ export interface AppState {
     loggedUserName: string | null,
     loginError: boolean,
     navTree: any // not precise,
-    activeDialogueID: number | null,
+    activeDialogueID: string | null,
     messages: Array<any>
 }
