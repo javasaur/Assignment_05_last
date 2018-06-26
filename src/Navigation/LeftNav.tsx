@@ -19,18 +19,28 @@ class LeftNav extends React.Component<LeftNavProps, any> {
     public render() {
         const elem = <ul className="left tree" tabIndex={0} />;
 
+        return (
+            <div className="leftNav">
+                {elem}
+            </div>
+        );
+    }
+
+    componentDidUpdate() {
+        this.loadNavTree();
+    }
+
+    componentDidMount() {
+        this.loadNavTree();
+    }
+
+    private loadNavTree() {
         if(!!this.props.navTree) {
             const tree = ChatTree(document.querySelector('ul.tree'));
             tree.subscribeToElementSwitch(this.switchDialogue);
             tree.load(this.props.navTree);
             tree.element.focus();
         }
-
-        return (
-            <div className="leftNav">
-                {elem}
-            </div>
-        );
     }
 
     private switchDialogue(id) {

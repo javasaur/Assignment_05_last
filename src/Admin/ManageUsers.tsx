@@ -18,7 +18,7 @@ export class ManageUsers extends React.Component<any, ManageUsersState> {
         return (
             <div className="manageUsers">
                 <a onClick={this.fetchAllUsers}>Fetch all users</a> |
-                <a>Search user</a>
+                <a>Search user</a> |
                 <div className="result">{this.state.data}</div>
             </div>
         )

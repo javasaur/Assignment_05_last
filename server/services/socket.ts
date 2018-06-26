@@ -13,15 +13,21 @@ export default class Socket {
             socket.on('groupSubscription', (groupID, userID) => {
                 socket.join(groupID);
             })
+
+            socket.on('disconnect', () => {
+                console.log('socket disconnected');
+            })
         })
+
+
         console.log(`initialised socket`);
         return Socket.io
     }
 
     static notifyByMessagesUpdate(dialogueID) {
-        console.log(`inside notifyByMessagesUpdate ${dialogueID}`);
+        // console.log(`inside notifyByMessagesUpdate ${dialogueID}`);
         Socket.io.to(dialogueID).emit('groupSubscription', dialogueID);
-        console.log(`after notifyByMessagesUpdate`);
+        // console.log(`after notifyByMessagesUpdate`);
     }
 
     static io;

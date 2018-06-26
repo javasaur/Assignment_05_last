@@ -43,7 +43,7 @@ class Users {
     }
     static removeUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            services.Users.removeUser(req.params.id)
+            services.UsersGroups.removeUser(req.params.id)
                 .then(() => res.status(200).send({}))
                 .catch(err => res.status(400).json({ error: err.message }));
         });

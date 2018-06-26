@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const groups_1 = require("./groups");
 const users_1 = require("./users");
+const usersdb_1 = require("../lib/usersdb");
 class UsersGroups {
     static getAssociatedGroups(userID) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -48,6 +49,21 @@ class UsersGroups {
             }
             catch (err) {
                 throw new Error(`Failed to build JSON tree for ${userID}: ${err.message}`);
+            }
+        });
+    }
+    static removeUser(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                console.log(`before userdb removeUser`);
+                //
+                yield usersdb_1.default.getInstance().removeUser(id);
+                console.log(`before entering removeUserToDialoguesLinks`);
+                // await UsersDB.getInstance().removeUserToDialoguesLinks(id);
+            }
+            catch (err) {
+                console.log(err);
+                throw err;
             }
         });
     }

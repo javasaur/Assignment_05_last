@@ -1,5 +1,7 @@
 import GroupsService from './groups';
 import UsersService from './users';
+import {rethrow} from "../util/helpers";
+import UsersDB from "../lib/usersdb";
 
 export default class UsersGroups {
     static async getAssociatedGroups(userID) {
@@ -38,5 +40,19 @@ export default class UsersGroups {
         } catch (err) {
             throw new Error(`Failed to build JSON tree for ${userID}: ${err.message}`);
         }
+    }
+
+    static async removeUser(id) {
+        try {
+            console.log(`before userdb removeUser`);
+            //
+            await UsersDB.getInstance().removeUser(id);
+            console.log(`before entering removeUserToDialoguesLinks`);
+            // await UsersDB.getInstance().removeUserToDialoguesLinks(id);
+        } catch (err) {
+            console.log(err);
+            throw err;
+        }
+
     }
 }

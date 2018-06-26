@@ -25,7 +25,7 @@ class UserDB {
                 const u = Object.assign({}, user, { id: id });
                 // SHOULD BE UPDATED ATOMIC?!
                 this.data.push(u);
-                this.updateStore();
+                this.updateUsersStore();
             }
             catch (err) {
                 throw new Error(`Failed to add user ${user.name}: ${err.message}`);
@@ -75,7 +75,7 @@ class UserDB {
                 if (found) {
                     // SHOULD BE UPDATED ATOMIC?!
                     this.data.splice(index, 1);
-                    this.updateStore();
+                    this.updateUsersStore();
                 }
                 throw new Error(`Trying to delete unexisting user ${userID}`);
             }

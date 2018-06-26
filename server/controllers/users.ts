@@ -28,7 +28,7 @@ export default class Users {
     }
 
     static async removeUser(req: Request, res: Response) {
-        services.Users.removeUser(req.params.id)
+        services.UsersGroups.removeUser(req.params.id)
             .then(() => res.status(200).send({}))
             .catch(err => res.status(400).json({error: err.message}));
     }

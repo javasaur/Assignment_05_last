@@ -16,9 +16,11 @@ class IOScreen extends React.Component<IOScreenProps, any> {
         super(props);
     }
 
-    scrollDown(){
+    scrollDown = () => {
+        console.log(`scrolling`);
         const element = document.querySelector("div.messages");
         if(!!element) {
+            console.log(`found element`);
             element.scrollTop = element.scrollHeight;
         }
     }
@@ -42,8 +44,8 @@ class IOScreen extends React.Component<IOScreenProps, any> {
             res = (
                 <div className="ioScreen">
                     <div className="messages">{messagesLI}</div>
-                    {/*<InputBlock operation={this.scrollDown}/>*/}
-                    <InputBlock />
+                    {/*<button onClick={this.scrollDown}>Scroll</button>*/}
+                    <InputBlock operation={this.scrollDown}/>
                 </div>
             )
         }
@@ -51,6 +53,10 @@ class IOScreen extends React.Component<IOScreenProps, any> {
     }
 
     componentDidMount() {
+        this.scrollDown();
+    }
+
+    componentDidUpdate() {
         this.scrollDown();
     }
 }

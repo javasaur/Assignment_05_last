@@ -21,7 +21,7 @@ export default class UsersDB {
 
             // SHOULD BE UPDATED ATOMIC?!
             this.users.push(u);
-            this.updateStore();
+            this.updateUsersStore();
 
         } catch (err) {
             throw new Error(`Failed to add user ${user.name}: ${err.message}`);
@@ -100,14 +100,28 @@ export default class UsersDB {
             })
 
             if(found) {
-                // SHOULD BE UPDATED ATOMIC?!
                 this.users.splice(index, 1);
-                this.updateStore();
+                this.updateUsersStore();
+                return;
             }
 
             throw new Error(`Trying to delete unexisting user ${userID}`);
         } catch (err) {
             throw new Error(`Failed to delete ${userID}: ${err.message}`);
+        }
+    }
+
+    async removeUserToDialoguesLinks(userID) {
+        try {
+            console.log(`trying to remove ${userID}`);
+            if(this.usersToDialogues[userID]) {
+                console.log('before delete', this.usersToDialogues);
+                delete this.usersToDialogues[userID];
+                console.log('after delete', this.usersToDialogues);
+                this.updateUsersDialoguesStore();
+            }
+        } catch (err) {
+            throw new Error(`Failed to delete dialogue references for ${userID}: ${err.message}`);
         }
     }
 
@@ -121,7 +135,6 @@ export default class UsersDB {
                 found.age = user.age;
                 return;
             }
-
             throw new Error(`Trying to update unexisting user ${userID}`);
         }
          catch (err) {
@@ -129,7 +142,11 @@ export default class UsersDB {
         }
     }
 
-    async updateStore() {
+    async updateUsersStore() {
         DB.writeToStore(DB.USERS_STORE, JSON.stringify({users: this.users}));
+    }
+
+    async updateUsersDialoguesStore() {
+        DB.writeToStore(DB.USERS_TO_DIALOGUES_STORE, JSON.stringify(JSON.stringify(this.usersToDialogues)));
     }
 }

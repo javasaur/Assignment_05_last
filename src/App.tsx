@@ -9,6 +9,7 @@ import {connect} from "react-redux";
 import Login from "./Other/Login";
 import {ManageUsers} from "./Admin/ManageUsers";
 import {ManageGroups} from "./Admin/ManageGroups";
+import Header from "./Blocks/Header";
 
 class App extends React.Component<any, any> {
     constructor(props: any) {
@@ -23,15 +24,15 @@ class App extends React.Component<any, any> {
         }
 
         const chatWindow = () => {
-            return !!logged ? <ChatWindow/> : <Login />;
+            return !!logged ? <><Header /><ChatWindow/></> : <Login />;
         }
 
         const manageUsers = () => {
-            return !!logged ? <ManageUsers/> : <Login />;
+            return !!logged ? <><Header /><ManageUsers/></> : <Login />;
         }
 
         const manageGroups = () => {
-            return !!logged ? <ManageGroups/> : <Login />;
+            return !!logged ? <><Header /><ManageGroups/></> : <Login />;
         }
 
         return (

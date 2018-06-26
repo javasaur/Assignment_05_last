@@ -5,23 +5,19 @@ import {sendMessage} from "../Store-Redux/thunks/dialogues";
 import {store} from "../Store-Redux/store";
 import {connect} from "react-redux";
 import {AppState} from "../Store-Redux/appState";
-// import {StateStore} from "../Store/StateStore";
-// import {IStateStore} from "../Store/IStateStore";
 
 interface InputBlockProps {
     activeDialogueID: string;
-    loggedUserID: number
+    loggedUserID: number;
+    operation: Function;
 }
 
 class InputBlock extends React.Component<InputBlockProps, any> {
-    // store: IStateStore;
-
     constructor(props: any) {
         super(props);
         this.state = {
             message: ''
         }
-        // this.store = StateStore.getInstance();
     }
 
     handleChange = (event: any) => {
@@ -40,7 +36,6 @@ class InputBlock extends React.Component<InputBlockProps, any> {
         this.setState({
             message: ''
         });
-        // this.store.addMessage(this.state.message);
         store.dispatch(sendMessage(this.props.activeDialogueID, this.props.loggedUserID, this.state.message));
     }
 
@@ -54,14 +49,17 @@ class InputBlock extends React.Component<InputBlockProps, any> {
     }
 
     componentDidUpdate() {
-        // this.props.operation();
+        if(this.props.operation) {
+            this.props.operation();
+        }
     }
 }
 
-const mapStateToProps = (state: AppState) => {
+const mapStateToProps = (state: AppState, ownProps) => {
     return {
         loggedUserID: state.loggedUserID,
         activeDialogueID: state.activeDialogueID,
+        operation: ownProps.operation
     }
 }
 

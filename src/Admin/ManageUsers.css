@@ -10,3 +10,9 @@
 .manageUsers a:hover {
     cursor: pointer
 }
+
+.manageUsers a, .manageUsers Link, .manageUsers a:visited {
+    text-decoration: none;
+    color: #FFF;
+}
+
