@@ -24,18 +24,41 @@ class UsersGroups {
             }
         });
     }
+    static getPrivateGroups(userID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const privateGroupsIDs = yield users_1.default.getPrivateGroupsIDs(userID);
+                let privateGroups;
+                if (privateGroupsIDs) {
+                    // privateGroupsIDs can be void?!!
+                    privateGroups = yield groups_1.default.getGroupsByIDs(privateGroupsIDs);
+                }
+                return privateGroups || [];
+            }
+            catch (err) {
+                throw new Error(`Failed to get private groups for ${userID}: ${err.message}`);
+            }
+        });
+    }
     static buildJSONTree(userID) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const groups = yield UsersGroups.getAssociatedGroups(userID);
-                if (groups) {
-                    for (let group of groups) {
+                const publicGroups = yield groups_1.default.getPublicGroups();
+                const privateGroups = yield this.getPrivateGroups(userID);
+                if (!publicGroups)
+                    return [];
+                const groups = [...publicGroups].concat([...privateGroups]);
+                const spreadGroups = [];
+                groups.forEach(g => spreadGroups.push(Object.assign({}, g)));
+                if (spreadGroups) {
+                    for (let group of spreadGroups) {
                         if (group.name === 'PM') {
                             const id = yield groups_1.default.getSecondCompanionID(group.id, userID + '');
                             const user = yield users_1.default.getUserByID(id);
                             group.name = user.name;
                             group.type = 'user';
                         }
+                        console.log(group.items);
                         const items = yield users_1.default.getUsersByIDs(group.items);
                         if (items) {
                             for (let item of items) {
@@ -45,9 +68,10 @@ class UsersGroups {
                         group.items = items;
                     }
                 }
-                return groups;
+                return spreadGroups;
             }
             catch (err) {
+                console.log(err);
                 throw new Error(`Failed to build JSON tree for ${userID}: ${err.message}`);
             }
         });

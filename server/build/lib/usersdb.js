@@ -65,6 +65,20 @@ class UsersDB {
         }
         return UsersDB.instance;
     }
+    getPrivateGroupsIDs(userID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let ids = [];
+                if (this.usersToDialogues[userID]) {
+                    ids = [...this.usersToDialogues[userID].filter(id => id.includes('_'))];
+                }
+                return ids;
+            }
+            catch (err) {
+                throw new Error(`Failed to fetch private groups ids for ${userID}`);
+            }
+        });
+    }
     getUserByID(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -123,22 +137,19 @@ class UsersDB {
             }
         });
     }
-    removeUserToDialoguesLinks(userID) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                console.log(`trying to remove ${userID}`);
-                if (this.usersToDialogues[userID]) {
-                    console.log('before delete', this.usersToDialogues);
-                    delete this.usersToDialogues[userID];
-                    console.log('after delete', this.usersToDialogues);
-                    this.updateUsersDialoguesStore();
-                }
-            }
-            catch (err) {
-                throw new Error(`Failed to delete dialogue references for ${userID}: ${err.message}`);
-            }
-        });
-    }
+    // async removeUserToDialoguesLinks(userID) {
+    //     try {
+    //         console.log(`trying to remove ${userID}`);
+    //         if(this.usersToDialogues[userID]) {
+    //             console.log('before delete', this.usersToDialogues);
+    //             delete this.usersToDialogues[userID];
+    //             console.log('after delete', this.usersToDialogues);
+    //             this.updateUsersDialoguesStore();
+    //         }
+    //     } catch (err) {
+    //         throw new Error(`Failed to delete dialogue references for ${userID}: ${err.message}`);
+    //     }
+    // }
     updateUser(userID, user) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

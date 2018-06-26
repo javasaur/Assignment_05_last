@@ -12,9 +12,9 @@ export function getNavTree(userID) {
                 body: JSON.stringify({userID})
             })
             const treeJSON = await httpResponse.json();
-
-           dispatch(setTree(treeJSON));
-           dispatch(subscribeToGroups());
+            console.log(treeJSON);
+            dispatch(setTree(treeJSON));
+            dispatch(subscribeToGroups());
         } catch (err) {
             console.log(err);
         }

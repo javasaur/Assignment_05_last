@@ -26,6 +26,11 @@ class Groups {
             return groupsdb_1.default.getInstance().getGroupByID(groupdID).catch(helpers_1.rethrow);
         });
     }
+    static getPublicGroups() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return groupsdb_1.default.getInstance().getPublicGroups().catch(helpers_1.rethrow);
+        });
+    }
     static getGroupsByIDs(groupsIDs) {
         return __awaiter(this, void 0, void 0, function* () {
             return groupsdb_1.default.getInstance().getGroupsByIDs(groupsIDs).catch(helpers_1.rethrow);

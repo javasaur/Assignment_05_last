@@ -51,6 +51,10 @@ export default class GroupsDB {
         return GroupsDB.instance;
     }
 
+    async getPublicGroups() {
+        return [...this.data].filter(g => !g.id.includes('_'));
+    }
+
     async init() {
         try {
             const res = await DB.readFromStore(DB.GROUPS_STORE);

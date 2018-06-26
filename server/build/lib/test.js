@@ -9,12 +9,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dbmanager_1 = require("./dbmanager");
-const messages_1 = require("../services/messages");
+const groups_1 = require("../services/groups");
+// import {Group} from "../../src/Store/Group";
 (function () {
     return __awaiter(this, void 0, void 0, function* () {
         const db = dbmanager_1.default.getInstance();
         yield db.initStores();
-        console.log(yield messages_1.default.getAllDialogueMessages('1_5'));
+        // const publicGroups = await GroupsService.getPublicGroups();
+        // const privateGroups = await UsersGroupsService.getPrivateGroups(1);
+        const g1 = yield groups_1.default.getGroupsByIDs(['5']);
+        g1['items'] = ['blabla'];
+        const g2 = yield groups_1.default.getGroupsByIDs(['5']);
+        console.log(g1);
+        console.log(g2);
+        console.log(g1 === g2);
+        // console.log(privateGroups);
+        // if(publicGroups) {
+        //     console.log(publicGroups.concat(privateGroups));
+        // }
+        // console.log(await MessagesService.getAllDialogueMessages('1_5'));
         // console.log(await GroupsService.getSecondCompanionID('1_5', '1'));
         // const tree = await UsersGroupsService.buildJSONTree(1);
         // console.log(JSON.stringify(tree));

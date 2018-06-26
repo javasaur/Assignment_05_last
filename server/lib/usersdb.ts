@@ -59,6 +59,18 @@ export default class UsersDB {
         return UsersDB.instance;
     }
 
+    async getPrivateGroupsIDs(userID) {
+        try {
+            let ids = [];
+            if(this.usersToDialogues[userID]) {
+                ids = [...this.usersToDialogues[userID].filter(id => id.includes('_'))];
+            }
+            return ids;
+        } catch (err) {
+            throw new Error(`Failed to fetch private groups ids for ${userID}`);
+        }
+    }
+
     async getUserByID(userId) {
         try {
             return this.users.find(u => u.id === userId) || null;
@@ -111,19 +123,19 @@ export default class UsersDB {
         }
     }
 
-    async removeUserToDialoguesLinks(userID) {
-        try {
-            console.log(`trying to remove ${userID}`);
-            if(this.usersToDialogues[userID]) {
-                console.log('before delete', this.usersToDialogues);
-                delete this.usersToDialogues[userID];
-                console.log('after delete', this.usersToDialogues);
-                this.updateUsersDialoguesStore();
-            }
-        } catch (err) {
-            throw new Error(`Failed to delete dialogue references for ${userID}: ${err.message}`);
-        }
-    }
+    // async removeUserToDialoguesLinks(userID) {
+    //     try {
+    //         console.log(`trying to remove ${userID}`);
+    //         if(this.usersToDialogues[userID]) {
+    //             console.log('before delete', this.usersToDialogues);
+    //             delete this.usersToDialogues[userID];
+    //             console.log('after delete', this.usersToDialogues);
+    //             this.updateUsersDialoguesStore();
+    //         }
+    //     } catch (err) {
+    //         throw new Error(`Failed to delete dialogue references for ${userID}: ${err.message}`);
+    //     }
+    // }
 
     async updateUser(userID, user) {
         try {

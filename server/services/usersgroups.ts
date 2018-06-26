@@ -14,18 +14,39 @@ export default class UsersGroups {
         }
     }
 
+    static async getPrivateGroups(userID) {
+        try {
+            const privateGroupsIDs = await UsersService.getPrivateGroupsIDs(userID);
+            let privateGroups;
+            if(privateGroupsIDs) {
+                // privateGroupsIDs can be void?!!
+                privateGroups = await GroupsService.getGroupsByIDs(privateGroupsIDs);
+            }
+            return privateGroups || [];
+        } catch (err) {
+            throw new Error(`Failed to get private groups for ${userID}: ${err.message}`);
+        }
+    }
+
     static async buildJSONTree(userID) {
         try {
-            const groups = await UsersGroups.getAssociatedGroups(userID);
+            const publicGroups = await GroupsService.getPublicGroups();
+            const privateGroups = await this.getPrivateGroups(userID);
 
-            if(groups) {
-                for(let group of groups) {
+            if(!publicGroups) return [];
+
+            const groups = [...publicGroups].concat([...privateGroups]);
+            const spreadGroups = [];
+            groups.forEach(g => spreadGroups.push({...g}));
+            if(spreadGroups) {
+                for(let group of spreadGroups) {
                     if(group.name === 'PM') {
                         const id = await GroupsService.getSecondCompanionID(group.id, userID + '');
                         const user = await UsersService.getUserByID(id);
                         group.name = user.name;
                         group.type = 'user';
                     }
+                    console.log(group.items);
                     const items = await UsersService.getUsersByIDs(group.items);
 
                     if(items) {
@@ -36,8 +57,9 @@ export default class UsersGroups {
                     group.items = items;
                 }
             }
-            return groups;
+            return spreadGroups;
         } catch (err) {
+            console.log(err);
             throw new Error(`Failed to build JSON tree for ${userID}: ${err.message}`);
         }
     }

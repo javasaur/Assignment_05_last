@@ -62,6 +62,11 @@ class GroupsDB {
         }
         return GroupsDB.instance;
     }
+    getPublicGroups() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return [...this.data].filter(g => !g.id.includes('_'));
+        });
+    }
     init() {
         return __awaiter(this, void 0, void 0, function* () {
             try {

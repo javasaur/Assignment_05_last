@@ -18,6 +18,10 @@ export default class Users {
         return UsersDB.getInstance().getUserByID(userID).catch(rethrow);
     }
 
+    static async getPrivateGroupsIDs(userID) {
+        return UsersDB.getInstance().getPrivateGroupsIDs(userID).catch(rethrow);
+    }
+
     static async getUsersByIDs(usersIDs) {
         return UsersDB.getInstance().getUsersByIds(usersIDs).catch(rethrow);
     }

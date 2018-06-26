@@ -17,10 +17,8 @@ class IOScreen extends React.Component<IOScreenProps, any> {
     }
 
     scrollDown = () => {
-        console.log(`scrolling`);
         const element = document.querySelector("div.messages");
         if(!!element) {
-            console.log(`found element`);
             element.scrollTop = element.scrollHeight;
         }
     }

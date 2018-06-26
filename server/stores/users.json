@@ -11,21 +11,21 @@
       "type": "user",
       "id": "2",
       "name": "Geralt",
-      "password": "",
+      "password": "1",
       "age": 105
     },
     {
       "type": "user",
       "id": "3",
       "name": "Ciri",
-      "password": "",
+      "password": "1",
       "age": 23
     },
     {
       "type": "user",
       "id": "4",
       "name": "Udi",
-      "password": "abc123",
+      "password": "1",
       "age": 22
     },
     {
@@ -39,8 +39,20 @@
       "type": "user",
       "id": "6",
       "name": "Roni",
-      "password": "",
+      "password": "1",
       "age": 22
+    },
+    {
+      "name": "test",
+      "password": "1",
+      "age": "22",
+      "id": "1530042163934"
+    },
+    {
+      "name": "",
+      "password": "1",
+      "age": "",
+      "id": "1530042185967"
     }
   ]
 }

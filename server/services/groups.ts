@@ -14,6 +14,10 @@ export default class Groups {
         return GroupsDB.getInstance().getGroupByID(groupdID).catch(rethrow);
     }
 
+    static async getPublicGroups() {
+        return GroupsDB.getInstance().getPublicGroups().catch(rethrow);
+    }
+
     static async getGroupsByIDs(groupsIDs: Array<any>) {
         return GroupsDB.getInstance().getGroupsByIDs(groupsIDs).catch(rethrow);
     }

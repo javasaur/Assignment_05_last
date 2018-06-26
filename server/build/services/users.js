@@ -31,6 +31,11 @@ class Users {
             return usersdb_1.default.getInstance().getUserByID(userID).catch(helpers_1.rethrow);
         });
     }
+    static getPrivateGroupsIDs(userID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return usersdb_1.default.getInstance().getPrivateGroupsIDs(userID).catch(helpers_1.rethrow);
+        });
+    }
     static getUsersByIDs(usersIDs) {
         return __awaiter(this, void 0, void 0, function* () {
             return usersdb_1.default.getInstance().getUsersByIds(usersIDs).catch(helpers_1.rethrow);
