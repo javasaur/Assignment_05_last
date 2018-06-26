@@ -21,7 +21,7 @@
     "socket.io": "^2.1.1"
   },
   "scripts": {
-    "start": "react-scripts-ts start",
+    "start": "concurrently \"react-scripts-ts start\" \"cd server && npm start\"",
     "dev": "concurrently \"npm start\" \"cd server && npm run dev\"",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
