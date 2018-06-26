@@ -14,12 +14,21 @@
     justify-self: end;
 }
 
+.header .logout a {
+    margin-right: 15px;
+}
+
 .header a {
     color: #87888c;
     font-size: 16px;
     cursor: pointer;
+    text-decoration: none;
 }
 
-.header a:hover {
-    text-decoration: underline;
+.header Link {
+    text-decoration: none;
 }
+
+/*.header a:hover {*/
+    /*text-decoration: underline;*/
+/*}*/

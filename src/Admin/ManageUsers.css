@@ -1,0 +1,12 @@
+.manageUsers ul {
+    list-style-type: none;
+}
+
+.manageUsers .delete {
+    color: red;
+    font-weight: bold;
+}
+
+.manageUsers a:hover {
+    cursor: pointer
+}

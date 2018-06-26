@@ -5,6 +5,7 @@ import {AppState} from "../Store-Redux/appState";
 import {connect} from "react-redux";
 import {store} from "../Store-Redux/store";
 import {logout} from "../Store-Redux/actions/login";
+import {Link} from "react-router-dom";
 
 interface HeaderProps {
     username: string;
@@ -20,8 +21,9 @@ class Header extends React.Component<HeaderProps, {}> {
             <div className="header">
                 Welcome, {this.props.username}!
                 <div className="logout">
+                    <Link to={'/managegroups'}>Manage groups <i className="far fa-object-group" /></Link>
+                    <Link to={'/manageusers'}>Manage users <i className="fas fa-users" /></Link>
                     <a onClick={this.logout}>Logout <i className="fas fa-sign-out-alt" /></a>
-
                 </div>
             </div>
         )
