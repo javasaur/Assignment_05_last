@@ -10,9 +10,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const usersdb_1 = require("../lib/usersdb");
 const helpers_1 = require("../util/helpers");
+const Joi = require("joi");
 class Users {
     static addUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
+            const schema = Joi.object().keys({
+                name: Joi.string().min(3).max(15).required().error(new Error(`Username should be between 3 and 15 characters`)),
+                password: Joi.string().min(6).max(32).required().error(new Error(`Password should be between 6 and 32 characters`)),
+                age: Joi.number().greater(17).error(new Error(`You must be at least 18 years old`))
+            });
+            Joi.validate({ name: user.name, password: user.password, age: user.age }, schema, function (err) {
+                if (err) {
+                    throw err;
+                }
+            });
             return usersdb_1.default.getInstance().addUser(user).catch(helpers_1.rethrow);
         });
     }
@@ -43,7 +54,17 @@ class Users {
     }
     static updateUser(userID, user) {
         return __awaiter(this, void 0, void 0, function* () {
-            return usersdb_1.default.getInstance().updateUser(userID, user).catch(helpers_1.rethrow);
+            const schema = Joi.object().keys({
+                name: Joi.string().min(3).max(15).required().error(new Error(`Username should be between 3 and 15 characters`)),
+                // password: Joi.string().min(6).max(32).required().error(new Error(`Password should be between 6 and 32 characters`)),
+                age: Joi.number().greater(17).error(new Error(`You must be at least 18 years old`))
+            });
+            Joi.validate({ name: user.name, age: user.age }, schema, function (err) {
+                if (err) {
+                    throw err;
+                }
+            });
+            return usersdb_1.default.getInstance().updateUser(userID, user);
         });
     }
     static removeUser(userId) {
