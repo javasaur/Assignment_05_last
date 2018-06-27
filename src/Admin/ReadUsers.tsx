@@ -73,10 +73,12 @@ export class ReadUsers extends React.Component<ReadUsersProps, ReadUsersState> {
     }
 
     private passUpdateUserData = (user) => {
+        this.props.clearResult();
         this.setState({updateUser: user});
     }
 
     private updateUser = (user) => {
+        this.props.clearResult();
         this.props.updateUser(user, this.refreshUsers.bind(this, false))
     }
 }

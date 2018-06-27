@@ -1,10 +1,14 @@
 import * as services from '../services';
-import {Request, Response} from 'express';0
+import {Request, Response} from 'express';
+import Socket from "../services/socket";
 
 export default class Users {
     static async addUser(req: Request, res: Response) {
         services.Users.addUser(req.body)
-            .then(() => res.status(200).send({})) // should return boolean?
+            .then(() => {
+                Socket.notifyOnTreeChange();
+                res.status(200).send({})
+            }) // should return boolean?
             .catch(err => {
                 console.log(err);
                 res.status(400).send(err.message);

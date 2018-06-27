@@ -9,12 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const services = require("../services");
-0;
+const socket_1 = require("../services/socket");
 class Users {
     static addUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             services.Users.addUser(req.body)
-                .then(() => res.status(200).send({})) // should return boolean?
+                .then(() => {
+                socket_1.default.notifyOnTreeChange();
+                res.status(200).send({});
+            }) // should return boolean?
                 .catch(err => {
                 console.log(err);
                 res.status(400).send(err.message);

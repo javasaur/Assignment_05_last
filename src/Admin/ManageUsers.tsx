@@ -72,6 +72,7 @@ export class ManageUsers extends React.Component<any, ManageUsersState> {
     }
 
     clearResult = () => {
+        console.log('inside clear');
         this.setState({result: null});
     }
 

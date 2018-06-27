@@ -14,13 +14,8 @@ export default class Socket {
                 socket.join(groupID);
             })
 
-            socket.on('disconnect', () => {
-                console.log('socket disconnected');
-            })
+
         })
-
-
-        console.log(`initialised socket`);
         return Socket.io
     }
 
@@ -28,6 +23,10 @@ export default class Socket {
         // console.log(`inside notifyByMessagesUpdate ${dialogueID}`);
         Socket.io.to(dialogueID).emit('groupSubscription', dialogueID);
         // console.log(`after notifyByMessagesUpdate`);
+    }
+
+    static notifyOnTreeChange() {
+        Socket.io.emit('treechange');
     }
 
     static io;
