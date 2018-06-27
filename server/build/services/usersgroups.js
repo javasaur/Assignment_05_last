@@ -43,7 +43,7 @@ class UsersGroups {
     static buildJSONTree(userID) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const publicGroups = yield groups_1.default.getPublicGroups();
+                const publicGroups = yield groups_1.default.getPublicRootGroups();
                 const privateGroups = yield this.getPrivateGroups(userID);
                 if (!publicGroups)
                     return [];
@@ -52,19 +52,7 @@ class UsersGroups {
                 groups.forEach(g => spreadGroups.push(Object.assign({}, g)));
                 if (spreadGroups) {
                     for (let group of spreadGroups) {
-                        if (group.name === 'PM') {
-                            const id = yield groups_1.default.getSecondCompanionID(group.id, userID + '');
-                            const user = yield users_1.default.getUserByID(id);
-                            group.name = user.name;
-                            group.type = 'user';
-                        }
-                        const items = yield users_1.default.getUsersByIDs(group.items);
-                        if (items) {
-                            for (let item of items) {
-                                item.id = Math.min(userID, item.id) + '_' + Math.max(userID, item.id);
-                            }
-                        }
-                        group.items = items;
+                        yield UsersGroups.decomposeGroup(group, userID);
                     }
                 }
                 return spreadGroups;
@@ -82,6 +70,33 @@ class UsersGroups {
             }
             catch (err) {
                 throw err;
+            }
+        });
+    }
+    static decomposeGroup(group, userID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            group.items = [];
+            if (group.name === 'PM') {
+                const id = yield groups_1.default.getSecondCompanionID(group.id, userID + '');
+                const user = yield users_1.default.getUserByID(id);
+                group.name = user.name;
+                group.type = 'user';
+                return;
+            }
+            if (group.groups.length > 0) {
+                for (let subgroupID of group.groups) {
+                    const subgroup = yield groups_1.default.getGroupByID(subgroupID);
+                    group.items.push(subgroup);
+                    UsersGroups.decomposeGroup(subgroup, userID);
+                }
+            }
+            const users = yield users_1.default.getUsersByIDs(group.users);
+            if (users && users.length > 0) {
+                console.log(users);
+                for (let user of users) {
+                    user.id = Math.min(userID, user.id) + '_' + Math.max(userID, user.id);
+                }
+                group.items.push(...users);
             }
         });
     }

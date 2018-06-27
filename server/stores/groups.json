@@ -5,7 +5,7 @@
       "name": "Friends",
       "id": "1",
       "parentID": null,
-      "items": [],
+      "groups": ["2"],
       "users": []
     },
     {
@@ -13,7 +13,7 @@
       "name": "Best Friends",
       "id": "2",
       "parentID": 1,
-      "items": [],
+      "groups": ["3"],
       "users": []
     },
     {
@@ -21,7 +21,7 @@
       "name": "Not friends, but brothers!",
       "id": "3",
       "parentID": 2,
-      "items": [],
+      "groups": [],
       "users": []
     },
     {
@@ -29,7 +29,7 @@
       "name": "Colleagues",
       "id": "4",
       "parentID": null,
-      "items": [],
+      "groups": [],
       "users": []
     },
     {
@@ -37,9 +37,7 @@
       "name": "Cyberpunk 2077",
       "id": "5",
       "parentID": null,
-      "items": [
-        "1", "2", "3", "5"
-      ],
+      "groups": [],
       "users": [
         "1", "2", "3", "5"
       ]
@@ -49,7 +47,7 @@
       "name": "PM",
       "id": "1_5",
       "parentID": null,
-      "items": [],
+      "groups": [],
       "users": []
     },
     {
@@ -57,9 +55,7 @@
       "name": "Random",
       "id": "6",
       "parentID": null,
-      "items": [
-        "1", "4", "5", "6"
-      ],
+      "groups": [],
       "users": [
         "1", "4", "5", "6"
       ]

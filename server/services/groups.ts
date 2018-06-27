@@ -15,7 +15,11 @@ export default class Groups {
     }
 
     static async getPublicGroups() {
-        return GroupsDB.getInstance().getPublicGroups().catch(rethrow);
+        return GroupsDB.getInstance().getPublicGroups(null).catch(rethrow);
+    }
+
+    static async getPublicRootGroups() {
+        return GroupsDB.getInstance().getPublicGroups('root').catch(rethrow)
     }
 
     static async getGroupsByIDs(groupsIDs: Array<any>) {

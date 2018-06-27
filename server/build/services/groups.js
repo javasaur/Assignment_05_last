@@ -28,7 +28,12 @@ class Groups {
     }
     static getPublicGroups() {
         return __awaiter(this, void 0, void 0, function* () {
-            return groupsdb_1.default.getInstance().getPublicGroups().catch(helpers_1.rethrow);
+            return groupsdb_1.default.getInstance().getPublicGroups(null).catch(helpers_1.rethrow);
+        });
+    }
+    static getPublicRootGroups() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return groupsdb_1.default.getInstance().getPublicGroups('root').catch(helpers_1.rethrow);
         });
     }
     static getGroupsByIDs(groupsIDs) {

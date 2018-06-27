@@ -51,7 +51,10 @@ export default class GroupsDB {
         return GroupsDB.instance;
     }
 
-    async getPublicGroups() {
+    async getPublicGroups(filter) {
+        if(filter === 'root') {
+            return [...this.data].filter(g => !g.id.includes('_') && g.parentID === null);
+        }
         return [...this.data].filter(g => !g.id.includes('_'));
     }
 
