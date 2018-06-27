@@ -1,23 +1,19 @@
+import axios from 'axios';
+
 export class UsersAPI {
-    // static async createUser(name, password, age) {
-    //     return new Promise((resolve, reject) => {
-    //         fetch('http://localhost:4000/users/', {
-    //             method: 'POST',
-    //             headers: {
-    //                 "Content-Type": "application/json"
-    //             },
-    //             body: JSON.stringify({name, password, age})
-    //         })
-    //             .then((response) => {
-    //                 if(!response.ok) {
-    //                     response.json().then((data) => {
-    //                         reject(data);
-    //                     })
-    //                 }
-    //                 resolve(response.json());
-    //             })
-    //     });
-    //
-    //
-    // }
+    static async createUser(name, password, age) {
+        return axios.post('http://localhost:4000/users/', {name, password, age})
+    }
+
+    static async fetchAllUsers() {
+        return axios.get('http://localhost:4000/users/');
+    }
+
+    static async removeUser(id) {
+        return axios.delete('http://localhost:4000/users/', {params: {id}});
+    }
+
+    static async updateUser(id, user) {
+        return axios.put('http://localhost:4000/users/', user, {params: {id}});
+    }
 }

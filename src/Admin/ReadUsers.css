@@ -1,0 +1,42 @@
+.refresh:hover {
+    cursor: pointer
+}
+
+.readusers-header {
+    color: #87888c;
+    background-color: #212226;
+    text-align: center;
+    padding: 17px;
+}
+
+.readusers-list {
+    margin-top: 5px;
+    color: #87888c;
+    background-color: #212226;
+    padding: 17px;
+}
+
+.readusers-refresh:hover {
+    cursor: pointer;
+}
+
+.readusers-list ul, .readusers-list li {
+    margin: 0;
+    padding: 0;
+}
+
+.readusers-list li {
+    margin-top: 6px;
+}
+
+.readusers-list ul {
+    list-style-type: none;
+}
+
+.readusers-removeicon:hover, .readusers-updateicon:hover {
+    cursor: pointer;
+}
+
+.readusers-removeicon, .readusers-updateicon {
+    margin-left: 7px;
+}

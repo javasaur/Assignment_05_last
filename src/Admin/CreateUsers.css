@@ -1,0 +1,23 @@
+.createUsername input {
+    padding: 5px;
+    background-color: #42464f;
+    color: #e6e9ee;
+    border: none;
+    outline: none;
+    margin-top: 5px;
+}
+
+.createUsername button {
+    background-color: #212226;
+    color: #9b9ca0;
+    border: 1px solid #000;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+.createusers-header {
+    color: #87888c;
+    padding: 17px;
+    background-color: #212226;
+    text-align: center;
+}

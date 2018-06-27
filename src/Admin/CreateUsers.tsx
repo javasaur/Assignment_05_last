@@ -2,6 +2,8 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {AppState} from "../Store-Redux/appState";
 
+import './CreateUsers.css';
+
 interface CreateUsersState {
     usernameRef: any,
     passwordRef: any,
@@ -9,7 +11,8 @@ interface CreateUsersState {
 }
 
 interface CreateUserProps {
-    createUser: Function
+    createUser: Function,
+    clearResult: Function,
 }
 
 export class CreateUsers extends React.Component<CreateUserProps, CreateUsersState> {
@@ -26,12 +29,14 @@ export class CreateUsers extends React.Component<CreateUserProps, CreateUsersSta
 
     render() {
         const form = (
-            <form>
+            <>
+            <div className="createusers-header">Create user</div>
+            <form className="createUsername">
             <input ref={this.usernameRef} type='text' placeholder='USERNAME' /><br />
             <input ref={this.passwordRef} type='password' placeholder='PASSWORD' /><br />
             <input ref={this.ageRef} type='text' placeholder='AGE' /><br />
                 <button onClick={this.createUser}>Create</button>
-        </form>);
+        </form></>);
 
         return (
             <div className="createUsers">
@@ -58,7 +63,8 @@ export class CreateUsers extends React.Component<CreateUserProps, CreateUsersSta
 
 const mapStateToProps = (state: AppState, ownProps) => {
     return {
-        createUser: ownProps.createUser,
+        clearResult: ownProps.clearResult,
+        createUser: ownProps.createUser
     }
 }
 

@@ -58,7 +58,6 @@ class UsersGroups {
                             group.name = user.name;
                             group.type = 'user';
                         }
-                        console.log(group.items);
                         const items = yield users_1.default.getUsersByIDs(group.items);
                         if (items) {
                             for (let item of items) {
@@ -71,7 +70,6 @@ class UsersGroups {
                 return spreadGroups;
             }
             catch (err) {
-                console.log(err);
                 throw new Error(`Failed to build JSON tree for ${userID}: ${err.message}`);
             }
         });
@@ -79,14 +77,10 @@ class UsersGroups {
     static removeUser(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(`before userdb removeUser`);
-                //
                 yield usersdb_1.default.getInstance().removeUser(id);
-                console.log(`before entering removeUserToDialoguesLinks`);
                 // await UsersDB.getInstance().removeUserToDialoguesLinks(id);
             }
             catch (err) {
-                console.log(err);
                 throw err;
             }
         });

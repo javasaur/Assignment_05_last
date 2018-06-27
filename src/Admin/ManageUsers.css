@@ -25,6 +25,22 @@
 .manageUsers .right {
     flex: 1 1;
     background: url("../Images/messages_bg.jpg") repeat;
+    padding: 20px;
+}
+
+.manageUsers .result {
+    padding: 10px;
+    background-color: #212226;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.manageUsers .result.error {
+    color: red;
+}
+
+.manageUsers .result.success {
+    color: green;
 }
 
 

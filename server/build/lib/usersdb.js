@@ -157,8 +157,11 @@ class UsersDB {
                 if (found) {
                     // seems not good
                     found.name = user.name;
-                    found.password = user.password;
+                    if (user.password) {
+                        found.password = user.password;
+                    }
                     found.age = user.age;
+                    this.updateUsersStore();
                     return;
                 }
                 throw new Error(`Trying to update unexisting user ${userID}`);

@@ -5,28 +5,32 @@
       "name": "Friends",
       "id": "1",
       "parentID": null,
-      "items": []
+      "items": [],
+      "users": []
     },
     {
       "type": "group",
       "name": "Best Friends",
       "id": "2",
       "parentID": 1,
-      "items": []
+      "items": [],
+      "users": []
     },
     {
       "type": "group",
       "name": "Not friends, but brothers!",
       "id": "3",
       "parentID": 2,
-      "items": []
+      "items": [],
+      "users": []
     },
     {
       "type": "group",
       "name": "Colleagues",
       "id": "4",
       "parentID": null,
-      "items": []
+      "items": [],
+      "users": []
     },
     {
       "type": "group",
@@ -35,6 +39,9 @@
       "parentID": null,
       "items": [
         "1", "2", "3", "5"
+      ],
+      "users": [
+        "1", "2", "3", "5"
       ]
     },
     {
@@ -42,7 +49,8 @@
       "name": "PM",
       "id": "1_5",
       "parentID": null,
-      "items": []
+      "items": [],
+      "users": []
     },
     {
       "type": "group",
@@ -50,6 +58,9 @@
       "id": "6",
       "parentID": null,
       "items": [
+        "1", "4", "5", "6"
+      ],
+      "users": [
         "1", "4", "5", "6"
       ]
     }

@@ -67,6 +67,5 @@
 
 /* Avoid coloring the whole node, only first div */
 .leftNavAdmin ul .selected > div.group, .leftNavAdmin ul .selected > div.user {
-
     color: #e6e9ee;
 }

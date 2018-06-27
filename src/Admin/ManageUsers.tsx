@@ -4,8 +4,8 @@ import './ManageUsers.css';
 import LeftNavAdmin from "./LeftNavAdmin";
 import {Route} from "react-router";
 import CreateUsers from "./CreateUsers";
-import {ReadUsers} from "./ReadUsers";
-// import {UsersAPI} from "./UsersAPI";
+import ReadUsers from "./ReadUsers";
+import {UsersAPI} from "./UsersAPI";
 
 interface ManageUsersState {
     data: any;
@@ -23,40 +23,40 @@ export class ManageUsers extends React.Component<any, ManageUsersState> {
 
     render() {
         const createUsers = () => {
-            return <CreateUsers createUser={this.createUser} />
+            return <CreateUsers clearResult={this.clearResult} createUser={this.createUser} />
+        }
+
+        const readUsers = () => {
+            return <ReadUsers clearResult={this.clearResult} updateUser={this.updateUser} removeUser={this.removeUser} />
         }
 
         return (
             <div className="manageUsers">
-                <LeftNavAdmin />
+                <LeftNavAdmin clearResult={this.clearResult} />
                 <div className="right">
                     <Route path='/manageusers/create' render={createUsers} />
-                    <Route path='/manageusers/read' component={ReadUsers} />
+                    <Route path='/manageusers/read' render={readUsers} />
                     {this.state.result}
-                    {/*<a onClick={this.fetchAllUsers}>Fetch all users</a> |*/}
-                    {/*<a>Search user</a> |*/}
-                    {/*<div className="result">{this.state.data}</div>*/}
                 </div>
-
             </div>
         )
     }
 
     createUser = async (username, password, age) => {
-        console.log(`trying to create ${username}, ${password}, ${age}`);
-        // UsersAPI.createUser(username, password, age)
-        //     .then((data) => {
-        //         console.log(data);
-        //         this.formSuccess('User created!')
-        //     })
-        //     .catch((err) => this.formError(`Failed to create user: ${err.message}`));
+        this.clearResult();
+        UsersAPI.createUser(username, password, age)
+            .then((data) => {
+                this.formSuccess('User created!')
+            })
+            .catch((err) => {
+                this.formError(err.response.data)
+            });
     }
 
     formError = (msg) => {
-        console.log(`inside error`);
         const elem = (
-            <div className='error'>
-                {msg}
+            <div className='error result'>
+                <i className="fas fa-times" /> {msg}
             </div>
         );
         this.setState({result: elem});
@@ -64,8 +64,8 @@ export class ManageUsers extends React.Component<any, ManageUsersState> {
 
     formSuccess = (msg) => {
         const elem = (
-            <div className='success'>
-                {msg}
+            <div className='success result'>
+                <i className="fas fa-check-circle" /> {msg}
             </div>
         );
         this.setState({result: elem});
@@ -75,31 +75,25 @@ export class ManageUsers extends React.Component<any, ManageUsersState> {
         this.setState({result: null});
     }
 
-
-    fetchAllUsers = async () => {
-        try {
-            const httpResponse = await fetch('http://localhost:4000/users', {method: 'GET'});
-            const data = await httpResponse.json();
-            const usersLI = data.map((u, index) => {
-                return <li key={index}>{index + 1}) {u.name} ({u.id}), {u.age} years old <a className="delete" onClick={this.removeUser.bind(this, u.id)}>X</a></li>;
+    removeUser = async (id, cb) => {
+        UsersAPI.removeUser(id)
+            .then((response) => {
+                this.formSuccess('User deleted!');
+                cb();
             })
-            const res = (
-                <ul>{usersLI}</ul>
-            );
-            this.setState({data: res});
-        } catch (err) {
-            this.setState({data: JSON.stringify(err)})
-        }
+            .catch((err) => {
+                this.formError(err.response.data);
+            });
     }
 
-    removeUser = async (id) => {
-        try {
-            await fetch(`http://localhost:4000/users/${id}`, {
-                method: 'DELETE',});
-            this.fetchAllUsers();
-        }
-        catch (err) {
-            this.setState({data: JSON.stringify(err)})
-        }
+    updateUser = async (user, cb) => {
+        UsersAPI.updateUser(user.id, user)
+            .then((response) => {
+                this.formSuccess('User updated!');
+                cb();
+            })
+            .catch((err) => {
+                this.formError(err.response.data);
+            });
     }
 }

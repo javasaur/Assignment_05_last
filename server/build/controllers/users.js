@@ -16,7 +16,8 @@ class Users {
             services.Users.addUser(req.body)
                 .then(() => res.status(200).send({})) // should return boolean?
                 .catch(err => {
-                res.status(400).json({ error: err.message });
+                console.log(err);
+                res.status(400).send(err.message);
             });
         });
     }
@@ -24,7 +25,7 @@ class Users {
         return __awaiter(this, void 0, void 0, function* () {
             services.Users.getAllUsers()
                 .then(users => res.status(200).json(users))
-                .catch(err => res.status(400).json({ error: err.message }));
+                .catch(err => res.status(400).send(err.message));
         });
     }
     static getUser(req, res) {
@@ -36,16 +37,16 @@ class Users {
     }
     static updateUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            services.Users.updateUser(req.params.id, req.body)
+            services.Users.updateUser(req.query.id, req.body)
                 .then(() => res.status(200).send({}))
-                .catch(err => res.status(400).json({ error: err.message }));
+                .catch(err => res.status(400).send(err.message));
         });
     }
     static removeUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            services.UsersGroups.removeUser(req.params.id)
+            services.UsersGroups.removeUser(req.query.id)
                 .then(() => res.status(200).send({}))
-                .catch(err => res.status(400).json({ error: err.message }));
+                .catch(err => res.status(400).send(err.message));
         });
     }
 }

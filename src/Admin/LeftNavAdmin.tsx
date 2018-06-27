@@ -14,10 +14,12 @@ class LeftNavAdmin extends React.Component<any, any> {
         return (
             <div className="leftNavAdmin">
                 <ul tabIndex={0}>
-                    <li onClick={this.selectLI}>
-                        Read | Update | Delete
-                    </li>
-                    <Link to={'/manageusers/create'}>
+                    <Link to={'/manageusers/read'} onClick={this.props.clearResult}>
+                        <li onClick={this.selectLI}>
+                            Read | Update | Delete
+                        </li>
+                    </Link>
+                    <Link to={'/manageusers/create'} onClick={this.props.clearResult}>
                         <li onClick={this.selectLI}>
                             Create
                         </li>
@@ -35,14 +37,13 @@ class LeftNavAdmin extends React.Component<any, any> {
     private unSelectLIs = () => {
         const elems = document.querySelectorAll('.leftNavAdmin li');
         Array.from(elems).forEach(elem => elem.className = '');
-        console.log(elems);
     }
 
 }
 
-const mapStateToProps = (state: AppState) => {
+const mapStateToProps = (state: AppState, ownProps) => {
     return {
-
+        clearResult: ownProps.clearResult
     }
 }
 

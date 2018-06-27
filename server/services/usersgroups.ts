@@ -46,7 +46,6 @@ export default class UsersGroups {
                         group.name = user.name;
                         group.type = 'user';
                     }
-                    console.log(group.items);
                     const items = await UsersService.getUsersByIDs(group.items);
 
                     if(items) {
@@ -59,20 +58,15 @@ export default class UsersGroups {
             }
             return spreadGroups;
         } catch (err) {
-            console.log(err);
             throw new Error(`Failed to build JSON tree for ${userID}: ${err.message}`);
         }
     }
 
     static async removeUser(id) {
         try {
-            console.log(`before userdb removeUser`);
-            //
             await UsersDB.getInstance().removeUser(id);
-            console.log(`before entering removeUserToDialoguesLinks`);
             // await UsersDB.getInstance().removeUserToDialoguesLinks(id);
         } catch (err) {
-            console.log(err);
             throw err;
         }
 
