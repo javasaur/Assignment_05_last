@@ -22,6 +22,7 @@ export const initialState: AppState = {
     loggedUserName: null,
     loginError: false,
     navTree: null,
+    adminNavTree: null,
     activeDialogueID: null,
     messages: [],
     socket: null
