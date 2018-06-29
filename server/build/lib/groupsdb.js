@@ -12,14 +12,89 @@ const db_1 = require("./db");
 class GroupsDB {
     constructor() {
     }
+    addUser(userID, groupID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const group = yield this.getGroupByID(groupID);
+            if (group) {
+                if (group.users.includes(userID)) {
+                    throw new Error(`User already in group`);
+                }
+                group.users.push(userID);
+                this.updateStore();
+            }
+        });
+    }
+    addGroupUnderParent(name, parentID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const parent = yield this.getGroupByID(parentID);
+            if (parent.users.length > 0) {
+                throw new Error('Group contains users, subgroup not allowed');
+            }
+            const siblings = yield this.getGroupsByIDs(parent.groups);
+            for (let sibling of siblings) {
+                if (sibling.name.toUpperCase() === name.toUpperCase()) {
+                    throw new Error('One of the future siblings has the same groupname');
+                }
+            }
+            const newGroup = {
+                type: 'group',
+                name,
+                id: this.data.length + Date.now() + '',
+                'parentID': parentID,
+                groups: [],
+                users: [],
+                items: []
+            };
+            parent.groups.push(newGroup.id);
+            this.data.push(newGroup);
+            this.updateStore();
+        });
+    }
+    addRootGroup(name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const rootGroups = yield this.getPublicGroups('root');
+            const found = rootGroups.find(u => u.name.toUpperCase() === name.toUpperCase());
+            if (found) {
+                throw new Error(`Name is busy`);
+            }
+            this.data.push({
+                type: 'group',
+                name,
+                id: this.data.length + Date.now() + '',
+                'parentID': null,
+                groups: [],
+                users: [],
+                items: []
+            });
+            this.updateStore();
+        });
+    }
+    addPrivateGroup(groupID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const group = {
+                "type": "group",
+                "name": "PM",
+                "id": groupID,
+                "parentID": null,
+                "groups": [],
+                "users": []
+            };
+            this.data.push(group);
+            this.updateStore();
+        });
+    }
+    addUserIfMissing(userID, groupID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const group = yield this.getGroupByID(groupID);
+            if (!group['users'].includes(userID)) {
+                group['users'].push(userID);
+                this.updateStore();
+            }
+        });
+    }
     getGroupByID(groupID) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return this.data.find(u => u.id === groupID) || null;
-            }
-            catch (err) {
-                throw new Error(`Failed to fetch group with id ${groupID}: ${err.message}`);
-            }
+            return this.data.find(u => u.id === groupID) || null;
         });
     }
     getGroupsByIDs(groupsIDs) {
@@ -78,6 +153,18 @@ class GroupsDB {
             }
             catch (err) {
                 throw new Error(`GroupsDB initialization failed: ${err.message}`);
+            }
+        });
+    }
+    removeUser(userID, groupID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const group = yield this.getGroupByID(groupID);
+            if (group) {
+                const found = group.users.indexOf(userID);
+                if (found !== -1) {
+                    group.users.splice(found, 1);
+                    this.updateStore();
+                }
             }
         });
     }

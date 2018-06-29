@@ -10,14 +10,20 @@ import MessagesService from "../services/messages";
     const db = DBManager.getInstance();
     await db.initStores();
 
+    // const res = await GroupsService.addGroupUnderParent('testing', "6");
+    // console.log(res);
+
+    await UsersGroupsService.addUserToGroup("2", "1530294489230");
+
+
     // const publicGroups = await GroupsService.getPublicGroups();
     // const privateGroups = await UsersGroupsService.getPrivateGroups(1);
-    const g1 = await GroupsService.getGroupsByIDs(['5']);
-    g1['items'] = ['blabla'];
-    const g2 = await GroupsService.getGroupsByIDs(['5']);
-    console.log(g1);
-    console.log(g2);
-    console.log(g1===g2);
+    // const g1 = await GroupsService.getGroupsByIDs(['5']);
+    // g1['items'] = ['blabla'];
+    // const g2 = await GroupsService.getGroupsByIDs(['5']);
+    // console.log(g1);
+    // console.log(g2);
+    // console.log(g1===g2);
     // console.log(privateGroups);
     // if(publicGroups) {
     //     console.log(publicGroups.concat(privateGroups));

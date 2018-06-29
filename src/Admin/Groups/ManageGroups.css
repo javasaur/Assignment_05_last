@@ -1,0 +1,42 @@
+.manageGroups {
+    flex: 1 1;
+    display: flex;
+    flex-direction: row;
+}
+
+.manageGroups .right {
+    flex: 1 1;
+    background: url("../../Images/messages_bg.jpg") repeat;
+    padding: 20px;
+}
+
+.managegroups-header {
+    color: #87888c;
+    padding: 17px;
+    background-color: #212226;
+    text-align: center;
+}
+
+.manageGroups a, .manageGroups Link, .manageGroups a:visited {
+    text-decoration: none;
+    color: #87888c;
+}
+
+.manageGroups .result {
+    padding: 10px;
+    background-color: #212226;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.manageGroups .result.error {
+    color: red;
+}
+
+.manageGroups .result.success {
+    color: green;
+}
+
+.managegroups-navitem {
+    margin-left: 15px;
+}

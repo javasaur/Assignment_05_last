@@ -24,7 +24,7 @@
 
 .manageUsers .right {
     flex: 1 1;
-    background: url("../Images/messages_bg.jpg") repeat;
+    background: url("../../Images/messages_bg.jpg") repeat;
     padding: 20px;
 }
 

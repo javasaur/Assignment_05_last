@@ -4,6 +4,7 @@ export interface AppState {
     loginError: boolean,
     navTree: any // not precise,
     adminNavTree: any,
+    adminCurrentGroupID: string | null,
     activeDialogueID: string | null,
     messages: Array<any>,
     socket: any

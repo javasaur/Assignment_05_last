@@ -12,13 +12,17 @@ export default class MessagesDB {
             if(!this.data[dialogueID]) {
                 throw new Error(`Trying to add message to unexisting dialogue ${dialogueID}`);
             }
-
+// /
             // Should be ATOMIC?
             this.data[dialogueID].push(message);
             this.updateStore()
         } catch (err) {
             throw new Error(`Failed to add message: ${err}`)
         }
+    }
+
+    async createMessageChunk(dialogueID) {
+        this.data[dialogueID] = [];
     }
 
     static getInstance() {

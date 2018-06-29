@@ -12,6 +12,19 @@ const db_1 = require("./db");
 class UsersDB {
     constructor() {
     }
+    addUserToGroupRelation(userID, groupID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield this.getUserByID(userID);
+            if (!user) {
+                throw new Error(`User doesn't exist'`);
+            }
+            if (!this.usersToDialogues[userID]) {
+                this.usersToDialogues[userID] = [];
+            }
+            this.usersToDialogues[userID].push(groupID);
+            this.updateUsersDialoguesStore();
+        });
+    }
     addUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -28,6 +41,23 @@ class UsersDB {
             }
             catch (err) {
                 throw new Error(`Failed to add user ${user.name}: ${err.message}`);
+            }
+        });
+    }
+    addUserToDialogueRelation(userID, dialogueID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let userDialogues = this.usersToDialogues[userID];
+                if (!userDialogues) {
+                    userDialogues = [];
+                }
+                if (!userDialogues.includes(dialogueID)) {
+                    userDialogues.push(dialogueID);
+                }
+                this.updateUsersDialoguesStore();
+            }
+            catch (err) {
+                throw new Error(`Error adding user-dialogue relation`);
             }
         });
     }
@@ -178,7 +208,7 @@ class UsersDB {
     }
     updateUsersDialoguesStore() {
         return __awaiter(this, void 0, void 0, function* () {
-            db_1.default.writeToStore(db_1.default.USERS_TO_DIALOGUES_STORE, JSON.stringify(JSON.stringify(this.usersToDialogues)));
+            db_1.default.writeToStore(db_1.default.USERS_TO_DIALOGUES_STORE, JSON.stringify(this.usersToDialogues));
         });
     }
 }

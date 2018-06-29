@@ -12,6 +12,11 @@ const usersdb_1 = require("../lib/usersdb");
 const helpers_1 = require("../util/helpers");
 const Joi = require("joi");
 class Users {
+    static addUserToGroupRelation(userID, groupID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return usersdb_1.default.getInstance().addUserToGroupRelation(userID, groupID);
+        });
+    }
     static addUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
             const schema = Joi.object().keys({
@@ -19,6 +24,7 @@ class Users {
                 password: Joi.string().min(6).max(32).required().error(new Error(`Password should be between 6 and 32 characters`)),
                 age: Joi.number().greater(17).error(new Error(`You must be at least 18 years old`))
             });
+            //
             Joi.validate({ name: user.name, password: user.password, age: user.age }, schema, function (err) {
                 if (err) {
                     throw err;

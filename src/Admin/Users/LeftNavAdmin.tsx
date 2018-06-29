@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {AppState} from "../Store-Redux/appState";
+import {AppState} from "../../Store-Redux/appState";
 import {connect} from "react-redux";
 import "./LeftNavAdmin.css";
 import {Link} from "react-router-dom";

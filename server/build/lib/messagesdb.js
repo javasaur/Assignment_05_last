@@ -18,6 +18,7 @@ class MessagesDB {
                 if (!this.data[dialogueID]) {
                     throw new Error(`Trying to add message to unexisting dialogue ${dialogueID}`);
                 }
+                // /
                 // Should be ATOMIC?
                 this.data[dialogueID].push(message);
                 this.updateStore();
@@ -25,6 +26,11 @@ class MessagesDB {
             catch (err) {
                 throw new Error(`Failed to add message: ${err}`);
             }
+        });
+    }
+    createMessageChunk(dialogueID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.data[dialogueID] = [];
         });
     }
     static getInstance() {

@@ -1,9 +1,10 @@
 import * as React from 'react';
 
-import './LeftNav.css';
-import { ChatTree } from '../Navigation/chat-tree.js';
-import {AppState} from "../Store-Redux/appState";
+import { ChatTree } from '../../Navigation/chat-tree.js';
+import {AppState} from "../../Store-Redux/appState";
 import {connect} from "react-redux";
+import {setAdminCurrentGroupID} from "../../Store-Redux/actions/groups";
+import {store} from "../../Store-Redux/store";
 // import {store} from "../Store-Redux/store";
 
 
@@ -37,10 +38,15 @@ class LeftNavAdminTree extends React.Component<LeftNavAdminTreeProps, any> {
     private loadNavTree() {
         if(!!this.props.adminNavTree) {
             const tree = ChatTree(document.querySelector('ul.tree'));
-            // tree.subscribeToElementSwitch(this.switchDialogue);
+            tree.subscribeToElementSwitch(this.setAdminCurrentGroupID);
             tree.load(this.props.adminNavTree);
             tree.element.focus();
         }
+    }
+
+    private setAdminCurrentGroupID = (id) => {
+        console.log('inside set current group id');
+        store.dispatch(setAdminCurrentGroupID(id));
     }
 }
 

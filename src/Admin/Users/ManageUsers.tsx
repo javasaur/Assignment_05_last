@@ -6,6 +6,8 @@ import {Route} from "react-router";
 import CreateUsers from "./CreateUsers";
 import ReadUsers from "./ReadUsers";
 import {UsersAPI} from "./UsersAPI";
+import {connect} from "react-redux";
+import {AppState} from "../../Store-Redux/appState";
 
 interface ManageUsersState {
     data: any;
@@ -23,11 +25,18 @@ export class ManageUsers extends React.Component<any, ManageUsersState> {
 
     render() {
         const createUsers = () => {
-            return <CreateUsers clearResult={this.clearResult} createUser={this.createUser} />
+            return <CreateUsers createUser={this.createUser} />
         }
 
         const readUsers = () => {
-            return <ReadUsers clearResult={this.clearResult} updateUser={this.updateUser} removeUser={this.removeUser} />
+            return (
+                <ReadUsers
+                    clearResult={this.clearResult}
+                    fetchUsers={UsersAPI.fetchAllUsers}
+                    updateUser={this.updateUser}
+                    removeUser={this.removeUser}
+                />
+            )
         }
 
         return (
@@ -72,8 +81,11 @@ export class ManageUsers extends React.Component<any, ManageUsersState> {
     }
 
     clearResult = () => {
-        console.log('inside clear');
         this.setState({result: null});
+    }
+
+    fetchUsers = () => {
+
     }
 
     removeUser = async (id, cb) => {
@@ -98,3 +110,10 @@ export class ManageUsers extends React.Component<any, ManageUsersState> {
             });
     }
 }
+
+const mapStateToProps = (state: AppState, ownProps) => {
+    return {
+    }
+}
+
+export default connect(mapStateToProps, {})(ManageUsers);

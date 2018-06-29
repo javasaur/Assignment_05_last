@@ -8,6 +8,18 @@ export default class UsersDB {
     constructor() {
     }
 
+    async addUserToGroupRelation(userID, groupID) {
+        const user = await this.getUserByID(userID);
+        if(!user) {
+            throw new Error(`User doesn't exist'`);
+        }
+        if(!this.usersToDialogues[userID]) {
+            this.usersToDialogues[userID] = [];
+        }
+        this.usersToDialogues[userID].push(groupID);
+        this.updateUsersDialoguesStore();
+    }
+
     async addUser(user) {
         try {
             const filtered = this.users.filter(u => u.name.toUpperCase() === user.name.toUpperCase());
@@ -25,6 +37,21 @@ export default class UsersDB {
 
         } catch (err) {
             throw new Error(`Failed to add user ${user.name}: ${err.message}`);
+        }
+    }
+
+    async addUserToDialogueRelation(userID, dialogueID) {
+        try {
+            let userDialogues = this.usersToDialogues[userID];
+            if(!userDialogues) {
+                userDialogues = [];
+            }
+            if(!userDialogues.includes(dialogueID)) {
+                userDialogues.push(dialogueID);
+            }
+            this.updateUsersDialoguesStore();
+        } catch (err) {
+            throw new Error(`Error adding user-dialogue relation`)
         }
     }
 
@@ -162,6 +189,6 @@ export default class UsersDB {
     }
 
     async updateUsersDialoguesStore() {
-        DB.writeToStore(DB.USERS_TO_DIALOGUES_STORE, JSON.stringify(JSON.stringify(this.usersToDialogues)));
+        DB.writeToStore(DB.USERS_TO_DIALOGUES_STORE, JSON.stringify(this.usersToDialogues));
     }
 }

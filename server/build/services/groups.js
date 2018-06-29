@@ -11,6 +11,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const groupsdb_1 = require("../lib/groupsdb");
 const helpers_1 = require("../util/helpers");
 class Groups {
+    static addUserToGroup(userID, groupID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return groupsdb_1.default.getInstance().addUser(userID, groupID);
+        });
+    }
+    static addRootGroup(name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return groupsdb_1.default.getInstance().addRootGroup(name).catch(helpers_1.rethrow);
+        });
+    }
+    static addGroupUnderParent(name, parentID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return groupsdb_1.default.getInstance().addGroupUnderParent(name, parentID).catch(helpers_1.rethrow);
+        });
+    }
     static getAllGroups() {
         return __awaiter(this, void 0, void 0, function* () {
             return groupsdb_1.default.getInstance().getAllGroups().catch(helpers_1.rethrow);
@@ -39,6 +54,11 @@ class Groups {
     static getGroupsByIDs(groupsIDs) {
         return __awaiter(this, void 0, void 0, function* () {
             return groupsdb_1.default.getInstance().getGroupsByIDs(groupsIDs).catch(helpers_1.rethrow);
+        });
+    }
+    static removeUserFromGroup(userID, groupID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return groupsdb_1.default.getInstance().removeUser(userID, groupID);
         });
     }
 }

@@ -12,6 +12,12 @@ const groups_1 = require("./groups");
 const users_1 = require("./users");
 const usersdb_1 = require("../lib/usersdb");
 class UsersGroups {
+    static addUserToGroup(userID, groupID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield groups_1.default.addUserToGroup(userID, groupID);
+            yield users_1.default.addUserToGroupRelation(userID, groupID);
+        });
+    }
     static getAssociatedGroups(userID) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -37,6 +43,34 @@ class UsersGroups {
             }
             catch (err) {
                 throw new Error(`Failed to get private groups for ${userID}: ${err.message}`);
+            }
+        });
+    }
+    static getUsersByGroupID(groupID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const group = yield groups_1.default.getGroupByID(groupID);
+            const users = yield users_1.default.getUsersByIDs(group.users);
+            return users;
+        });
+    }
+    static buildAdminJSONTree() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const publicGroups = yield groups_1.default.getPublicRootGroups();
+                const spreadGroups = [];
+                if (!publicGroups)
+                    return;
+                publicGroups.forEach(g => spreadGroups.push(Object.assign({}, g)));
+                if (spreadGroups) {
+                    console.log(spreadGroups);
+                    for (let group of spreadGroups) {
+                        yield UsersGroups.decomposeAdminGroup(group);
+                    }
+                }
+                return spreadGroups;
+            }
+            catch (err) {
+                throw new Error(`Failed to build admin JSON tree: ${err.message}`);
             }
         });
     }
@@ -73,6 +107,18 @@ class UsersGroups {
             }
         });
     }
+    static decomposeAdminGroup(group) {
+        return __awaiter(this, void 0, void 0, function* () {
+            group.items = [];
+            if (group.groups.length > 0) {
+                for (let subgroupID of group.groups) {
+                    const subgroup = yield groups_1.default.getGroupByID(subgroupID);
+                    group.items.push(subgroup);
+                    UsersGroups.decomposeAdminGroup(subgroup);
+                }
+            }
+        });
+    }
     static decomposeGroup(group, userID) {
         return __awaiter(this, void 0, void 0, function* () {
             group.items = [];
@@ -98,6 +144,11 @@ class UsersGroups {
                 }
                 group.items.push(...users);
             }
+        });
+    }
+    static removeUserFromGroup(userID, groupID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return groups_1.default.removeUserFromGroup(userID, groupID);
         });
     }
 }

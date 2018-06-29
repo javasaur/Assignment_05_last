@@ -9,12 +9,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const messagesdb_1 = require("../lib/messagesdb");
-const helpers_1 = require("../util/helpers");
 const services = require("../services/");
+const usersdb_1 = require("../lib/usersdb");
+const groupsdb_1 = require("../lib/groupsdb");
 class Messages {
     static addMessageToDialogue(dialogueID, message) {
         return __awaiter(this, void 0, void 0, function* () {
-            return messagesdb_1.default.getInstance().addMessageToDialogue(dialogueID, message).catch(helpers_1.rethrow);
+            try {
+                let isPrivate = false;
+                const dialogue = yield groupsdb_1.default.getInstance().getGroupByID(dialogueID);
+                if (!dialogue) {
+                    const regex = new RegExp(/\w+_\w+/);
+                    if (!regex.test(dialogueID)) {
+                        throw new Error(`Unknow dialogue format ${dialogueID}`);
+                    }
+                    isPrivate = true;
+                    yield groupsdb_1.default.getInstance().addPrivateGroup(dialogueID);
+                    yield messagesdb_1.default.getInstance().createMessageChunk(dialogueID);
+                }
+                yield messagesdb_1.default.getInstance().addMessageToDialogue(dialogueID, message);
+                if (isPrivate) {
+                    const secondCompanion = yield groupsdb_1.default.getInstance().getSecondCompanionID(dialogueID, message.authorId);
+                    console.log(`second companio is: ${secondCompanion}`);
+                    yield usersdb_1.default.getInstance().addUserToDialogueRelation(secondCompanion, dialogueID);
+                }
+                yield usersdb_1.default.getInstance().addUserToDialogueRelation(message.authorId, dialogueID);
+                yield groupsdb_1.default.getInstance().addUserIfMissing(message.authorId, dialogueID);
+            }
+            catch (err) {
+                throw err;
+            }
         });
     }
     static getAllDialogueMessages(dialogueID) {

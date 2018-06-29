@@ -30,4 +30,8 @@ export default class Socket {
     }
 
     static io;
+
+    static notifyOnAdminTreeChange() {
+        Socket.io.emit('admintreechange');
+    }
 }

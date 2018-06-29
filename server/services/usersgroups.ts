@@ -4,6 +4,11 @@ import {rethrow} from "../util/helpers";
 import UsersDB from "../lib/usersdb";
 
 export default class UsersGroups {
+    static async addUserToGroup(userID, groupID) {
+        await GroupsService.addUserToGroup(userID, groupID);
+        await UsersService.addUserToGroupRelation(userID, groupID);
+    }
+
     static async getAssociatedGroups(userID) {
         try {
             const groupIDs = await UsersService.getAssociatedGroupsIDs(userID);
@@ -25,6 +30,32 @@ export default class UsersGroups {
             return privateGroups || [];
         } catch (err) {
             throw new Error(`Failed to get private groups for ${userID}: ${err.message}`);
+        }
+    }
+
+    static async getUsersByGroupID(groupID) {
+        const group = await GroupsService.getGroupByID(groupID);
+        const users = await UsersService.getUsersByIDs(group.users);
+        return users;
+    }
+
+
+    static async buildAdminJSONTree() {
+        try {
+            const publicGroups = await GroupsService.getPublicRootGroups();
+            const spreadGroups = [];
+            if(!publicGroups) return;
+
+            publicGroups.forEach(g => spreadGroups.push({...g}));
+            if(spreadGroups) {
+                console.log(spreadGroups);
+                for(let group of spreadGroups) {
+                    await UsersGroups.decomposeAdminGroup(group);
+                }
+            }
+            return spreadGroups;
+        } catch (err) {
+            throw new Error(`Failed to build admin JSON tree: ${err.message}`);
         }
     }
 
@@ -58,6 +89,18 @@ export default class UsersGroups {
         }
     }
 
+    static async decomposeAdminGroup(group) {
+        group.items = [];
+
+        if(group.groups.length > 0) {
+            for(let subgroupID of group.groups) {
+                const subgroup = await GroupsService.getGroupByID(subgroupID);
+                group.items.push(subgroup);
+                UsersGroups.decomposeAdminGroup(subgroup);
+            }
+        }
+    }
+
     static async decomposeGroup(group, userID) {
         group.items = [];
 
@@ -77,7 +120,6 @@ export default class UsersGroups {
             }
         }
 
-
         const users = await UsersService.getUsersByIDs(group.users);
         if(users && users.length > 0) {
             console.log(users);
@@ -86,5 +128,9 @@ export default class UsersGroups {
             }
             group.items.push(...users);
         }
+    }
+
+    static async removeUserFromGroup(userID, groupID) {
+        return GroupsService.removeUserFromGroup(userID, groupID);
     }
 }

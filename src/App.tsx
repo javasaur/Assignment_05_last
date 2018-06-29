@@ -7,8 +7,8 @@ import {Switch} from "react-router";
 import {AppState} from "./Store-Redux/appState";
 import {connect} from "react-redux";
 import Login from "./Other/Login";
-import {ManageUsers} from "./Admin/ManageUsers";
-import {ManageGroups} from "./Admin/ManageGroups";
+import {ManageUsers} from "./Admin/Users/ManageUsers";
+import {ManageGroups} from "./Admin/Groups/ManageGroups";
 import Header from "./Blocks/Header";
 
 class App extends React.Component<any, any> {

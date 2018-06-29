@@ -2,6 +2,18 @@ import GroupsDB from "../lib/groupsdb";
 import {rethrow} from '../util/helpers';
 
 export default class Groups {
+    static async addUserToGroup(userID, groupID) {
+        return GroupsDB.getInstance().addUser(userID, groupID);
+    }
+
+    static async addRootGroup(name) {
+        return GroupsDB.getInstance().addRootGroup(name).catch(rethrow);
+    }
+
+    static async addGroupUnderParent(name, parentID) {
+        return GroupsDB.getInstance().addGroupUnderParent(name, parentID).catch(rethrow);
+    }
+
     static async getAllGroups() {
         return GroupsDB.getInstance().getAllGroups().catch(rethrow);
     }
@@ -24,5 +36,9 @@ export default class Groups {
 
     static async getGroupsByIDs(groupsIDs: Array<any>) {
         return GroupsDB.getInstance().getGroupsByIDs(groupsIDs).catch(rethrow);
+    }
+
+    static async removeUserFromGroup(userID, groupID) {
+        return GroupsDB.getInstance().removeUser(userID, groupID);
     }
 }

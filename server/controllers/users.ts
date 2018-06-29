@@ -16,9 +16,16 @@ export default class Users {
     }
 
     static async getAllUsers(req: Request, res: Response) {
-        services.Users.getAllUsers()
-            .then(users => res.status(200).json(users))
-            .catch(err => res.status(400).send(err.message));
+        console.log(req.query);
+        if(req.query.group) {
+            services.UsersGroups.getUsersByGroupID(req.query.group)
+                .then(users => res.status(200).json(users))
+                .catch(err => res.status(400).send(err.message));
+        } else {
+            services.Users.getAllUsers()
+                .then(users => res.status(200).json(users))
+                .catch(err => res.status(400).send(err.message));
+        }
     }
 
     static async getUser(req: Request, res: Response) {
@@ -34,8 +41,14 @@ export default class Users {
     }
 
     static async removeUser(req: Request, res: Response) {
-        services.UsersGroups.removeUser(req.query.id)
-            .then(() => res.status(200).send({}))
-            .catch(err => res.status(400).send(err.message));
+        if(req.query.group) {
+            services.UsersGroups.removeUserFromGroup(req.query.id, req.query.group)
+                .then(() => res.status(200).send({}))
+                .catch(err => res.status(400).send(err.message));
+        } else {
+            services.UsersGroups.removeUser(req.query.id)
+                .then(() => res.status(200).send({}))
+                .catch(err => res.status(400).send(err.message));
+        }
     }
 }

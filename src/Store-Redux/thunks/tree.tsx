@@ -1,5 +1,6 @@
-import {setTree} from "../actions/tree";
+import {setAdminTree, setTree} from "../actions/tree";
 import {subscribeToGroups} from "./socket";
+import axios from 'axios';
 
 export function getNavTree(userID) {
     return async function(dispatch) {
@@ -12,7 +13,6 @@ export function getNavTree(userID) {
                 body: JSON.stringify({userID})
             })
             const treeJSON = await httpResponse.json();
-            console.log(treeJSON);
             dispatch(setTree(treeJSON));
             dispatch(subscribeToGroups());
         } catch (err) {
@@ -20,3 +20,17 @@ export function getNavTree(userID) {
         }
     }
 }
+export function getAdminNavTree() {
+    return async function(dispatch) {
+        try {
+            const response = await axios.get('http://localhost:4000/tree');
+            const treeJSON = response.data;
+            dispatch(setAdminTree(treeJSON))
+        } catch (err) {
+            console.log(err);
+        }
+    }
+}
+
+
+

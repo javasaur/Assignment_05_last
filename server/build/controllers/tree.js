@@ -14,7 +14,17 @@ class Tree {
         return __awaiter(this, void 0, void 0, function* () {
             services.UsersGroups.buildJSONTree(req.body.userID)
                 .then((tree) => res.status(200).json(tree))
-                .catch((error) => res.status(400).send(error));
+                .catch((error) => {
+                console.log(error);
+                res.status(400).send(error.message);
+            });
+        });
+    }
+    static buildAdminJSONTree(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            services.UsersGroups.buildAdminJSONTree()
+                .then((tree) => res.status(200).json(tree))
+                .catch((error) => res.status(400).send(error.message));
         });
     }
 }

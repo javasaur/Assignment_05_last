@@ -284,20 +284,23 @@ export function ChatTree(element) {
     }
 
     function traverseLeft() {
-        let currElem = getActiveElem()
-        let path = currElem.getAttribute("path");
+        let currElem = getActiveElem();
+        let path = currElem.getAttribute("path").split(',');
 
         if(!currElem) {
             return;
         }
 
         if(isExpanded(currElem)) {
+            console.log('folded');
             fold(currElem);
             return;
         }
 
         // If it's not top-level, switch to parent
         if(path.length > 1) {
+            console.log(path);
+            console.log('switching to parent');
             let parentLi = currElem.parentNode.parentNode;
             let newIndex = elemList.indexOf(parentLi);
             switchCurrenElementTo(newIndex);
@@ -334,7 +337,6 @@ export function ChatTree(element) {
 
     function traverseUpOrDown(n) {
         let newIndex = currIndex + n;
-
         // No action if reached top/bottom borders
         if(newIndex < 0 || newIndex > elemList.length - 1) {
             return;

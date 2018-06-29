@@ -1,8 +1,7 @@
 import * as React from "react";
 
 import './ReadUsers.css';
-import {UsersAPI} from "./UsersAPI";
-import {AppState} from "../Store-Redux/appState";
+import {AppState} from "../../Store-Redux/appState";
 import {connect} from "react-redux";
 import {UpdateUser} from "./UpdateUser";
 
@@ -14,10 +13,11 @@ interface ReadUsersState {
 
 interface ReadUsersProps {
     clearResult: Function,
-    updateUser: Function,
-    removeUser: Function
+    fetchUsers?: Function,
+    updateUser?: Function,
+    removeUser?: Function,
+    associateUserWithGroup?: Function
 }
-
 
 export class ReadUsers extends React.Component<ReadUsersProps, ReadUsersState> {
     constructor(props) {
@@ -27,6 +27,14 @@ export class ReadUsers extends React.Component<ReadUsersProps, ReadUsersState> {
             result: null,
             updateUser: null,
         }
+    }
+
+    componentDidMount() {
+        console.log('readusers did mount');
+    }
+
+    componentDidUpdate() {
+        console.log('readusers did update');
     }
 
     render() {
@@ -39,13 +47,28 @@ export class ReadUsers extends React.Component<ReadUsersProps, ReadUsersState> {
 
 
         const usersLI = this.state.users.map((u, index) => {
-            return (
+            const addToGroupIcon = this.props.associateUserWithGroup ?
+                <i onClick={this.addUserToGroup.bind(this, u.id)} className="fas fa-user-plus readusers-addtogroupicon" /> :
+                null;
+
+            const updateIcon = this.props.updateUser ?
+                <i onClick={this.passUpdateUserData.bind(this, {id: u.id, name: u.name, age: u.age})} className="fas fa-pen readusers-updateicon" /> :
+                null;
+
+            const removeIcon = this.props.removeUser ?
+                <i onClick={this.removeUser.bind(null, u.id)} className="fas fa-trash-alt readusers-removeicon" /> :
+                null;
+
+            const li = (
                 <li key={u.id}>[{u.id}] {u.name}, {u.age}
-                <i onClick={this.passUpdateUserData.bind(this, {id: u.id, name: u.name, age: u.age})} className="fas fa-pen readusers-updateicon" />
-            <i onClick={this.removeUser.bind(null, u.id)} className="fas fa-trash-alt readusers-removeicon" />
+                    {addToGroupIcon}
+                    {updateIcon}
+                    {removeIcon}
                 </li>)
+            return li;
         })
-        const users = this.state.users.length > 0 ? <div className="readusers-list">[ID] Name, age<ul>{usersLI}</ul></div> : null;
+        const users = this.state.users.length > 0 ? <div className="readusers-list">[ID] Name, age<ul>{usersLI}</ul></div> :
+        <div className="readusers-list">No users to display</div>;
         return (
             <div className="readusers">
                 <div className="readusers-header">
@@ -58,12 +81,17 @@ export class ReadUsers extends React.Component<ReadUsersProps, ReadUsersState> {
         );
     }
 
+    private addUserToGroup = async(id, cb) => {
+        this.props.associateUserWithGroup(id, this.refreshUsers.bind(this, false));
+    }
+
     private refreshUsers = async (clearResult) => {
         if(clearResult) {
             this.props.clearResult();
         }
         this.setState({users: []});
-        UsersAPI.fetchAllUsers()
+
+        this.props.fetchUsers()
             .then(response => this.setState({users: response.data}))
             .catch(err => console.log(err.response.data))
     }
@@ -86,8 +114,10 @@ export class ReadUsers extends React.Component<ReadUsersProps, ReadUsersState> {
 const mapStateToProps = (state: AppState, ownProps) => {
     return {
         clearResult: ownProps.clearResult,
+        fetchUsers: ownProps.fetchUsers,
         removeUser: ownProps.removeUser,
-        updateUser: ownProps.updateUser
+        updateUser: ownProps.updateUser,
+        associateUserWithGroup: ownProps.associateUserWithGroup
     }
 }
 
