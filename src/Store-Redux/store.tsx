@@ -4,7 +4,9 @@ import {composeWithDevTools} from "redux-devtools-extension";
 import {
     LOG_OUT,
     NULL_LOGIN_ERROR,
-    RAISE_LOGIN_ERROR, SET_ADMIN_CURRENT_GROUP_ID, SET_ADMIN_NAV_TREE,
+    RAISE_LOGIN_ERROR,
+    SET_ADMIN_CURRENT_GROUP_ID,
+    SET_ADMIN_NAV_TREE,
     SET_LOGGED_USER,
     SET_MESSAGES,
     SET_NAV_TREE,
