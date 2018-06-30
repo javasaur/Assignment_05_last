@@ -1,43 +1,35 @@
-.refresh:hover {
-    cursor: pointer
-}
+/* Header block */
+/* Inputs */
+/* Buttons */
+/* Action result (triggered by aapi requests) */
+.read-users-header {
+  background-color: #212226;
+  color: #87888c;
+  padding: 17px;
+  text-align: center;
+  margin-top: 5px; }
 
-.readusers-header {
-    margin-top: 5px;
-    color: #87888c;
-    background-color: #212226;
-    text-align: center;
-    padding: 17px;
-}
+.read-users-list {
+  margin-top: 5px;
+  color: #87888c;
+  background-color: #212226;
+  padding: 17px; }
 
-.readusers-list {
-    margin-top: 5px;
-    color: #87888c;
-    background-color: #212226;
-    padding: 17px;
-}
+.read-users-refresh:hover {
+  cursor: pointer; }
 
-.readusers-refresh:hover {
-    cursor: pointer;
-}
+.read-users ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none; }
 
-.readusers-list ul, .readusers-list li {
-    margin: 0;
-    padding: 0;
-}
+.read-users ul li {
+  margin: 0;
+  padding: 0;
+  margin-top: 6px; }
 
-.readusers-list li {
-    margin-top: 6px;
-}
+.read-users-removeicon, .read-users-updateicon, .read-users-addtogroupicon {
+  margin-left: 7px; }
 
-.readusers-list ul {
-    list-style-type: none;
-}
-
-.readusers-removeicon:hover, .readusers-updateicon:hover, .readusers-addtogroupicon:hover {
-    cursor: pointer;
-}
-
-.readusers-removeicon, .readusers-updateicon, .readusers-addtogroupicon {
-    margin-left: 7px;
-}
+.read-users-removeicon:hover, .read-users-updateicon:hover, .read-users-addtogroupicon:hover {
+  cursor: pointer; }

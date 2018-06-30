@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import './LeftNav.css';
+import './LeftNavTree.css';
 import { ChatTree } from './chat-tree.js';
 import {AppState} from "../Store-Redux/appState";
 import {connect} from "react-redux";
@@ -11,16 +11,16 @@ interface LeftNavProps {
     navTree: any
 }
 
-class LeftNav extends React.Component<LeftNavProps, any> {
+class LeftNavTree extends React.Component<LeftNavProps, any> {
     constructor(props) {
         super(props);
     }
 
     public render() {
-        const elem = <ul className="left tree" tabIndex={0} />;
+        const elem = <ul className="left-nav-tree js-tree" tabIndex={0} />;
 
         return (
-            <div className="leftNav">
+            <div className="left-nav">
                 {elem}
             </div>
         );
@@ -36,7 +36,7 @@ class LeftNav extends React.Component<LeftNavProps, any> {
 
     private loadNavTree() {
         if(!!this.props.navTree) {
-            const tree = ChatTree(document.querySelector('ul.tree'));
+            const tree = ChatTree(document.querySelector('ul.js-tree'));
             tree.subscribeToElementSwitch(this.switchDialogue);
             tree.load(this.props.navTree);
             tree.element.focus();
@@ -54,4 +54,4 @@ const mapStateToProps = (state: AppState) => {
     }
 }
 
-export default connect(mapStateToProps, {})(LeftNav);
+export default connect(mapStateToProps, {})(LeftNavTree);

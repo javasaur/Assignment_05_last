@@ -27,11 +27,10 @@ export class CreateUsers extends React.Component<CreateUserProps, CreateUsersSta
     }
 
     render() {
-        console.log('rerendering createusers');
         const form = (
             <>
-            <div className="createusers-header">Create user</div>
-            <form className="createUsername">
+            <div className="create-users-header">Create user</div>
+            <form className="create-users-form">
             <input ref={this.usernameRef} type='text' placeholder='USERNAME' /><br />
             <input ref={this.passwordRef} type='password' placeholder='PASSWORD' /><br />
             <input ref={this.ageRef} type='text' placeholder='AGE' /><br />
@@ -39,7 +38,7 @@ export class CreateUsers extends React.Component<CreateUserProps, CreateUsersSta
         </form></>);
 
         return (
-            <div className="createUsers">
+            <div className="create-users">
             {form}
             </div>
         );

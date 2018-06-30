@@ -1,0 +1,27 @@
+/* Header block */
+$header_bg: #212226;
+$header_padding: 17px;
+$header_color: #87888c;
+$header_text_align: center;
+
+/* Inputs */
+$input_bg: #42464f;
+$input_padding: 5px;
+$input_color: #e6e9ee;
+$input_border: none;
+$input_outline: none;
+$input_margin: 5px 0 0 0;
+
+/* Buttons */
+$button_bg: #212226;
+$button_color: #9b9ca0;
+$button_border: 1px solid #000;
+
+/* Action result (triggered by aapi requests) */
+$result_block_padding: 10px;
+$result_block_bg: #212226;
+$result_block_display: inline-block;
+$result_block_margin: 10px 0 0 0;
+$result_block_error_color: red;
+$result_block_success_color: green;
+

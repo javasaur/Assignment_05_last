@@ -1,0 +1,15 @@
+@import "../../CommonStyles/Mixins.scss";
+
+.add-root-group {
+    &-form {
+        & input {
+            @include inputStyles();
+        }
+
+        & button {
+            @include buttonStyles();
+            padding: 5px;
+            margin-top: 5px;
+        }
+    }
+}

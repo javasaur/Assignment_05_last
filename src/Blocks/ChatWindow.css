@@ -1,13 +1,10 @@
-.ChatWindow {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    border-radius: 15px;
-}
+.chat-window {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px; }
 
-.ChatWindow .main {
-    flex: 1 1;
-    display: flex;
-    flex-direction: row;
-}
-
+.chat-window-main {
+  flex: 1 1;
+  display: flex;
+  flex-direction: row; }

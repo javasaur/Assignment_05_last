@@ -29,14 +29,6 @@ export class ReadUsers extends React.Component<ReadUsersProps, ReadUsersState> {
         }
     }
 
-    componentDidMount() {
-        console.log('readusers did mount');
-    }
-
-    componentDidUpdate() {
-        console.log('readusers did update');
-    }
-
     render() {
         let updateForm;
         if(this.state.updateUser) {
@@ -48,15 +40,15 @@ export class ReadUsers extends React.Component<ReadUsersProps, ReadUsersState> {
 
         const usersLI = this.state.users.map((u, index) => {
             const addToGroupIcon = this.props.associateUserWithGroup ?
-                <i onClick={this.addUserToGroup.bind(this, u.id)} className="fas fa-user-plus readusers-addtogroupicon" /> :
+                <i onClick={this.addUserToGroup.bind(this, u.id)} className="fas fa-user-plus read-users-addtogroupicon" /> :
                 null;
 
             const updateIcon = this.props.updateUser ?
-                <i onClick={this.passUpdateUserData.bind(this, {id: u.id, name: u.name, age: u.age})} className="fas fa-pen readusers-updateicon" /> :
+                <i onClick={this.passUpdateUserData.bind(this, {id: u.id, name: u.name, age: u.age})} className="fas fa-pen read-users-updateicon" /> :
                 null;
 
             const removeIcon = this.props.removeUser ?
-                <i onClick={this.removeUser.bind(null, u.id)} className="fas fa-trash-alt readusers-removeicon" /> :
+                <i onClick={this.removeUser.bind(null, u.id)} className="fas fa-trash-alt read-users-removeicon" /> :
                 null;
 
             const li = (
@@ -67,12 +59,12 @@ export class ReadUsers extends React.Component<ReadUsersProps, ReadUsersState> {
                 </li>)
             return li;
         })
-        const users = this.state.users.length > 0 ? <div className="readusers-list">[ID] Name, age<ul>{usersLI}</ul></div> :
-        <div className="readusers-list">No users to display</div>;
+        const users = this.state.users.length > 0 ? <div className="read-users-list">[ID] Name, age<ul>{usersLI}</ul></div> :
+        <div className="read-users-list">No users to display</div>;
         return (
-            <div className="readusers">
-                <div className="readusers-header">
-                    <div className="readusers-refresh" onClick={this.refreshUsers.bind(this, true)}>Users list <i className="fas fa-sync-alt refresh" /></div>
+            <div className="read-users">
+                <div className="read-users-header">
+                    <div className="read-users-refresh" onClick={this.refreshUsers.bind(this, true)}>Users list <i className="fas fa-sync-alt refresh" /></div>
                 </div>
                 {users}
                 {this.state.result}

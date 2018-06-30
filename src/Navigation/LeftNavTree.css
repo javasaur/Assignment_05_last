@@ -1,0 +1,61 @@
+/* Header block */
+/* Inputs */
+/* Buttons */
+/* Action result (triggered by aapi requests) */
+.left-nav {
+  padding: 0;
+  margin: 0;
+  flex: 1 1;
+  max-width: 250px;
+  border-right: 1px solid #222328; }
+
+.left-nav-tree {
+  background-color: #303136;
+  height: 100%;
+  padding: 5px 0 0 0;
+  margin: 0;
+  list-style: none;
+  outline: none;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  /* webkit (safari, chrome) browsers */
+  -moz-user-select: none;
+  /* mozilla browsers */
+  -khtml-user-select: none;
+  /* webkit (konqueror) browsers */
+  -ms-user-select: none;
+  /* IE10+ */ }
+
+.left-nav-tree ul {
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+
+.left-nav-tree ul li {
+  margin: 0;
+  padding: 0;
+  padding: 0.1em 0; }
+
+.left-nav-tree li:hover {
+  cursor: pointer; }
+
+.left-nav-tree .selected > div.group, .left-nav-tree .selected > div.user {
+  background-color: #42464f;
+  color: #e6e9ee; }
+
+.left-nav-tree div {
+  box-sizing: border-box; }
+
+.left-nav-tree div .icon {
+  padding: 0 10px; }
+
+.left-nav-tree div.group {
+  color: #e3e4e8;
+  background-color: #212226;
+  padding: 1em; }
+
+.left-nav-tree div.user {
+  color: #64656a;
+  font-size: 0.9em;
+  font-style: italic;
+  padding: 1em; }

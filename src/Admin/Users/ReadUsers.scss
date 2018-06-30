@@ -1,0 +1,36 @@
+@import "../../CommonStyles/Mixins.scss";
+
+.read-users {
+    &-header {
+        @include headerBlockStyles();
+        margin-top: 5px;
+    }
+
+    &-list {
+        margin-top: 5px;
+        color: #87888c;
+        background-color: #212226;
+        padding: 17px;
+    }
+
+    &-refresh:hover {
+        cursor: pointer;
+    }
+
+    ul {
+        @include zeroMarginAndPadding();
+        list-style-type: none;
+
+        li {
+            @include zeroMarginAndPadding();
+            margin-top: 6px;
+        }
+    }
+
+    &-removeicon, &-updateicon, &-addtogroupicon {
+        margin-left: 7px;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}

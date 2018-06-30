@@ -1,71 +1,40 @@
-.leftNavAdmin {
-    padding: 0;
-    margin: 0;
-    flex: 1 1;
-    max-width: 250px;
-    border-right: 1px solid #222328;
-}
+.left-nav-admin {
+  padding: 0;
+  margin: 0;
+  flex: 1 1;
+  max-width: 250px;
+  border-right: 1px solid #222328; }
 
-.leftNavAdmin ul {
-    background-color: #303136;
-    height: 100%;
-    padding: 5px 0 0 0;
-    margin: 0;
-    list-style: none;
-    outline: none;
-    box-sizing: border-box;
+.left-nav-admin ul {
+  background-color: #303136;
+  height: 100%;
+  padding: 5px 0 0 0;
+  margin: 0;
+  list-style: none;
+  outline: none;
+  box-sizing: border-box;
+  /* Prevent the double click selection */
+  -webkit-user-select: none;
+  /* webkit (safari, chrome) browsers */
+  -moz-user-select: none;
+  /* mozilla browsers */
+  -khtml-user-select: none;
+  /* webkit (konqueror) browsers */
+  -ms-user-select: none;
+  /* IE10+ */ }
 
-    /* Prevent the double click selection */
-    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
-    -moz-user-select: none; /* mozilla browsers */
-    -khtml-user-select: none; /* webkit (konqueror) browsers */
-    -ms-user-select: none; /* IE10+ */
-}
+.left-nav-admin ul li {
+  padding: 1em 1em;
+  color: #e3e4e8;
+  background-color: #212226;
+  margin-bottom: 0.1em; }
 
-.leftNavAdmin ul li {
-    padding: 1em 1em;
-    color: #e3e4e8;
-    background-color: #212226;
-    margin-bottom: 0.1em;
-}
+.left-nav-admin ul li:hover {
+  cursor: pointer;
+  background-color: #42464f; }
 
-/*.leftNavAdmin ul ul {*/
-    /*list-style: none;*/
-/*}*/
+.left-nav-admin ul li.selected {
+  background-color: #42464f; }
 
-/*.leftNavAdmin ul ul div {*/
-    /*box-sizing: border-box;*/
-    /*font-family: Calibri sans-serif;*/
-/*}*/
-
-.leftNavAdmin ul li:hover {
-    cursor: pointer;
-    background-color: #42464f;
-}
-
-.leftNavAdmin ul li.selected {
-    background-color: #42464f;
-}
-
-/*.leftNavAdmin ul .icon {*/
-    /*padding: 0 10px;*/
-/*}*/
-
-/*.leftNavAdmin ul div.group {*/
-    /*color: #e3e4e8;*/
-    /*background-color: #212226;*/
-/*}*/
-
-/*.leftNavAdmin ul div.user {*/
-    /*color: #64656a;*/
-    /*font-size: 0.9em;*/
-    /*font-style: italic;*/
-/*}*/
-
-/*
-*/
-
-/* Avoid coloring the whole node, only first div */
-.leftNavAdmin ul .selected > div.group, .leftNavAdmin ul .selected > div.user {
-    color: #e6e9ee;
-}
+.left-nav-admin ul .selected > div.group {
+  color: #e6e9ee; }

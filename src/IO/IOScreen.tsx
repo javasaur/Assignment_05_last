@@ -40,9 +40,8 @@ class IOScreen extends React.Component<IOScreenProps, any> {
             });
 
             res = (
-                <div className="ioScreen">
-                    <div className="messages">{messagesLI}</div>
-                    {/*<button onClick={this.scrollDown}>Scroll</button>*/}
+                <div className="io-screen">
+                    <div className="io-screen-messages">{messagesLI}</div>
                     <InputBlock operation={this.scrollDown}/>
                 </div>
             )

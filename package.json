@@ -11,6 +11,7 @@
     "express": "^4.16.3",
     "joi": "^13.4.0",
     "moment": "^2.22.2",
+    "node-sass": "^4.9.0",
     "react": "^16.3.2",
     "react-css-modules": "^4.7.3",
     "react-dom": "^16.3.2",
@@ -24,11 +25,12 @@
   },
   "scripts": {
     "start": "concurrently \"react-scripts-ts start\" \"cd server && npm start\"",
-    "dev": "concurrently \"npm start\" \"cd server && npm run dev\"",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
-    "postinstall": "cd server && npm i"
+    "postinstall": "cd server && npm i",
+    "start-client": "react-scripts-ts start",
+    "watchscss": "node-sass -rw src -o src"
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",

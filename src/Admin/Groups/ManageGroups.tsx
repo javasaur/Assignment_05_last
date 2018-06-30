@@ -64,14 +64,14 @@ export class ManageGroups extends React.Component<ManageGroupsProps, ManageGroup
         }
 
         return (
-            <div className="manageGroups">
+            <div className="manage-groups">
                 <LeftNavAdminTree />
-                <div className="right">
-                    <div className="managegroups-header">
-                        <Link to={'/managegroups/addgroup/root'} className="managegroups-navitem">Add root group</Link>
-                        <Link to={'/managegroups/addgroup/subgroup'} className="managegroups-navitem">Add subgroup</Link>
-                        <Link to={'/managegroups/groupusers'} className="managegroups-navitem">Group users</Link>
-                        <Link to={'/managegroups/addusers'} className="managegroups-navitem">Associate users</Link>
+                <div className="manage-groups-right-block">
+                    <div className="manage-groups-header">
+                        <Link to={'/managegroups/addgroup/root'} className="manage-groups-navitem">Add root group</Link>
+                        <Link to={'/managegroups/addgroup/subgroup'} className="manage-groups-navitem">Add subgroup</Link>
+                        <Link to={'/managegroups/groupusers'} className="manage-groups-navitem">Group users</Link>
+                        <Link to={'/managegroups/addusers'} className="manage-groups-navitem">Associate users</Link>
                     </div>
 
                     <Route path='/managegroups/addgroup/root' render={addRootGroup} />
@@ -109,7 +109,7 @@ export class ManageGroups extends React.Component<ManageGroupsProps, ManageGroup
 
     formError = (msg) => {
         const elem = (
-            <div className='error result'>
+            <div className='error action-result'>
                 <i className="fas fa-times" /> {msg}
             </div>
         );
@@ -118,7 +118,7 @@ export class ManageGroups extends React.Component<ManageGroupsProps, ManageGroup
 
     formSuccess = (msg) => {
         const elem = (
-            <div className='success result'>
+            <div className='success action-result'>
                 <i className="fas fa-check-circle" /> {msg}
             </div>
         );

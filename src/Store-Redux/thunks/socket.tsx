@@ -9,7 +9,7 @@ export function openSocket() {
             const socket = SocketAPI.initSocket();
             dispatch(setSocket(socket));
         } catch (err) {
-            console.log(err);
+
         }
     }
 }
@@ -20,7 +20,7 @@ export function subscribeToGroups() {
             const uniqueGroupIDs = getUniqueGroupIDs(flatten(store.getState().navTree));
             SocketAPI.subscribeToDialogues(uniqueGroupIDs);
         } catch (err) {
-            console.log(err);
+
         }
     }
 }

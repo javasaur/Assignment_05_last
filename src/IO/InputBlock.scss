@@ -1,0 +1,30 @@
+@import "../CommonStyles/Mixins.scss";
+
+.input-block {
+    display: flex;
+    padding: 15px;
+    border-top: 1px solid #222328;
+
+    textarea {
+        flex: 1 1;
+        resize: none;
+        rows: 40;
+        padding: 7px;
+        background-color: #484b54;
+        border: none;
+        color: #FFF;
+        outline: none;
+    }
+
+    button {
+        @include buttonStyles();
+        max-width: 80px;
+        flex: 1 1 auto;
+        border-bottom-right-radius: 25%;
+        border-top-right-radius: 25%;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}

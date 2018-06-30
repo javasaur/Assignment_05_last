@@ -2,9 +2,6 @@ import * as React from 'react';
 import * as moment from 'moment';
 
 import './Message.css';
-// import {IMessage} from "./IMessage";
-import {IStateStore} from "../Store/IStateStore";
-import {StateStore} from "../Store/StateStore";
 
 interface IMessageComponentProps {
     message: any,
@@ -14,7 +11,6 @@ interface IMessageComponentProps {
 }
 
 export class Message extends React.Component<IMessageComponentProps, {}> {
-    store: IStateStore;
 
     constructor(props: {
         message: any,
@@ -23,7 +19,6 @@ export class Message extends React.Component<IMessageComponentProps, {}> {
         keyValue: number
     }) {
         super(props);
-        this.store = StateStore.getInstance();
     }
 
     public render() {
@@ -33,7 +28,7 @@ export class Message extends React.Component<IMessageComponentProps, {}> {
             const a = this.props.message.authorName;
             author = (
                 <>
-                <div className="author">{a}</div>
+                <div className="message-author">{a}</div>
                     </>
             )
         } else {
@@ -43,11 +38,11 @@ export class Message extends React.Component<IMessageComponentProps, {}> {
             )
         }
         return (
-            <div className="messageContainer" key={this.props.keyValue}>
+            <div className="message-container" key={this.props.keyValue}>
                 <div className={`message ${this.props.alignClass}`}>
                     {author}
-                    <div className="content">{this.props.message.content}</div>
-                    <div className="date">{date}</div>
+                    <div className="message-content">{this.props.message.content}</div>
+                    <div className="message-date">{date}</div>
                 </div>
             </div>
         );

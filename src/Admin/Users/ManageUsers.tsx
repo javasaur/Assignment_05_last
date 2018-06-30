@@ -40,9 +40,9 @@ export class ManageUsers extends React.Component<any, ManageUsersState> {
         }
 
         return (
-            <div className="manageUsers">
+            <div className="manage-users">
                 <LeftNavAdmin clearResult={this.clearResult} />
-                <div className="right">
+                <div className="manage-users-right-block">
                     <Route path='/manageusers/create' render={createUsers} />
                     <Route path='/manageusers/read' render={readUsers} />
                     {this.state.result}
@@ -64,7 +64,7 @@ export class ManageUsers extends React.Component<any, ManageUsersState> {
 
     formError = (msg) => {
         const elem = (
-            <div className='error result'>
+            <div className='error action-result'>
                 <i className="fas fa-times" /> {msg}
             </div>
         );
@@ -73,7 +73,7 @@ export class ManageUsers extends React.Component<any, ManageUsersState> {
 
     formSuccess = (msg) => {
         const elem = (
-            <div className='success result'>
+            <div className='success action-result'>
                 <i className="fas fa-check-circle" /> {msg}
             </div>
         );

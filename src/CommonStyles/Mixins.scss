@@ -1,0 +1,50 @@
+@import "./Styles.scss";
+
+@mixin buttonStyles() {
+  background-color: $button_bg;
+  color: $button_color;
+  border: $button_border;
+}
+
+@mixin inputStyles() {
+  background-color: $input_bg;
+  padding: $input_padding;
+  color: $input_color;
+  border: $input_border;
+  outline: $input_outline;
+  margin: $input_margin;
+}
+
+@mixin actionResultStyles() {
+  padding: $result_block_padding;
+  background-color: $result_block_bg;
+  display: $result_block_display;
+  margin: $result_block_margin;
+
+  &.success {
+    color: $result_block_success_color;
+  }
+
+  &.error {
+    color: $result_block_error_color;
+  }
+}
+
+@mixin headerBlockStyles() {
+  background-color: $header_bg;
+  color: $header_color;
+  padding: $header_padding;
+  text-align: $header_text_align;
+}
+
+@mixin zeroMarginAndPadding() {
+  margin: 0;
+  padding: 0;
+}
+
+@mixin preventDoubleClickSelection() {
+  -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+  -moz-user-select: none; /* mozilla browsers */
+  -khtml-user-select: none; /* webkit (konqueror) browsers */
+  -ms-user-select: none; /* IE10+ */
+}

@@ -16,7 +16,7 @@ export function getNavTree(userID) {
             dispatch(setTree(treeJSON));
             dispatch(subscribeToGroups());
         } catch (err) {
-            console.log(err);
+
         }
     }
 }
@@ -27,7 +27,7 @@ export function getAdminNavTree() {
             const treeJSON = response.data;
             dispatch(setAdminTree(treeJSON))
         } catch (err) {
-            console.log(err);
+
         }
     }
 }

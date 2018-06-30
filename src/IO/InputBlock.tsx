@@ -41,7 +41,7 @@ class InputBlock extends React.Component<InputBlockProps, any> {
 
     public render() {
         return (
-            <div className="inputBlock">
+            <div className="input-block">
                 <textarea rows={4}  placeholder="Type a message" onKeyPress={this.handleKey} onChange={this.handleChange} value={this.state.message}>Some text to enter</textarea>
                 <button onClick={this.send}>Send</button>
             </div>

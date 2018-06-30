@@ -12,7 +12,7 @@ class LeftNavAdmin extends React.Component<any, any> {
 
     public render() {
         return (
-            <div className="leftNavAdmin">
+            <div className="left-nav-admin">
                 <ul tabIndex={0}>
                     <Link to={'/manageusers/read'} onClick={this.props.clearResult}>
                         <li onClick={this.selectLI}>
@@ -35,7 +35,7 @@ class LeftNavAdmin extends React.Component<any, any> {
     }
 
     private unSelectLIs = () => {
-        const elems = document.querySelectorAll('.leftNavAdmin li');
+        const elems = document.querySelectorAll('.left-nav-admin li');
         Array.from(elems).forEach(elem => elem.className = '');
     }
 

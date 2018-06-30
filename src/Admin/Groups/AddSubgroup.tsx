@@ -24,14 +24,14 @@ export class AddSubgroup extends React.Component<AddSubgroupProps, AddSubgroupSt
     render() {
         const form = (
             <>
-                <form className="addsubgroup">
+                <form className="add-subgroup-form">
                     <input type='text' placeholder={`Parent ID - ${this.props.parent}`} disabled={true} /><br />
                     <input ref={this.groupNameRef} type='text' placeholder='GROUPNAME' /><br />
                     <button onClick={this.addSubgroup}>Add</button>
                 </form></>);
 
         return (
-            <div className="AddSubgroup">
+            <div className="add-subgroup">
                 {form}
             </div>
         );

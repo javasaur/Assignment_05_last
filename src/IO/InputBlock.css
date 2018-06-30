@@ -1,30 +1,30 @@
-.inputBlock {
-    display: flex;
-    padding: 15px;
-    border-top: 1px solid #222328;
-}
+/* Header block */
+/* Inputs */
+/* Buttons */
+/* Action result (triggered by aapi requests) */
+.input-block {
+  display: flex;
+  padding: 15px;
+  border-top: 1px solid #222328; }
 
-.inputBlock textarea {
-    flex: 1 1;
-    resize: none;
-    rows: 40;
-    padding: 7px;
-    background-color: #484b54;
-    border: none;
-    color: #FFF;
-    outline: none;
-}
+.input-block textarea {
+  flex: 1 1;
+  resize: none;
+  rows: 40;
+  padding: 7px;
+  background-color: #484b54;
+  border: none;
+  color: #FFF;
+  outline: none; }
 
-.inputBlock button {
-    max-width: 80px;
-    flex: 1 1 auto;
-    background-color: #212226;
-    color: #9b9ca0;
-    border: 1px solid #000;
-    border-bottom-right-radius: 25%;
-    border-top-right-radius: 25%;
-}
+.input-block button {
+  background-color: #212226;
+  color: #9b9ca0;
+  border: 1px solid #000;
+  max-width: 80px;
+  flex: 1 1 auto;
+  border-bottom-right-radius: 25%;
+  border-top-right-radius: 25%; }
 
-.inputBlock button:hover {
-    cursor: pointer;
-}
+.input-block button:hover {
+  cursor: pointer; }

@@ -1,22 +1,10 @@
-.ioScreen {
-    flex: 4 4;
-    display: flex;
-    flex-direction: column;
-    background: url("../Images/messages_bg.jpg") repeat;
-    /*background: url("C:/Users\\Fulls4\\Documents\\Course files\\Repositories\\assignment05\\src\\Images\\messages_bg.jpg") repeat;*/
-}
+.io-screen {
+  flex: 4 4;
+  display: flex;
+  flex-direction: column;
+  background: url("../Images/messages_bg.jpg") repeat; }
 
-.ioScreen .input {
-    background-color: #e0d7d8;
-}
-
-.ioScreen .messages {
-    flex: 1 1;
-    /*background-color: #FCFCFC;*/
-    overflow-y: auto;
-    padding: 10px 0;
-}
-
-.messages .fake {
-    flex: 1 1;
-}
+.io-screen-messages {
+  flex: 1 1;
+  overflow-y: auto;
+  padding: 10px 0; }

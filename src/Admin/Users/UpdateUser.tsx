@@ -23,24 +23,19 @@ export class UpdateUser extends React.Component<UpdateUsersStateProps, any> {
 
     componentWillReceiveProps(props) {
         this.setState(props.user);
-        console.log(`new props`, props);
     }
 
     render() {
         const form = (
-            <div className="updateuser">
-                <div className="updateuser-header">Update user</div>
-                <form className="updateUser">
+            <div className="update-user">
+                <div className="update-user-header">Update user</div>
+                <form className="update-user-forum">
                     <input onChange={this.handleNameChange} type='text' placeholder='USERNAME' value={this.state.name} /><br />
                     <input onChange={this.handleAgeChange} type='text' placeholder='AGE' value={this.state.age} /><br />
                     <button onClick={this.updateUser}>Update</button>
                 </form></div>);
         return form;
     }
-
-    // private clearState() {
-    //     this.setState({id: null, name: '', value: ''})
-    // }
 
     private handleNameChange = (event) => {
         this.setState({name: event.target.value})

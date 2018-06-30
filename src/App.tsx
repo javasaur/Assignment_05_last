@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {BrowserRouter, Route, Redirect} from "react-router-dom";
+import {Switch} from "react-router";
+import {connect} from "react-redux";
 
 import './App.css';
 import {ChatWindow} from "./Blocks/ChatWindow";
-import {Switch} from "react-router";
 import {AppState} from "./Store-Redux/appState";
-import {connect} from "react-redux";
 import Login from "./Other/Login";
 import {ManageUsers} from "./Admin/Users/ManageUsers";
 import {ManageGroups} from "./Admin/Groups/ManageGroups";
@@ -18,26 +18,14 @@ class App extends React.Component<any, any> {
 
     public render() {
         const logged = this.props.loggedUserID;
-
-        const login = () => {
-            return !!logged ? <Redirect to='/chat' /> : <Login />;
-        }
-
-        const chatWindow = () => {
-            return !!logged ? <><Header /><ChatWindow/></> : <Login />;
-        }
-
-        const manageUsers = () => {
-            return !!logged ? <><Header /><ManageUsers/></> : <Login />;
-        }
-
-        const manageGroups = () => {
-            return !!logged ? <><Header /><ManageGroups/></> : <Login />;
-        }
+        const login = () => !!logged ? <Redirect to='/chat' /> : <Login />;
+        const chatWindow = () => !!logged ? <><Header /><ChatWindow/></> : <Login />;
+        const manageUsers = () => !!logged ? <><Header /><ManageUsers/></> : <Login />;
+        const manageGroups = () => !!logged ? <><Header /><ManageGroups/></> : <Login />;
 
         return (
             <BrowserRouter>
-                <div className="App">
+                <div className="app">
                     <Switch>
                         <Route path='/' exact={true} render={login} />
                         <Route path='/chat' render={chatWindow} />

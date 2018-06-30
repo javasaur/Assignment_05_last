@@ -23,13 +23,13 @@ export class AddRootGroup extends React.Component<AddRootGroupProps, AddRootGrou
     render() {
         const form = (
             <>
-                <form className="addrootgroup">
+                <form className="add-root-group-form">
                     <input ref={this.groupNameRef} type='text' placeholder='GROUPNAME' /><br />
                     <button onClick={this.addRootGroup}>Add</button>
                 </form></>);
 
         return (
-            <div className="addRootGroup">
+            <div className="add-root-group">
                 {form}
             </div>
         );

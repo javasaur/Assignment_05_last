@@ -1,0 +1,40 @@
+@import "../../CommonStyles/Mixins.scss";
+
+.left-nav-admin {
+    padding: 0;
+    margin: 0;
+    flex: 1 1;
+    max-width: 250px;
+    border-right: 1px solid #222328;
+
+    ul {
+        background-color: #303136;
+        height: 100%;
+        padding: 5px 0 0 0;
+        margin: 0;
+        list-style: none;
+        outline: none;
+        box-sizing: border-box;
+        @include preventDoubleClickSelection();
+
+        li {
+            padding: 1em 1em;
+            color: #e3e4e8;
+            background-color: #212226;
+            margin-bottom: 0.1em;
+
+            &:hover {
+                cursor: pointer;
+                background-color: #42464f;
+            }
+
+            &.selected {
+                background-color: #42464f;
+
+                & > div.group {
+                    color: #e6e9ee;
+                }
+            }
+        }
+    }
+}

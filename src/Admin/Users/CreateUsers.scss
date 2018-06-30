@@ -1,0 +1,19 @@
+@import "../../CommonStyles/Mixins.scss";
+
+.create-users {
+    &-header {
+        @include headerBlockStyles();
+    }
+
+    &-form {
+        input {
+            @include inputStyles();
+        }
+
+        button {
+            @include buttonStyles();
+            padding: 5px;
+            margin-top: 5px;
+        }
+    }
+}

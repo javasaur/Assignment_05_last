@@ -1,0 +1,26 @@
+.header {
+    color: #87888c;
+    text-align: center;
+    padding: 17px;
+    background-color: #212226;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    display: flex;
+
+    &-logout {
+        text-align: right;
+        flex: 1 1;
+        justify-self: end;
+
+        a {
+            margin-right: 15px;
+        }
+    }
+
+    a {
+        color: #87888c;
+        font-size: 16px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+}

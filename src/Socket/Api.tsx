@@ -4,6 +4,8 @@ import {loadMessages} from "../Store-Redux/thunks/dialogues";
 import {getAdminNavTree, getNavTree} from "../Store-Redux/thunks/tree";
 
 export class SocketAPI {
+    static socket;
+
     static emit(channel, msg) {
         SocketAPI.socket.emit(channel, msg);
     }
@@ -27,11 +29,7 @@ export class SocketAPI {
         return SocketAPI.socket;
     }
 
-    static socket;
 
-    static subscribeToTreeChange() {
-
-    }
 
     static subscribeToDialogues(uniqueGroupIDs) {
         for(let groupID of uniqueGroupIDs) {

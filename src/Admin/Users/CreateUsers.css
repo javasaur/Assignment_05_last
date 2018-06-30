@@ -1,23 +1,24 @@
-.createUsername input {
-    padding: 5px;
-    background-color: #42464f;
-    color: #e6e9ee;
-    border: none;
-    outline: none;
-    margin-top: 5px;
-}
+/* Header block */
+/* Inputs */
+/* Buttons */
+/* Action result (triggered by aapi requests) */
+.create-users-header {
+  background-color: #212226;
+  color: #87888c;
+  padding: 17px;
+  text-align: center; }
 
-.createUsername button {
-    background-color: #212226;
-    color: #9b9ca0;
-    border: 1px solid #000;
-    padding: 5px;
-    margin-top: 5px;
-}
+.create-users-form input {
+  background-color: #42464f;
+  padding: 5px;
+  color: #e6e9ee;
+  border: none;
+  outline: none;
+  margin: 5px 0 0 0; }
 
-.createusers-header {
-    color: #87888c;
-    padding: 17px;
-    background-color: #212226;
-    text-align: center;
-}
+.create-users-form button {
+  background-color: #212226;
+  color: #9b9ca0;
+  border: 1px solid #000;
+  padding: 5px;
+  margin-top: 5px; }

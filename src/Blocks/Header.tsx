@@ -20,7 +20,7 @@ class Header extends React.Component<HeaderProps, {}> {
         return (
             <div className="header">
                 Welcome, {this.props.username}!
-                <div className="logout">
+                <div className="header-logout">
                     <Link to={'/chat'}>Chat <i className="fas fa-comments" /></Link>
                     <Link to={'/managegroups'}>Manage groups <i className="far fa-object-group" /></Link>
                     <Link to={'/manageusers'}>Manage users <i className="fas fa-users" /></Link>

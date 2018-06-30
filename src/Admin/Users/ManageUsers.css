@@ -1,46 +1,35 @@
-.manageUsers ul {
-    list-style-type: none;
-}
+/* Header block */
+/* Inputs */
+/* Buttons */
+/* Action result (triggered by aapi requests) */
+.manage-users {
+  flex: 1 1;
+  display: flex;
+  flex-direction: row; }
 
-.manageUsers .delete {
-    color: red;
-    font-weight: bold;
-}
+.manage-users ul {
+  list-style-type: none; }
 
-.manageUsers a:hover {
-    cursor: pointer
-}
+.manage-users-right-block {
+  flex: 1 1;
+  background: url("../../Images/messages_bg.jpg") repeat;
+  padding: 20px; }
 
-.manageUsers a, .manageUsers Link, .manageUsers a:visited {
-    text-decoration: none;
-    color: #FFF;
-}
+.manage-users a, .manage-users a:visited {
+  text-decoration: none;
+  color: #FFF; }
 
-.manageUsers {
-    flex: 1 1;
-    display: flex;
-    flex-direction: row;
-}
+.manage-users a:hover {
+  cursor: pointer; }
 
-.manageUsers .right {
-    flex: 1 1;
-    background: url("../../Images/messages_bg.jpg") repeat;
-    padding: 20px;
-}
+.manage-users .action-result {
+  padding: 10px;
+  background-color: #212226;
+  display: inline-block;
+  margin: 10px 0 0 0; }
 
-.manageUsers .result {
-    padding: 10px;
-    background-color: #212226;
-    display: inline-block;
-    margin-top: 10px;
-}
+.manage-users .action-result.success {
+  color: green; }
 
-.manageUsers .result.error {
-    color: red;
-}
-
-.manageUsers .result.success {
-    color: green;
-}
-
-
+.manage-users .action-result.error {
+  color: red; }

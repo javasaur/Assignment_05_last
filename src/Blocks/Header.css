@@ -1,34 +1,22 @@
 .header {
-    color: #87888c;
-    text-align: center;
-    padding: 17px;
-    background-color: #212226;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    display: flex;
-}
+  color: #87888c;
+  text-align: center;
+  padding: 17px;
+  background-color: #212226;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  display: flex; }
 
-.header .logout {
-    text-align: right;
-    flex: 1 1;
-    justify-self: end;
-}
+.header-logout {
+  text-align: right;
+  flex: 1 1;
+  justify-self: end; }
 
-.header .logout a {
-    margin-right: 15px;
-}
+.header-logout a {
+  margin-right: 15px; }
 
 .header a {
-    color: #87888c;
-    font-size: 16px;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.header Link {
-    text-decoration: none;
-}
-
-/*.header a:hover {*/
-    /*text-decoration: underline;*/
-/*}*/
+  color: #87888c;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none; }

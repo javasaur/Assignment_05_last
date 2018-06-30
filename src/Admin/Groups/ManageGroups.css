@@ -1,42 +1,38 @@
-.manageGroups {
-    flex: 1 1;
-    display: flex;
-    flex-direction: row;
-}
+/* Header block */
+/* Inputs */
+/* Buttons */
+/* Action result (triggered by aapi requests) */
+.manage-groups {
+  flex: 1 1;
+  display: flex;
+  flex-direction: row; }
 
-.manageGroups .right {
-    flex: 1 1;
-    background: url("../../Images/messages_bg.jpg") repeat;
-    padding: 20px;
-}
+.manage-groups-header {
+  color: #87888c;
+  padding: 17px;
+  background-color: #212226;
+  text-align: center; }
 
-.managegroups-header {
-    color: #87888c;
-    padding: 17px;
-    background-color: #212226;
-    text-align: center;
-}
+.manage-groups-right-block {
+  flex: 1 1;
+  background: url("../../Images/messages_bg.jpg") repeat;
+  padding: 20px; }
 
-.manageGroups a, .manageGroups Link, .manageGroups a:visited {
-    text-decoration: none;
-    color: #87888c;
-}
+.manage-groups-navitem {
+  margin-left: 15px; }
 
-.manageGroups .result {
-    padding: 10px;
-    background-color: #212226;
-    display: inline-block;
-    margin-top: 10px;
-}
+.manage-groups a, .manage-groups a:visited {
+  text-decoration: none;
+  color: #87888c; }
 
-.manageGroups .result.error {
-    color: red;
-}
+.manage-groups .action-result {
+  padding: 10px;
+  background-color: #212226;
+  display: inline-block;
+  margin: 10px 0 0 0; }
 
-.manageGroups .result.success {
-    color: green;
-}
+.manage-groups .action-result.success {
+  color: green; }
 
-.managegroups-navitem {
-    margin-left: 15px;
-}
+.manage-groups .action-result.error {
+  color: red; }

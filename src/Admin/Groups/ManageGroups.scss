@@ -1,0 +1,33 @@
+@import "../../CommonStyles/Mixins.scss";
+
+.manage-groups {
+    flex: 1 1;
+    display: flex;
+    flex-direction: row;
+
+    &-header {
+        color: #87888c;
+        padding: 17px;
+        background-color: #212226;
+        text-align: center;
+    }
+
+    &-right-block {
+        flex: 1 1;
+        background: url("../../Images/messages_bg.jpg") repeat;
+        padding: 20px;
+    }
+
+    &-navitem {
+        margin-left: 15px;
+    }
+
+    a, a:visited {
+        text-decoration: none;
+        color: #87888c;
+    }
+
+    .action-result {
+        @include actionResultStyles();
+    }
+}

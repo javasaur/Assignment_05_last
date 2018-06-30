@@ -1,0 +1,18 @@
+@import "../../CommonStyles/Mixins.scss";
+
+.update-user {
+    &-header {
+        @include headerBlockStyles();
+        margin-top: 5px;
+    }
+
+    input {
+        @include inputStyles();
+    }
+
+    button {
+        @include buttonStyles();
+        padding: 5px;
+        margin-top: 5px;
+    }
+}
