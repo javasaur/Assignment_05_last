@@ -74,6 +74,10 @@ export function ChatTree(element) {
         return newPath;
     }
 
+    function canTraverseDownOrRight() {
+        return currIndex < elemList.length - 1;
+    }
+
     function createDomElement(type, str) {
         let elem = document.createElement(type);
         elem.innerText = str;
@@ -219,6 +223,10 @@ export function ChatTree(element) {
         }
     }
 
+    function hasChildren(elem) {
+
+    }
+
     function isExpandable(elem) {
         return elem.querySelector("div").classList.contains("group");
     }
@@ -318,7 +326,7 @@ export function ChatTree(element) {
             return;
         }
 
-        if(isExpandable(currElem)) {
+        if(isExpandable(currElem) && canTraverseDownOrRight()) {
             expand(currElem);
             switchCurrenElementTo(currIndex + 1);
             return;
