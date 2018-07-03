@@ -23,7 +23,7 @@ class LeftNavAdminTree extends React.Component<LeftNavAdminTreeProps, any> {
         const elem = <ul className="left-nav-tree js-admin-tree" tabIndex={0} />;
 
         return (
-            <div className="leftNav">
+            <div className="left-nav">
                 <Scrollbars autoHide={true} >
                     {elem}
                 </Scrollbars>
