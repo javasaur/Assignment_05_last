@@ -17,6 +17,7 @@
   list-style: none;
   outline: none;
   box-sizing: border-box;
+  overflow-y: auto;
   -webkit-user-select: none;
   /* webkit (safari, chrome) browsers */
   -moz-user-select: none;
