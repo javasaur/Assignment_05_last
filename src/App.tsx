@@ -16,6 +16,9 @@ class App extends React.Component<any, any> {
         super(props);
     }
 
+    componentDidMount() {
+    }
+
     public render() {
         const logged = this.props.loggedUserID;
         const login = () => !!logged ? <Redirect to='/chat' /> : <Login />;

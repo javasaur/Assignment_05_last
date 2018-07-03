@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 import { ChatTree } from '../../Navigation/chat-tree.js';
 import {AppState} from "../../Store-Redux/appState";
@@ -23,7 +24,9 @@ class LeftNavAdminTree extends React.Component<LeftNavAdminTreeProps, any> {
 
         return (
             <div className="leftNav">
-                {elem}
+                <Scrollbars autoHide={true} >
+                    {elem}
+                </Scrollbars>
             </div>
         );
     }

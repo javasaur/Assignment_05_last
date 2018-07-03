@@ -5,6 +5,7 @@ import InputBlock from "./InputBlock";
 import {AppState} from "../Store-Redux/appState";
 import {connect} from "react-redux";
 import {Message} from "../Messages/Message";
+import { Scrollbars } from 'react-custom-scrollbars';
 
 interface IOScreenProps {
     messages: Array<any>,
@@ -17,10 +18,14 @@ class IOScreen extends React.Component<IOScreenProps, any> {
     }
 
     scrollDown = () => {
-        const element = document.querySelector("div.messages");
-        if(!!element) {
-            element.scrollTop = element.scrollHeight;
-        }
+        // const self = this;
+        // window.requestAnimationFrame(() => {
+        //     const element = document.querySelector("io-screen-messages");
+        //     if(!!element) {
+        //         console.log('found element, scrolling');
+        //         element.scrollTop = element.scrollHeight;
+        //     }
+        // })
     }
 
     public render() {
@@ -41,7 +46,9 @@ class IOScreen extends React.Component<IOScreenProps, any> {
 
             res = (
                 <div className="io-screen">
-                    <div className="io-screen-messages">{messagesLI}</div>
+                    <Scrollbars autoHide={true} >
+                        <div className="io-screen-messages">{messagesLI}</div>
+                    </Scrollbars>
                     <InputBlock operation={this.scrollDown}/>
                 </div>
             )
