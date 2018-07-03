@@ -292,15 +292,12 @@ export function ChatTree(element) {
         }
 
         if(isExpanded(currElem)) {
-            console.log('folded');
             fold(currElem);
             return;
         }
 
         // If it's not top-level, switch to parent
         if(path.length > 1) {
-            console.log(path);
-            console.log('switching to parent');
             let parentLi = currElem.parentNode.parentNode;
             let newIndex = elemList.indexOf(parentLi);
             switchCurrenElementTo(newIndex);

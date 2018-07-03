@@ -15,6 +15,7 @@ interface LeftNavAdminTreeProps {
 class LeftNavAdminTree extends React.Component<LeftNavAdminTreeProps, any> {
     constructor(props) {
         super(props);
+
     }
 
     public render() {
@@ -31,10 +32,6 @@ class LeftNavAdminTree extends React.Component<LeftNavAdminTreeProps, any> {
         this.loadNavTree();
     }
 
-    componentDidMount() {
-        this.loadNavTree();
-    }
-
     private loadNavTree() {
         if(!!this.props.adminNavTree) {
             const tree = ChatTree(document.querySelector('ul.js-admin-tree'));
@@ -45,7 +42,6 @@ class LeftNavAdminTree extends React.Component<LeftNavAdminTreeProps, any> {
     }
 
     private setAdminCurrentGroupID = (id) => {
-        console.log('inside set current group id');
         store.dispatch(setAdminCurrentGroupID(id));
     }
 }
