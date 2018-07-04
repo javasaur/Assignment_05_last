@@ -5,15 +5,28 @@ import UsersGroupsService from "../services/usersgroups";
 import UsersDB from "./usersdb"
 import MessagesService from "../services/messages";
 // import {Group} from "../../src/Store/Group";
+import * as bcrypt from 'bcrypt';
+import HashService from "../services/hash";
 
 (async function() {
     const db = DBManager.getInstance();
     await db.initStores();
 
+    // const saltRounds = 10;
+    const plainText = '1';
+    // const hash = await HashService.hash(plainText);
+    // console.log(hash);
+    const pass = await UsersDB.getInstance().getUserPassword('Feo');
+    const check = await HashService.compare(plainText, pass);
+    console.log(check);
+    // const check = await HashService.compare('1', '$2b$10$A5jYqkMXeOjPjF.OjzTU8.b1EqTy2wKSQypzy9aHMvDZXZNyHXwQy');
+    // console.log(check);
+
+
     // const res = await GroupsService.addGroupUnderParent('testing', "6");
     // console.log(res);
 
-    await UsersGroupsService.addUserToGroup("2", "1530294489230");
+
 
 
     // const publicGroups = await GroupsService.getPublicGroups();

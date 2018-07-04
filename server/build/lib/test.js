@@ -9,15 +9,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dbmanager_1 = require("./dbmanager");
-const usersgroups_1 = require("../services/usersgroups");
-// import {Group} from "../../src/Store/Group";
+const usersdb_1 = require("./usersdb");
+const hash_1 = require("../services/hash");
 (function () {
     return __awaiter(this, void 0, void 0, function* () {
         const db = dbmanager_1.default.getInstance();
         yield db.initStores();
+        // const saltRounds = 10;
+        const plainText = '1';
+        // const hash = await HashService.hash(plainText);
+        // console.log(hash);
+        const pass = yield usersdb_1.default.getInstance().getUserPassword('Feo');
+        const check = yield hash_1.default.compare(plainText, pass);
+        console.log(check);
+        // const check = await HashService.compare('1', '$2b$10$A5jYqkMXeOjPjF.OjzTU8.b1EqTy2wKSQypzy9aHMvDZXZNyHXwQy');
+        // console.log(check);
         // const res = await GroupsService.addGroupUnderParent('testing', "6");
         // console.log(res);
-        yield usersgroups_1.default.addUserToGroup("2", "1530294489230");
         // const publicGroups = await GroupsService.getPublicGroups();
         // const privateGroups = await UsersGroupsService.getPrivateGroups(1);
         // const g1 = await GroupsService.getGroupsByIDs(['5']);

@@ -8,12 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const hash_1 = require("../services/hash");
 const usersdb_1 = require("../lib/usersdb");
-const helpers_1 = require("../util/helpers");
 class Login {
     static checkMatch(username, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            return usersdb_1.default.getInstance().checkMatch(username, password).catch(helpers_1.rethrow);
+            const user = yield usersdb_1.default.getInstance().getUserByName(username);
+            const userHash = user.password;
+            const compare = yield hash_1.default.compare(password, userHash);
+            return compare ? { accessAllowed: true, id: user.id } : { accessAllowed: false };
         });
     }
 }

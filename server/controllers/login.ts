@@ -4,7 +4,7 @@ import {Request, Response} from 'express';
 export default class Login {
     static async checkMatch(req: Request, res: Response) {
         services.Login.checkMatch(req.body.username, req.body.password)
-            .then((accessAllowed) => res.status(200).json(accessAllowed))
+            .then((resObj) => {res.status(200).json({...resObj})})
             .catch((error) => res.status(400).json({error}))
     }
 }

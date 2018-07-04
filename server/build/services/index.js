@@ -12,4 +12,6 @@ const usersgroups_1 = require("./usersgroups");
 exports.UsersGroups = usersgroups_1.default;
 const socket_1 = require("./socket");
 exports.Socket = socket_1.default;
+const hash_1 = require("./hash");
+exports.Hash = hash_1.default;
 //# sourceMappingURL=index.js.map

@@ -136,6 +136,20 @@ class UsersDB {
             }
         });
     }
+    getUserByName(name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = this.users.find(u => u.name.toUpperCase() === name.toUpperCase());
+                if (!user) {
+                    return null;
+                }
+                return user;
+            }
+            catch (err) {
+                throw new Error(`Error fetching user ${name} ${err.message}`);
+            }
+        });
+    }
     getUsersByIds(usersIDs) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -148,6 +162,20 @@ class UsersDB {
             }
             catch (err) {
                 throw new Error(`Failed to fetch users: ${err.message} `);
+            }
+        });
+    }
+    getUserPassword(username) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = this.users.find(u => u.name.toUpperCase() === username.toUpperCase());
+                if (!user) {
+                    throw new Error(`User not found`);
+                }
+                return user.password;
+            }
+            catch (err) {
+                throw new Error(err.message);
             }
         });
     }

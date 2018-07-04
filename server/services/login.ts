@@ -1,8 +1,11 @@
+import HashService from "../services/hash";
 import UsersDB from "../lib/usersdb";
-import {rethrow} from '../util/helpers';
 
 export default class Login {
     static async checkMatch(username: string, password: string) {
-        return UsersDB.getInstance().checkMatch(username, password).catch(rethrow);
+        const user = await UsersDB.getInstance().getUserByName(username);
+        const userHash = user.password;
+        const compare = await HashService.compare(password, userHash);
+        return compare ? {accessAllowed: true, id: user.id} : {accessAllowed: false};
     }
 }

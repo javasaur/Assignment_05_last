@@ -115,6 +115,18 @@ export default class UsersDB {
         }
     }
 
+    async getUserByName(name) {
+        try {
+            const user = this.users.find(u => u.name.toUpperCase() === name.toUpperCase());
+            if(!user) {
+                return null;
+            }
+            return user;
+        } catch (err) {
+            throw new Error(`Error fetching user ${name} ${err.message}`);
+        }
+    }
+
     async getUsersByIds(usersIDs: Array<any>) {
         try {
             const users = [];
@@ -125,6 +137,18 @@ export default class UsersDB {
             return users;
         } catch (err) {
             throw new Error(`Failed to fetch users: ${err.message} `);
+        }
+    }
+
+    async getUserPassword(username) {
+        try {
+            const user = this.users.find(u => u.name.toUpperCase() === username.toUpperCase());
+            if(!user) {
+                throw new Error(`User not found`);
+            }
+            return user.password;
+        } catch (err) {
+            throw new Error(err.message);
         }
     }
 
