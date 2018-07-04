@@ -8,9 +8,7 @@ const db = dbmanager_1.default.getInstance();
 const server = http.createServer(app_1.default);
 const port = 4000;
 services.Socket.init(server);
-setTimeout(() => {
-    db.initStores();
-}, 2000);
+db.initStores();
 server.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });

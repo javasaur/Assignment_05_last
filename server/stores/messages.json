@@ -1,1 +1,303 @@
-{"3":[{"authorId":"1","content":"test","dateTimestamp":1530260588.76},{"authorId":"1","content":"test1","dateTimestamp":1530260606.68},{"authorId":"1","content":"fdasfadsf","dateTimestamp":1530260652.96},{"authorId":"1","content":"blabla","dateTimestamp":1530260684.352}],"4":[{"authorId":"1","content":"weeeeeee\n","dateTimestamp":1530260894.345}],"5":[{"authorId":"2","content":"The world where Eredin couldn't find you, what was it like?","dateTimestamp":1528134398},{"authorId":"3","content":"You wouldn't believe me if I told you.","dateTimestamp":1529948866.044},{"authorId":"2","content":"Try me.","dateTimestamp":1529955668.08},{"authorId":"3","content":"People there had metal in their heads, waged war from a distance, using things similar to megascopes.","dateTimestamp":1529948866.044},{"authorId":"3","content":"And there were no horses, everyone had their own flying ship instead.","dateTimestamp":1529948866.044},{"authorId":"2","content":"Ciri, stop fooling around.","dateTimestamp":1529948866.044},{"authorId":"3","content":"Told you you wouldn't believe me","dateTimestamp":1529948866.044},{"authorId":"6","content":"hello","dateTimestamp":1530263344.603},{"authorId":"1","content":"roni, what are u doing here","dateTimestamp":1530263352.292},{"authorId":"1","content":"\ngtfo","dateTimestamp":1530263353.444},{"authorId":"3","content":"ye, Roni, go away","dateTimestamp":1530264900.797},{"authorId":"1","content":"haha","dateTimestamp":1530264906.756},{"authorId":"5","content":":))\n","dateTimestamp":1530264911.565},{"authorId":"1","content":"test","dateTimestamp":1530611306.693}],"6":[{"authorId":"4","content":"Hey guys, welcome to our group!","dateTimestamp":1528134398},{"authorId":"5","content":"Hello!","dateTimestamp":1528134398},{"authorId":"6","content":"I Love javascript","dateTimestamp":1528134398},{"authorId":"1","content":"Random message","dateTimestamp":1529961117.429},{"authorId":"5","content":"No spam, please!","dateTimestamp":1529961123.844},{"authorId":"1","content":"r","dateTimestamp":1530611425.702},{"authorId":"1","content":"\nbla","dateTimestamp":1530611426.597},{"authorId":"1","content":"\nbadf","dateTimestamp":1530611427.509},{"authorId":"1","content":"\nfadf","dateTimestamp":1530611428.326},{"authorId":"1","content":"\nadf","dateTimestamp":1530611429.206},{"authorId":"1","content":"fdf","dateTimestamp":1530611452.517},{"authorId":"1","content":"fadf","dateTimestamp":1530611746.829}],"1_5":[{"authorId":"5","content":"Hello, tomorrow we are going to learn Redux!","dateTimestamp":1528134398},{"authorId":"1","content":"Got it, npm i --save redux","dateTimestamp":1528134398},{"authorId":"5","content":"...","dateTimestamp":1529948547516},{"authorId":"1","content":"What?","dateTimestamp":1529948658227},{"authorId":"5","content":"yarn add redux","dateTimestamp":1529948674292},{"authorId":"1","content":"I see","dateTimestamp":1529948687899},{"authorId":"1","content":"t","dateTimestamp":1530175676.369},{"authorId":"1","content":"Test","dateTimestamp":1530260850.346},{"authorId":"5","content":"oh hello","dateTimestamp":1530260857.138},{"authorId":"5","content":"WOW","dateTimestamp":1530260867.713},{"authorId":"1","content":"hello","dateTimestamp":1530260870.528},{"authorId":"5","content":"fadsf","dateTimestamp":1530260879.257},{"authorId":"1","content":"\nfadsf","dateTimestamp":1530260881.121},{"authorId":"1","content":"\nblabla","dateTimestamp":1530264843.422},{"authorId":"1","content":"\nfadsf","dateTimestamp":1530264848.965},{"authorId":"5","content":"fadsf","dateTimestamp":1530264851.212},{"authorId":"5","content":"\n123213","dateTimestamp":1530264852.501},{"authorId":"1","content":"hello","dateTimestamp":1530637560.21},{"authorId":"5","content":"","dateTimestamp":1530637607.993}],"1_4":[{"authorId":"1","content":"test","dateTimestamp":1530262714.947}],"1_6":[{"authorId":"1","content":"hello","dateTimestamp":1530264728.365},{"authorId":"6","content":"hi there","dateTimestamp":1530264754.557},{"authorId":"1","content":"hh\n","dateTimestamp":1530264757.669},{"authorId":"1","content":"hellloooooo","dateTimestamp":1530264824.197}],"3_5":[{"authorId":"3","content":"Hey there","dateTimestamp":1530264933.565},{"authorId":"5","content":"\nHello","dateTimestamp":1530264940.149}]}
+{
+  "3": [
+    {
+      "authorId": "1",
+      "content": "test",
+      "dateTimestamp": 1530260588.76
+    },
+    {
+      "authorId": "1",
+      "content": "test1",
+      "dateTimestamp": 1530260606.68
+    },
+    {
+      "authorId": "1",
+      "content": "fdasfadsf",
+      "dateTimestamp": 1530260652.96
+    },
+    {
+      "authorId": "1",
+      "content": "blabla",
+      "dateTimestamp": 1530260684.352
+    }
+  ],
+  "4": [
+    {
+      "authorId": "1",
+      "content": "weeeeeee\n",
+      "dateTimestamp": 1530260894.345
+    }
+  ],
+  "5": [
+    {
+      "authorId": "2",
+      "content": "The world where Eredin couldn't find you, what was it like?",
+      "dateTimestamp": 1528134398
+    },
+    {
+      "authorId": "3",
+      "content": "You wouldn't believe me if I told you.",
+      "dateTimestamp": 1529948866.044
+    },
+    {
+      "authorId": "2",
+      "content": "Try me.",
+      "dateTimestamp": 1529955668.08
+    },
+    {
+      "authorId": "3",
+      "content": "People there had metal in their heads, waged war from a distance, using things similar to megascopes.",
+      "dateTimestamp": 1529948866.044
+    },
+    {
+      "authorId": "3",
+      "content": "And there were no horses, everyone had their own flying ship instead.",
+      "dateTimestamp": 1529948866.044
+    },
+    {
+      "authorId": "2",
+      "content": "Ciri, stop fooling around.",
+      "dateTimestamp": 1529948866.044
+    },
+    {
+      "authorId": "3",
+      "content": "Told you you wouldn't believe me",
+      "dateTimestamp": 1529948866.044
+    },
+    {
+      "authorId": "6",
+      "content": "hello",
+      "dateTimestamp": 1530263344.603
+    },
+    {
+      "authorId": "1",
+      "content": "roni, what are u doing here",
+      "dateTimestamp": 1530263352.292
+    },
+    {
+      "authorId": "1",
+      "content": "\ngtfo",
+      "dateTimestamp": 1530263353.444
+    },
+    {
+      "authorId": "3",
+      "content": "ye, Roni, go away",
+      "dateTimestamp": 1530264900.797
+    },
+    {
+      "authorId": "1",
+      "content": "haha",
+      "dateTimestamp": 1530264906.756
+    },
+    {
+      "authorId": "5",
+      "content": ":))\n",
+      "dateTimestamp": 1530264911.565
+    },
+    {
+      "authorId": "1",
+      "content": "test",
+      "dateTimestamp": 1530611306.693
+    }
+  ],
+  "6": [
+    {
+      "authorId": "4",
+      "content": "Hey guys, welcome to our group!",
+      "dateTimestamp": 1528134398
+    },
+    {
+      "authorId": "5",
+      "content": "Hello!",
+      "dateTimestamp": 1528134398
+    },
+    {
+      "authorId": "6",
+      "content": "I Love javascript",
+      "dateTimestamp": 1528134398
+    },
+    {
+      "authorId": "1",
+      "content": "Random message",
+      "dateTimestamp": 1529961117.429
+    },
+    {
+      "authorId": "5",
+      "content": "No spam, please!",
+      "dateTimestamp": 1529961123.844
+    },
+    {
+      "authorId": "1",
+      "content": "r",
+      "dateTimestamp": 1530611425.702
+    },
+    {
+      "authorId": "1",
+      "content": "\nbla",
+      "dateTimestamp": 1530611426.597
+    },
+    {
+      "authorId": "1",
+      "content": "\nbadf",
+      "dateTimestamp": 1530611427.509
+    },
+    {
+      "authorId": "1",
+      "content": "\nfadf",
+      "dateTimestamp": 1530611428.326
+    },
+    {
+      "authorId": "1",
+      "content": "\nadf",
+      "dateTimestamp": 1530611429.206
+    },
+    {
+      "authorId": "1",
+      "content": "fdf",
+      "dateTimestamp": 1530611452.517
+    },
+    {
+      "authorId": "1",
+      "content": "fadf",
+      "dateTimestamp": 1530611746.829
+    }
+  ],
+  "1_5": [
+    {
+      "authorId": "5",
+      "content": "Hello, tomorrow we are going to learn Redux!",
+      "dateTimestamp": 1528134398
+    },
+    {
+      "authorId": "1",
+      "content": "Got it, npm i --save redux",
+      "dateTimestamp": 1528134398
+    },
+    {
+      "authorId": "5",
+      "content": "...",
+      "dateTimestamp": 1529948547516
+    },
+    {
+      "authorId": "1",
+      "content": "What?",
+      "dateTimestamp": 1529948658227
+    },
+    {
+      "authorId": "5",
+      "content": "yarn add redux",
+      "dateTimestamp": 1529948674292
+    },
+    {
+      "authorId": "1",
+      "content": "I see",
+      "dateTimestamp": 1529948687899
+    },
+    {
+      "authorId": "1",
+      "content": "t",
+      "dateTimestamp": 1530175676.369
+    },
+    {
+      "authorId": "1",
+      "content": "Test",
+      "dateTimestamp": 1530260850.346
+    },
+    {
+      "authorId": "5",
+      "content": "oh hello",
+      "dateTimestamp": 1530260857.138
+    },
+    {
+      "authorId": "5",
+      "content": "WOW",
+      "dateTimestamp": 1530260867.713
+    },
+    {
+      "authorId": "1",
+      "content": "hello",
+      "dateTimestamp": 1530260870.528
+    },
+    {
+      "authorId": "5",
+      "content": "fadsf",
+      "dateTimestamp": 1530260879.257
+    },
+    {
+      "authorId": "1",
+      "content": "\nfadsf",
+      "dateTimestamp": 1530260881.121
+    },
+    {
+      "authorId": "1",
+      "content": "\nblabla",
+      "dateTimestamp": 1530264843.422
+    },
+    {
+      "authorId": "1",
+      "content": "\nfadsf",
+      "dateTimestamp": 1530264848.965
+    },
+    {
+      "authorId": "5",
+      "content": "fadsf",
+      "dateTimestamp": 1530264851.212
+    },
+    {
+      "authorId": "5",
+      "content": "\n123213",
+      "dateTimestamp": 1530264852.501
+    },
+    {
+      "authorId": "1",
+      "content": "hello",
+      "dateTimestamp": 1530637560.21
+    },
+    {
+      "authorId": "5",
+      "content": "",
+      "dateTimestamp": 1530637607.993
+    }
+  ],
+  "1_4": [
+    {
+      "authorId": "1",
+      "content": "test",
+      "dateTimestamp": 1530262714.947
+    }
+  ],
+  "1_6": [
+    {
+      "authorId": "1",
+      "content": "hello",
+      "dateTimestamp": 1530264728.365
+    },
+    {
+      "authorId": "6",
+      "content": "hi there",
+      "dateTimestamp": 1530264754.557
+    },
+    {
+      "authorId": "1",
+      "content": "hh\n",
+      "dateTimestamp": 1530264757.669
+    },
+    {
+      "authorId": "1",
+      "content": "hellloooooo",
+      "dateTimestamp": 1530264824.197
+    }
+  ],
+  "3_5": [
+    {
+      "authorId": "3",
+      "content": "Hey there",
+      "dateTimestamp": 1530264933.565
+    },
+    {
+      "authorId": "5",
+      "content": "\nHello",
+      "dateTimestamp": 1530264940.149
+    }
+  ]
+}
