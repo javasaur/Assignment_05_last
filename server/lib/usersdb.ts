@@ -115,6 +115,18 @@ export default class UsersDB {
         }
     }
 
+    async getUserByIDWithRef(userId) {
+        try {
+            const user = this.users.find(u => u.id === userId);
+            if(!user) {
+                return null;
+            }
+            return user;
+        } catch (err) {
+            throw new Error(`Failed to fetch user with id ${userId}: ${err.message}`);
+        }
+    }
+
     async getUserByName(name) {
         try {
             const user = this.users.find(u => u.name.toUpperCase() === name.toUpperCase());
@@ -199,7 +211,7 @@ export default class UsersDB {
 
     async updateUser(userID, user) {
         try {
-            let found = await this.getUserByID(userID);
+            let found = await this.getUserByIDWithRef(userID);
             if (found) {
                 // seems not good
                 found.name = user.name;
@@ -207,6 +219,7 @@ export default class UsersDB {
                     found.password = user.password;
                 }
                 found.age = user.age;
+                console.log(`updated user`, found);
                 this.updateUsersStore();
                 return;
             }

@@ -16,10 +16,10 @@ class Users {
             services.Users.addUser(req.body)
                 .then(() => {
                 socket_1.default.notifyOnTreeChange();
+                socket_1.default.notifyOnUsersChange();
                 res.status(200).send({});
-            }) // should return boolean?
+            })
                 .catch(err => {
-                console.log(err);
                 res.status(400).send(err.message);
             });
         });
@@ -49,7 +49,10 @@ class Users {
     static updateUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             services.Users.updateUser(req.query.id, req.body)
-                .then(() => res.status(200).send({}))
+                .then(() => {
+                socket_1.default.notifyOnUsersChange();
+                res.status(200).send({});
+            })
                 .catch(err => res.status(400).send(err.message));
         });
     }
@@ -57,7 +60,10 @@ class Users {
         return __awaiter(this, void 0, void 0, function* () {
             if (req.query.group) {
                 services.UsersGroups.removeUserFromGroup(req.query.id, req.query.group)
-                    .then(() => res.status(200).send({}))
+                    .then(() => {
+                    socket_1.default.notifyOnUsersChange();
+                    res.status(200).send({});
+                })
                     .catch(err => res.status(400).send(err.message));
             }
             else {

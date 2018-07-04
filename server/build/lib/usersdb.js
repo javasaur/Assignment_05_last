@@ -136,6 +136,20 @@ class UsersDB {
             }
         });
     }
+    getUserByIDWithRef(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = this.users.find(u => u.id === userId);
+                if (!user) {
+                    return null;
+                }
+                return user;
+            }
+            catch (err) {
+                throw new Error(`Failed to fetch user with id ${userId}: ${err.message}`);
+            }
+        });
+    }
     getUserByName(name) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -228,7 +242,7 @@ class UsersDB {
     updateUser(userID, user) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                let found = yield this.getUserByID(userID);
+                let found = yield this.getUserByIDWithRef(userID);
                 if (found) {
                     // seems not good
                     found.name = user.name;
@@ -236,6 +250,7 @@ class UsersDB {
                         found.password = user.password;
                     }
                     found.age = user.age;
+                    console.log(`updated user`, found);
                     this.updateUsersStore();
                     return;
                 }

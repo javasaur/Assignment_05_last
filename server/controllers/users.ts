@@ -7,10 +7,10 @@ export default class Users {
         services.Users.addUser(req.body)
             .then(() => {
                 Socket.notifyOnTreeChange();
+                Socket.notifyOnUsersChange();
                 res.status(200).send({})
-            }) // should return boolean?
+            })
             .catch(err => {
-                console.log(err);
                 res.status(400).send(err.message);
             });
     }
@@ -36,14 +36,20 @@ export default class Users {
 
     static async updateUser(req: Request, res: Response) {
         services.Users.updateUser(req.query.id, req.body)
-            .then(() => res.status(200).send({}))
+            .then(() => {
+                Socket.notifyOnUsersChange();
+                res.status(200).send({})
+            })
             .catch(err => res.status(400).send(err.message));
     }
 
     static async removeUser(req: Request, res: Response) {
         if(req.query.group) {
             services.UsersGroups.removeUserFromGroup(req.query.id, req.query.group)
-                .then(() => res.status(200).send({}))
+                .then(() => {
+                    Socket.notifyOnUsersChange();
+                    res.status(200).send({})
+                })
                 .catch(err => res.status(400).send(err.message));
         } else {
             services.UsersGroups.removeUser(req.query.id)

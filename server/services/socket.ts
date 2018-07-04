@@ -34,4 +34,8 @@ export default class Socket {
     static notifyOnAdminTreeChange() {
         Socket.io.emit('admintreechange');
     }
+
+    static notifyOnUsersChange() {
+        Socket.io.emit('userschange');
+    }
 }
