@@ -1,3 +1,7 @@
+/* Header block */
+/* Inputs */
+/* Buttons */
+/* Action result (triggered by aapi requests) */
 .left-nav-admin {
   padding: 0;
   margin: 0;
@@ -13,7 +17,6 @@
   list-style: none;
   outline: none;
   box-sizing: border-box;
-  /* Prevent the double click selection */
   -webkit-user-select: none;
   /* webkit (safari, chrome) browsers */
   -moz-user-select: none;
@@ -36,5 +39,5 @@
 .left-nav-admin ul li.selected {
   background-color: #42464f; }
 
-.left-nav-admin ul .selected > div.group {
+.left-nav-admin ul li.selected > div.group {
   color: #e6e9ee; }

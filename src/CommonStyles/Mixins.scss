@@ -3,7 +3,7 @@
 @mixin buttonStyles() {
   background-color: $button_bg;
   color: $button_color;
-  border: $button_border;
+  border: none;
 }
 
 @mixin inputStyles() {

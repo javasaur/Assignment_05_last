@@ -20,7 +20,7 @@
 .input-block button {
   background-color: #212226;
   color: #9b9ca0;
-  border: 1px solid #000;
+  border: none;
   max-width: 80px;
   flex: 1 1 auto;
   border-bottom-right-radius: 25%;

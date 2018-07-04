@@ -13,6 +13,7 @@ import ReadUsers from "../Users/ReadUsers";
 import {connect} from "react-redux";
 import {AppState} from "../../Store-Redux/appState";
 import {UsersAPI} from "../Users/UsersAPI";
+import RemoveGroup from "./RemoveGroup";
 
 interface ManageGroupsState {
     result: any,
@@ -41,15 +42,15 @@ export class ManageGroups extends React.Component<ManageGroupsProps, ManageGroup
                     clearResult={this.clearResult}
                     fetchUsers={UsersAPI.fetchAllUsers}
                     associateUserWithGroup={this.addUserToGroup}
-                />)
+                />);
         }
 
         const addRootGroup = () => {
-            return <AddRootGroup addRootGroup={this.addRootGroup} />
+            return <AddRootGroup addRootGroup={this.addRootGroup} />;
         }
 
         const addSubgroup = () => {
-            return <AddSubgroup addSubgroup={this.addSubgroup} />
+            return <AddSubgroup addSubgroup={this.addSubgroup} />;
         }
 
         const groupUsers = () => {
@@ -60,7 +61,11 @@ export class ManageGroups extends React.Component<ManageGroupsProps, ManageGroup
                     updateUser={this.updateUser}
                     removeUser={this.removeUser}
                 />
-            )
+            );
+        }
+
+        const removeGroup = () => {
+            return <RemoveGroup removeGroup={this.removeGroup} />;
         }
 
         return (
@@ -72,12 +77,14 @@ export class ManageGroups extends React.Component<ManageGroupsProps, ManageGroup
                         <Link to={'/managegroups/addgroup/subgroup'} className="manage-groups-navitem">Add subgroup</Link>
                         <Link to={'/managegroups/groupusers'} className="manage-groups-navitem">Group users</Link>
                         <Link to={'/managegroups/addusers'} className="manage-groups-navitem">Associate users</Link>
+                        <Link to={'/managegroups/removegroup'} className="manage-groups-navitem">Remove group</Link>
                     </div>
 
                     <Route path='/managegroups/addgroup/root' render={addRootGroup} />
                     <Route path='/managegroups/addgroup/subgroup' render={addSubgroup} />
                     <Route path='/managegroups/groupusers' render={groupUsers} />
                     <Route path='/managegroups/addusers' render={addUsers} />
+                    <Route path={'/managegroups/removegroup'} render={removeGroup} />
                     {this.state.result}
                 </div>
             </div>
@@ -147,6 +154,16 @@ export class ManageGroups extends React.Component<ManageGroupsProps, ManageGroup
                 cb();
             })
             .catch((err) => this.formError(err.response.data));
+    }
+
+    private removeGroup = async (id, cb) => {
+        console.log(`removing group ${id}`);
+        // GroupsAPI.removeUserFromAdminGroup(id)
+        //     .then(() => {
+        //         this.formSuccess('Group removed');
+        //         cb();
+        //     })
+        //     .catch((err) => this.formError(err.response.data));
     }
 }
 

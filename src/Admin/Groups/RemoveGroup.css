@@ -2,7 +2,7 @@
 /* Inputs */
 /* Buttons */
 /* Action result (triggered by aapi requests) */
-.add-subgroup-form input {
+.remove-group-form input {
   background-color: #42464f;
   padding: 5px;
   color: #e6e9ee;
@@ -10,7 +10,7 @@
   outline: none;
   margin: 5px 0 0 0; }
 
-.add-subgroup-form button {
+.remove-group-form button {
   background-color: #212226;
   color: #9b9ca0;
   border: none;
