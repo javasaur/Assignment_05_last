@@ -1,4 +1,5 @@
 import UsersDB from "../lib/usersdb";
+import HashService from "./hash";
 import {rethrow} from '../util/helpers';
 import * as Joi from 'joi';
 
@@ -19,6 +20,9 @@ export default class Users {
                 throw err;
             }
         });
+
+        const hash = await HashService.hash(user.password);
+        user.password = hash;
         return UsersDB.getInstance().addUser(user).catch(rethrow);
     }
 
@@ -54,7 +58,6 @@ export default class Users {
                 throw err;
             }
         });
-
         return UsersDB.getInstance().updateUser(userID, user);
     }
 

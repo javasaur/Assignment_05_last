@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const usersdb_1 = require("../lib/usersdb");
+const hash_1 = require("./hash");
 const helpers_1 = require("../util/helpers");
 const Joi = require("joi");
 class Users {
@@ -30,6 +31,8 @@ class Users {
                     throw err;
                 }
             });
+            const hash = yield hash_1.default.hash(user.password);
+            user.password = hash;
             return usersdb_1.default.getInstance().addUser(user).catch(helpers_1.rethrow);
         });
     }
