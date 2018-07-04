@@ -10,7 +10,7 @@
 
 .left-nav-tree {
   background-color: #303136;
-  padding: 5px 0 0 0;
+  padding: 1px 0 0 0;
   margin: 0;
   list-style: none;
   outline: none;
@@ -31,11 +31,14 @@
 
 .left-nav-tree ul li {
   margin: 0;
-  padding: 0;
-  padding: 0.1em 0; }
+  padding: 0; }
 
 .left-nav-tree li:hover {
   cursor: pointer; }
+
+.left-nav-tree div.group:hover, .left-nav-tree div.user:hover {
+  background-color: #42464f;
+  color: #e6e9ee; }
 
 .left-nav-tree .selected > div.group, .left-nav-tree .selected > div.user {
   background-color: #42464f;
@@ -50,7 +53,8 @@
 .left-nav-tree div.group {
   color: #e3e4e8;
   background-color: #212226;
-  padding: 1em; }
+  padding: 1em;
+  margin: 1px 0; }
 
 .left-nav-tree div.user {
   color: #64656a;

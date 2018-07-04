@@ -9,7 +9,7 @@
     &-tree {
         background-color: #303136;
         //height: 100%;
-        padding: 5px 0 0 0;
+        padding: 1px 0 0 0;
         margin: 0;
         list-style: none;
         outline: none;
@@ -23,12 +23,19 @@
 
             li {
                 @include zeroMarginAndPadding();
-                padding: 0.1em 0;
             }
         }
 
         li:hover {
             cursor: pointer;
+        }
+
+
+        div.group, div.user {
+            &:hover {
+                background-color: #42464f;
+                color: #e6e9ee;
+            }
         }
 
         .selected {
@@ -49,6 +56,8 @@
                 color: #e3e4e8;
                 background-color: #212226;
                 padding: 1em;
+                //margin: 0.1em 0;
+                margin: 1px 0;
             }
 
             &.user {
