@@ -14,7 +14,6 @@ export default class Hash {
     static async compare(strToCheck, hash) {
         try {
             const res = await bcrypt.compare(strToCheck, hash);
-            console.log(`res is ${res}`);
             return res;
         } catch (err) {
             throw new Error(`Failed to check hash for ${strToCheck}`);
