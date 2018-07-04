@@ -71,8 +71,13 @@ export default class UsersDB {
         }
     }
 
+    noPasswordUser(user) {
+        const {password, ...noPass} = user;
+        return noPass;
+    }
+
     async getAllUsers() {
-        return this.users;
+        return this.users.map(this.noPasswordUser);
     }
 
     async getAssociatedGroupsIDs(userID) {
@@ -100,7 +105,11 @@ export default class UsersDB {
 
     async getUserByID(userId) {
         try {
-            return this.users.find(u => u.id === userId) || null;
+            const user = this.users.find(u => u.id === userId);
+            if(!user) {
+                return null;
+            }
+            return this.noPasswordUser(user);
         } catch (err) {
             throw new Error(`Failed to fetch user with id ${userId}: ${err.message}`);
         }

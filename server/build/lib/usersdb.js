@@ -7,6 +7,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
+            t[p[i]] = s[p[i]];
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("./db");
 class UsersDB {
@@ -79,9 +88,13 @@ class UsersDB {
             }
         });
     }
+    noPasswordUser(user) {
+        const { password } = user, noPass = __rest(user, ["password"]);
+        return noPass;
+    }
     getAllUsers() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.users;
+            return this.users.map(this.noPasswordUser);
         });
     }
     getAssociatedGroupsIDs(userID) {
@@ -112,7 +125,11 @@ class UsersDB {
     getUserByID(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return this.users.find(u => u.id === userId) || null;
+                const user = this.users.find(u => u.id === userId);
+                if (!user) {
+                    return null;
+                }
+                return this.noPasswordUser(user);
             }
             catch (err) {
                 throw new Error(`Failed to fetch user with id ${userId}: ${err.message}`);
