@@ -1,19 +1,15 @@
 import {nullLoginError, raiseLoginError, setLoggedUser} from "../actions/login";
 import {getNavTree} from "./tree";
 import {openSocket} from "./socket";
+import axios from 'axios';
 
 export function checkMatch(username, password) {
     return async function(dispatch) {
         try {
             dispatch(nullLoginError());
-            const httpResponse = await fetch('http://localhost:4000/login', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({username, password})});
-            const res = await httpResponse.json();
-            if(res.foundMatch) {
+            const response = await axios.post('http://localhost:4000/login', {username, password});
+            const res = response.data;
+            if(res.accessAllowed) {
                 dispatch(setLoggedUser(username, res.id));
                 dispatch(openSocket());
                 dispatch(getNavTree(res.id));
