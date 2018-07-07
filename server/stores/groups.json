@@ -55,9 +55,7 @@
       "id": "4",
       "parentID": null,
       "groups": [],
-      "users": [
-        "1"
-      ]
+      "users": []
     },
     {
       "type": "group",

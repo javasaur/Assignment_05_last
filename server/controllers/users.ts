@@ -16,7 +16,6 @@ export default class Users {
     }
 
     static async getAllUsers(req: Request, res: Response) {
-        console.log(req.query);
         if(req.query.group) {
             services.UsersGroups.getUsersByGroupID(req.query.group)
                 .then(users => res.status(200).json(users))

@@ -1,5 +1,6 @@
 import GroupsDB from "../lib/groupsdb";
 import {rethrow} from '../util/helpers';
+import * as DAL from '../lib/dal';
 
 export default class Groups {
     static async addUserToGroup(userID, groupID) {
@@ -7,11 +8,11 @@ export default class Groups {
     }
 
     static async addRootGroup(name) {
-        return GroupsDB.getInstance().addRootGroup(name).catch(rethrow);
+        return DAL.Talks.addPublicRootTalk(name);
     }
 
     static async addGroupUnderParent(name, parentID) {
-        return GroupsDB.getInstance().addGroupUnderParent(name, parentID).catch(rethrow);
+        return DAL.Talks.addPublicSubtalk(name, parentID);
     }
 
     static async getAllGroups() {

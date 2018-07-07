@@ -2,6 +2,7 @@ import UsersDB from "../lib/usersdb";
 import HashService from "./hash";
 import {rethrow} from '../util/helpers';
 import * as Joi from 'joi';
+import * as DAL from '../lib/dal';
 
 export default class Users {
     static async addUserToGroupRelation(userID, groupID) {
@@ -23,11 +24,11 @@ export default class Users {
 
         const hash = await HashService.hash(user.password);
         user.password = hash;
-        return UsersDB.getInstance().addUser(user).catch(rethrow);
+        return DAL.Users.addUser(user);
     }
 
     static async getAllUsers() {
-        return UsersDB.getInstance().getAllUsers().catch(rethrow);
+        return DAL.Users.getAllUsers('no-password');
     }
 
     static async getAssociatedGroupsIDs(userID) {
@@ -35,7 +36,7 @@ export default class Users {
     }
 
     static async getUserByID(userID) {
-        return UsersDB.getInstance().getUserByID(userID).catch(rethrow);
+        return DAL.Users.getUserByID(userID);
     }
 
     static async getPrivateGroupsIDs(userID) {
@@ -58,10 +59,11 @@ export default class Users {
                 throw err;
             }
         });
-        return UsersDB.getInstance().updateUser(userID, user);
+        user.id = userID;
+        return DAL.Users.updateUser(user);
     }
 
-    static async removeUser(userId) {
-        return UsersDB.getInstance().removeUser(userId).catch(rethrow);
+    static async removeUser(userID) {
+        return DAL.Users.removeUser({id: userID});
     }
 }

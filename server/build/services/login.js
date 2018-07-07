@@ -9,14 +9,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const hash_1 = require("../services/hash");
-const usersdb_1 = require("../lib/usersdb");
+const DAL = require("../lib/dal");
 class Login {
     static checkMatch(username, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield usersdb_1.default.getInstance().getUserByName(username);
-            const userHash = user.password;
-            const compare = yield hash_1.default.compare(password, userHash);
-            return compare ? { accessAllowed: true, id: user.id } : { accessAllowed: false };
+            let accessAllowed = false;
+            const user = yield DAL.Users.getUserByName(username);
+            if (!!user) {
+                const userHash = user.password;
+                const compare = yield hash_1.default.compare(password, userHash);
+                accessAllowed = compare;
+            }
+            return accessAllowed ? { accessAllowed: true, id: user.user_id } : { accessAllowed: false };
         });
     }
 }

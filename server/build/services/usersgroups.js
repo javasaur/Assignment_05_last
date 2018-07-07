@@ -10,12 +10,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const groups_1 = require("./groups");
 const users_1 = require("./users");
-const usersdb_1 = require("../lib/usersdb");
+const DAL = require("../lib/dal");
+const CustomError_1 = require("../lib/CustomError");
 class UsersGroups {
     static addUserToGroup(userID, groupID) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield groups_1.default.addUserToGroup(userID, groupID);
-            yield users_1.default.addUserToGroupRelation(userID, groupID);
+            if (yield DAL.Talks.hasSubtalks(groupID)) {
+                throw new CustomError_1.default(`Can't add user to group, which contains subgroups`);
+            }
+            return DAL.UsersTalks.addUserToTalk(userID, groupID);
         });
     }
     static getAssociatedGroups(userID) {
@@ -46,11 +49,9 @@ class UsersGroups {
             }
         });
     }
-    static getUsersByGroupID(groupID) {
+    static getUsersByGroupID(talkID) {
         return __awaiter(this, void 0, void 0, function* () {
-            const group = yield groups_1.default.getGroupByID(groupID);
-            const users = yield users_1.default.getUsersByIDs(group.users);
-            return users;
+            return DAL.UsersTalks.getUsersByTalkID(talkID);
         });
     }
     static buildAdminJSONTree() {
@@ -98,13 +99,7 @@ class UsersGroups {
     }
     static removeUser(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield usersdb_1.default.getInstance().removeUser(id);
-                // await UsersDB.getInstance().removeUserToDialoguesLinks(id);
-            }
-            catch (err) {
-                throw err;
-            }
+            return DAL.Users.removeUser({ id });
         });
     }
     static decomposeAdminGroup(group) {
@@ -146,9 +141,9 @@ class UsersGroups {
             }
         });
     }
-    static removeUserFromGroup(userID, groupID) {
+    static removeUserFromGroup(userID, talkID) {
         return __awaiter(this, void 0, void 0, function* () {
-            return groups_1.default.removeUserFromGroup(userID, groupID);
+            return DAL.UsersTalks.removeUserFromTalk(talkID, userID);
         });
     }
 }

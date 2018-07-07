@@ -12,6 +12,7 @@ const usersdb_1 = require("../lib/usersdb");
 const hash_1 = require("./hash");
 const helpers_1 = require("../util/helpers");
 const Joi = require("joi");
+const DAL = require("../lib/dal");
 class Users {
     static addUserToGroupRelation(userID, groupID) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -33,12 +34,12 @@ class Users {
             });
             const hash = yield hash_1.default.hash(user.password);
             user.password = hash;
-            return usersdb_1.default.getInstance().addUser(user).catch(helpers_1.rethrow);
+            return DAL.Users.addUser(user);
         });
     }
     static getAllUsers() {
         return __awaiter(this, void 0, void 0, function* () {
-            return usersdb_1.default.getInstance().getAllUsers().catch(helpers_1.rethrow);
+            return DAL.Users.getAllUsers('no-password');
         });
     }
     static getAssociatedGroupsIDs(userID) {
@@ -48,7 +49,7 @@ class Users {
     }
     static getUserByID(userID) {
         return __awaiter(this, void 0, void 0, function* () {
-            return usersdb_1.default.getInstance().getUserByID(userID).catch(helpers_1.rethrow);
+            return DAL.Users.getUserByID(userID);
         });
     }
     static getPrivateGroupsIDs(userID) {
@@ -73,12 +74,13 @@ class Users {
                     throw err;
                 }
             });
-            return usersdb_1.default.getInstance().updateUser(userID, user);
+            user.id = userID;
+            return DAL.Users.updateUser(user);
         });
     }
-    static removeUser(userId) {
+    static removeUser(userID) {
         return __awaiter(this, void 0, void 0, function* () {
-            return usersdb_1.default.getInstance().removeUser(userId).catch(helpers_1.rethrow);
+            return DAL.Users.removeUser({ id: userID });
         });
     }
 }

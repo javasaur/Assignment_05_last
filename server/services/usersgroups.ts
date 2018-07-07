@@ -2,11 +2,15 @@ import GroupsService from './groups';
 import UsersService from './users';
 import {rethrow} from "../util/helpers";
 import UsersDB from "../lib/usersdb";
+import * as DAL from '../lib/dal';
+import CustomError from "../lib/CustomError";
 
 export default class UsersGroups {
     static async addUserToGroup(userID, groupID) {
-        await GroupsService.addUserToGroup(userID, groupID);
-        await UsersService.addUserToGroupRelation(userID, groupID);
+        if(await DAL.Talks.hasSubtalks(groupID)) {
+            throw new CustomError(`Can't add user to group, which contains subgroups`)
+        }
+        return DAL.UsersTalks.addUserToTalk(userID, groupID);
     }
 
     static async getAssociatedGroups(userID) {
@@ -33,10 +37,8 @@ export default class UsersGroups {
         }
     }
 
-    static async getUsersByGroupID(groupID) {
-        const group = await GroupsService.getGroupByID(groupID);
-        const users = await UsersService.getUsersByIDs(group.users);
-        return users;
+    static async getUsersByGroupID(talkID) {
+        return DAL.UsersTalks.getUsersByTalkID(talkID);
     }
 
 
@@ -81,12 +83,7 @@ export default class UsersGroups {
     }
 
     static async removeUser(id) {
-        try {
-            await UsersDB.getInstance().removeUser(id);
-            // await UsersDB.getInstance().removeUserToDialoguesLinks(id);
-        } catch (err) {
-            throw err;
-        }
+        return DAL.Users.removeUser({id});
     }
 
     static async decomposeAdminGroup(group) {
@@ -130,7 +127,7 @@ export default class UsersGroups {
         }
     }
 
-    static async removeUserFromGroup(userID, groupID) {
-        return GroupsService.removeUserFromGroup(userID, groupID);
+    static async removeUserFromGroup(userID, talkID) {
+        return DAL.UsersTalks.removeUserFromTalk(talkID, userID);
     }
 }
