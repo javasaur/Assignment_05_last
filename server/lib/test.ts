@@ -1,9 +1,10 @@
 import * as DAL from "./dal";
+import * as services from "../services";
 
 (async function() {
 
     try {
-        console.log(await DAL.Talks.hasSubtalks('1'));
+        await services.Messages.addMessageToDialogue('1_5', {authorId: '1', content: 'hello there'});
 
     } catch (err) {
         console.log("========USER SEES THIS============");

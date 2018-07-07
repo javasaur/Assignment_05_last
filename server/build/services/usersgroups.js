@@ -8,8 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const groups_1 = require("./groups");
-const users_1 = require("./users");
 const DAL = require("../lib/dal");
 const CustomError_1 = require("../lib/CustomError");
 class UsersGroups {
@@ -21,34 +19,6 @@ class UsersGroups {
             return DAL.UsersTalks.addUserToTalk(userID, groupID);
         });
     }
-    static getAssociatedGroups(userID) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const groupIDs = yield users_1.default.getAssociatedGroupsIDs(userID);
-                const groups = yield groups_1.default.getGroupsByIDs(groupIDs);
-                return groups;
-            }
-            catch (err) {
-                throw new Error(`Failed to get associated groups: ${err.message}`);
-            }
-        });
-    }
-    static getPrivateGroups(userID) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const privateGroupsIDs = yield users_1.default.getPrivateGroupsIDs(userID);
-                let privateGroups;
-                if (privateGroupsIDs) {
-                    // privateGroupsIDs can be void?!!
-                    privateGroups = yield groups_1.default.getGroupsByIDs(privateGroupsIDs);
-                }
-                return privateGroups || [];
-            }
-            catch (err) {
-                throw new Error(`Failed to get private groups for ${userID}: ${err.message}`);
-            }
-        });
-    }
     static getUsersByGroupID(talkID) {
         return __awaiter(this, void 0, void 0, function* () {
             return DAL.UsersTalks.getUsersByTalkID(talkID);
@@ -57,18 +27,18 @@ class UsersGroups {
     static buildAdminJSONTree() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const publicGroups = yield groups_1.default.getPublicRootGroups();
-                const spreadGroups = [];
-                if (!publicGroups)
-                    return;
-                publicGroups.forEach(g => spreadGroups.push(Object.assign({}, g)));
-                if (spreadGroups) {
-                    console.log(spreadGroups);
-                    for (let group of spreadGroups) {
-                        yield UsersGroups.decomposeAdminGroup(group);
+                const hierarchy = yield DAL.Talks.getTalksHierarchy();
+                const flatArr = UsersGroups.__populateFlatArray(hierarchy);
+                for (let t of flatArr) {
+                    if (!t) {
+                        continue;
+                    }
+                    if (t.isSubtalk) {
+                        UsersGroups.__decomposeHierarchyPath(t, flatArr);
                     }
                 }
-                return spreadGroups;
+                const filtered = flatArr.filter(t => t !== undefined && !t.isSubtalk);
+                return filtered;
             }
             catch (err) {
                 throw new Error(`Failed to build admin JSON tree: ${err.message}`);
@@ -78,19 +48,28 @@ class UsersGroups {
     static buildJSONTree(userID) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const publicGroups = yield groups_1.default.getPublicRootGroups();
-                const privateGroups = yield this.getPrivateGroups(userID);
-                if (!publicGroups)
-                    return [];
-                const groups = [...publicGroups].concat([...privateGroups]);
-                const spreadGroups = [];
-                groups.forEach(g => spreadGroups.push(Object.assign({}, g)));
-                if (spreadGroups) {
-                    for (let group of spreadGroups) {
-                        yield UsersGroups.decomposeGroup(group, userID);
+                const hierarchy = yield DAL.Talks.getTalksHierarchy();
+                const flatArr = UsersGroups.__populateFlatArray(hierarchy);
+                for (let t of flatArr) {
+                    if (!t) {
+                        continue;
                     }
+                    if (t.isSubtalk) {
+                        UsersGroups.__decomposeHierarchyPath(t, flatArr);
+                    }
+                    const users = yield DAL.UsersTalks.getUsersByTalkID(t.id);
+                    UsersGroups.__populateWithUsers(t, users, userID);
                 }
-                return spreadGroups;
+                const filtered = flatArr.filter(t => t !== undefined && !t.isSubtalk);
+                const privateTalks = yield DAL.UsersTalks.getPrivateTalks(userID);
+                for (let pm of privateTalks) {
+                    filtered.push({
+                        id: pm.talk_id,
+                        type: 'user',
+                        name: pm.name
+                    });
+                }
+                return filtered;
             }
             catch (err) {
                 throw new Error(`Failed to build JSON tree for ${userID}: ${err.message}`);
@@ -102,43 +81,39 @@ class UsersGroups {
             return DAL.Users.removeUser({ id });
         });
     }
-    static decomposeAdminGroup(group) {
-        return __awaiter(this, void 0, void 0, function* () {
-            group.items = [];
-            if (group.groups.length > 0) {
-                for (let subgroupID of group.groups) {
-                    const subgroup = yield groups_1.default.getGroupByID(subgroupID);
-                    group.items.push(subgroup);
-                    UsersGroups.decomposeAdminGroup(subgroup);
-                }
-            }
+    static __populateFlatArray(hierarchy) {
+        const flatArr = [];
+        hierarchy.forEach(t => {
+            const path = t.path.split(',');
+            const isSubtalk = path.length > 1;
+            flatArr[t.talk_id] = {
+                id: t.talk_id,
+                type: 'group',
+                name: t.name,
+                items: [],
+                path,
+                isSubtalk,
+            };
         });
+        return flatArr;
     }
-    static decomposeGroup(group, userID) {
-        return __awaiter(this, void 0, void 0, function* () {
-            group.items = [];
-            if (group.name === 'PM') {
-                const id = yield groups_1.default.getSecondCompanionID(group.id, userID + '');
-                const user = yield users_1.default.getUserByID(id);
-                group.name = user.name;
-                group.type = 'user';
-                return;
+    static __decomposeHierarchyPath(talk, flatArr) {
+        for (let i = talk.path.length - 1; i >= 1; i--) {
+            const subTalk = flatArr[talk.path[i]];
+            const parent = flatArr[talk.path[i - 1]];
+            if (!parent.items.includes(subTalk)) {
+                parent.items.push(subTalk);
             }
-            if (group.groups.length > 0) {
-                for (let subgroupID of group.groups) {
-                    const subgroup = yield groups_1.default.getGroupByID(subgroupID);
-                    group.items.push(subgroup);
-                    UsersGroups.decomposeGroup(subgroup, userID);
-                }
-            }
-            const users = yield users_1.default.getUsersByIDs(group.users);
-            if (users && users.length > 0) {
-                console.log(users);
-                for (let user of users) {
-                    user.id = Math.min(userID, user.id) + '_' + Math.max(userID, user.id);
-                }
-                group.items.push(...users);
-            }
+        }
+    }
+    static __populateWithUsers(talk, users, userID) {
+        users.forEach(u => {
+            talk.items.push({
+                id: Math.min(+u.user_id, +userID) + '_' + Math.max(+u.user_id, +userID),
+                type: 'user',
+                name: u.name,
+                age: u.age
+            });
         });
     }
     static removeUserFromGroup(userID, talkID) {

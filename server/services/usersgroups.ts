@@ -1,7 +1,5 @@
 import GroupsService from './groups';
 import UsersService from './users';
-import {rethrow} from "../util/helpers";
-import UsersDB from "../lib/usersdb";
 import * as DAL from '../lib/dal';
 import CustomError from "../lib/CustomError";
 
@@ -13,30 +11,6 @@ export default class UsersGroups {
         return DAL.UsersTalks.addUserToTalk(userID, groupID);
     }
 
-    static async getAssociatedGroups(userID) {
-        try {
-            const groupIDs = await UsersService.getAssociatedGroupsIDs(userID);
-            const groups = await GroupsService.getGroupsByIDs(groupIDs);
-            return groups;
-        } catch (err) {
-            throw new Error(`Failed to get associated groups: ${err.message}`)
-        }
-    }
-
-    static async getPrivateGroups(userID) {
-        try {
-            const privateGroupsIDs = await UsersService.getPrivateGroupsIDs(userID);
-            let privateGroups;
-            if(privateGroupsIDs) {
-                // privateGroupsIDs can be void?!!
-                privateGroups = await GroupsService.getGroupsByIDs(privateGroupsIDs);
-            }
-            return privateGroups || [];
-        } catch (err) {
-            throw new Error(`Failed to get private groups for ${userID}: ${err.message}`);
-        }
-    }
-
     static async getUsersByGroupID(talkID) {
         return DAL.UsersTalks.getUsersByTalkID(talkID);
     }
@@ -44,18 +18,21 @@ export default class UsersGroups {
 
     static async buildAdminJSONTree() {
         try {
-            const publicGroups = await GroupsService.getPublicRootGroups();
-            const spreadGroups = [];
-            if(!publicGroups) return;
+            const hierarchy = await DAL.Talks.getTalksHierarchy();
+            const flatArr = UsersGroups.__populateFlatArray(hierarchy);
 
-            publicGroups.forEach(g => spreadGroups.push({...g}));
-            if(spreadGroups) {
-                console.log(spreadGroups);
-                for(let group of spreadGroups) {
-                    await UsersGroups.decomposeAdminGroup(group);
+            for(let t of flatArr) {
+                if(!t) {
+                    continue;
+                }
+
+                if(t.isSubtalk) {
+                    UsersGroups.__decomposeHierarchyPath(t, flatArr);
                 }
             }
-            return spreadGroups;
+
+            const filtered = flatArr.filter(t => t !== undefined && !t.isSubtalk);
+            return filtered;
         } catch (err) {
             throw new Error(`Failed to build admin JSON tree: ${err.message}`);
         }
@@ -63,20 +40,34 @@ export default class UsersGroups {
 
     static async buildJSONTree(userID) {
         try {
-            const publicGroups = await GroupsService.getPublicRootGroups();
-            const privateGroups = await this.getPrivateGroups(userID);
+            const hierarchy = await DAL.Talks.getTalksHierarchy();
+            const flatArr = UsersGroups.__populateFlatArray(hierarchy);
 
-            if(!publicGroups) return [];
-
-            const groups = [...publicGroups].concat([...privateGroups]);
-            const spreadGroups = [];
-            groups.forEach(g => spreadGroups.push({...g}));
-            if(spreadGroups) {
-                for(let group of spreadGroups) {
-                    await UsersGroups.decomposeGroup(group, userID);
+            for(let t of flatArr) {
+                if(!t) {
+                    continue;
                 }
+
+                if(t.isSubtalk) {
+                    UsersGroups.__decomposeHierarchyPath(t, flatArr);
+                }
+
+                const users = await DAL.UsersTalks.getUsersByTalkID(t.id);
+                UsersGroups.__populateWithUsers(t, users, userID);
             }
-            return spreadGroups;
+
+            const filtered = flatArr.filter(t => t !== undefined && !t.isSubtalk);
+
+            const privateTalks = await DAL.UsersTalks.getPrivateTalks(userID);
+            for(let pm of privateTalks) {
+                filtered.push({
+                    id: pm.talk_id,
+                    type: 'user',
+                    name: pm.name
+                })
+            }
+
+            return filtered;
         } catch (err) {
             throw new Error(`Failed to build JSON tree for ${userID}: ${err.message}`);
         }
@@ -86,45 +77,42 @@ export default class UsersGroups {
         return DAL.Users.removeUser({id});
     }
 
-    static async decomposeAdminGroup(group) {
-        group.items = [];
+    static __populateFlatArray(hierarchy) {
+        const flatArr = [];
+        hierarchy.forEach(t => {
+            const path = t.path.split(',');
+            const isSubtalk = path.length > 1;
+            flatArr[t.talk_id] =  {
+                id: t.talk_id,
+                type: 'group',
+                name: t.name,
+                items: [],
+                path,
+                isSubtalk,
+            }
+        });
+        return flatArr;
+    }
 
-        if(group.groups.length > 0) {
-            for(let subgroupID of group.groups) {
-                const subgroup = await GroupsService.getGroupByID(subgroupID);
-                group.items.push(subgroup);
-                UsersGroups.decomposeAdminGroup(subgroup);
+    static __decomposeHierarchyPath(talk, flatArr) {
+        for(let i = talk.path.length - 1; i >= 1; i--) {
+            const subTalk = flatArr[talk.path[i]];
+            const parent = flatArr[talk.path[i-1]];
+            if(!parent.items.includes(subTalk)) {
+                parent.items.push(subTalk);
             }
         }
     }
 
-    static async decomposeGroup(group, userID) {
-        group.items = [];
-
-        if(group.name === 'PM') {
-            const id = await GroupsService.getSecondCompanionID(group.id, userID + '');
-            const user = await UsersService.getUserByID(id);
-            group.name = user.name;
-            group.type = 'user';
-            return;
-        }
-
-        if(group.groups.length > 0) {
-            for(let subgroupID of group.groups) {
-                const subgroup = await GroupsService.getGroupByID(subgroupID);
-                group.items.push(subgroup);
-                UsersGroups.decomposeGroup(subgroup, userID);
-            }
-        }
-
-        const users = await UsersService.getUsersByIDs(group.users);
-        if(users && users.length > 0) {
-            console.log(users);
-            for (let user of users) {
-                user.id = Math.min(userID, user.id) + '_' + Math.max(userID, user.id);
-            }
-            group.items.push(...users);
-        }
+    static __populateWithUsers(talk, users, userID) {
+        users.forEach(u => {
+            talk.items.push({
+                id: Math.min(+u.user_id, +userID) + '_' + Math.max(+u.user_id, +userID),
+                type: 'user',
+                name: u.name,
+                age: u.age
+            })
+        })
     }
 
     static async removeUserFromGroup(userID, talkID) {

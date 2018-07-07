@@ -1,8 +1,21 @@
 import * as QueryBuilder from '../querybuilders';
-import {dbQuery} from "../dbhelper";
+import {dbQuery, escape} from "../dbhelper";
 import Logger from "../logger";
 
 export default class UsersTalks {
+    static async addUsersToPrivateTalk(talkID) {
+        try {
+            const users = talkID.split('_');
+            users.map(u => escape(u));
+            const query = QueryBuilder.UsersTalks.addUsersToPrivateTalk(escape(talkID), users[0], users[1]);
+            await dbQuery(query);
+            return true;
+        } catch (err) {
+            Logger.log(`Failed to add users to private talk ${talkID}, err: ${JSON.stringify(err)}`);
+            throw new Error(`DB request failed, try later!`);
+        }
+    }
+
     static async addUserToTalk(userID: string, talkID: string) {
         try {
             const query = QueryBuilder.UsersTalks.addUserToTalk(escape(userID), escape(talkID));
@@ -24,6 +37,14 @@ export default class UsersTalks {
             Logger.log(`Failed to count users for talk ${talkID}, err: ${JSON.stringify(err)}`);
             throw new Error(`DB request failed, try later!`);
         }
+    }
+
+    static async isUserInTalk(userID: string, talkID: string) {
+        console.log(`checking isUserInTal: ${userID} and ${talkID}`);
+        const query = QueryBuilder.UsersTalks.getUsersCountUnderTalkByUserID(escape(userID), escape(talkID));
+        const res = await dbQuery(query);
+        const count = res[0].userCount;
+        return count > 0;
     }
 
     static async getPrivateTalks(userID: string) {

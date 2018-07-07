@@ -4,6 +4,17 @@ import CustomError from "../CustomError";
 import Logger from "../logger";
 
 export default class Talks {
+    static async addPrivateTalk(talkID: string) {
+        try {
+            const query = QueryBuilder.Talks.addPrivateTalk(escape(talkID));
+            await dbQuery(query);
+            return true;
+        } catch (err) {
+            Logger.log(`Failed to add a private talk ${talkID} , err: ${JSON.stringify(err)}`);
+            throw new Error(`DB request failed, try later!`);
+        }
+    }
+
     static async addPublicTalk(talkName: string) {
         try {
             const query = QueryBuilder.Talks.addPublicTalk(escape(talkName));
@@ -52,11 +63,45 @@ export default class Talks {
         }
     }
 
+    static async existsTalkWithID(talkID: string) {
+        return !!Talks.getTalkByID(talkID);
+    }
+
+    static async getAllPublicTalks() {
+        try {
+            const query = QueryBuilder.Talks.getAllPublicTalks();
+            return await dbQuery(query);
+        } catch (err) {
+            Logger.log(`Failed to fetch all public groups , err: ${JSON.stringify(err)}`);
+            throw new Error(`DB request failed, try later!`);
+        }
+    }
+
+    static async getTalkByID(talkID: string) {
+        try {
+            const query = QueryBuilder.Talks.getTalkByID(escape(talkID));
+            const talks = await dbQuery(query);
+            return talks.length > 0 ? talks[0] : null;
+        } catch (err) {
+            Logger.log(`Failed to fetch talk by id ${talkID} , err: ${JSON.stringify(err)}`);
+            throw new Error(`DB request failed, try later!`);
+        }
+    }
+
+    static async getTalksHierarchy() {
+        try {
+            const query = QueryBuilder.Talks.getTalksHierarchy();
+            return await dbQuery(query);
+        } catch (err) {
+            Logger.log(`Failed to fetch groups hierarchy , err: ${JSON.stringify(err)}`);
+            throw new Error(`DB request failed, try later!`);
+        }
+    }
+
     static async hasSubtalks(parentID: string) {
         const query = QueryBuilder.Talks.countSubtalks(escape(parentID));
         const res = await dbQuery(query);
         const count = res[0].subtalkCount;
-        console.log(count);
         return count > 0;
     }
 
