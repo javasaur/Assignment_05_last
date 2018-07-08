@@ -10,7 +10,7 @@ import {
     SET_LOGGED_USER,
     SET_MESSAGES,
     SET_NAV_TREE,
-    SET_SOCKET,
+    SET_SOCKET, SET_USERS,
     SWITCH_DIALOGUE
 } from "./actions/actionTypes";
 
@@ -20,6 +20,7 @@ import {setAdminNavTree, setNavTree} from "./reducers/tree";
 import {setMessages, switchDialogue} from "./reducers/dialogues";
 import {setSocket} from "./reducers/socket";
 import {setAdminCurrentGroupID} from "./reducers/groups";
+import {setUsers} from "./reducers/users";
 
 export const initialState: AppState = {
     loggedUserID: null,
@@ -54,6 +55,8 @@ function rootReducer(state: AppState, action: AnyAction): AppState {
             return setMessages(state, action.payload);
         case SET_SOCKET:
             return setSocket(state, action.payload);
+        case SET_USERS:
+            return setUsers(state, action.payload);
         case SWITCH_DIALOGUE:
             return switchDialogue(state, action.payload);
         default:

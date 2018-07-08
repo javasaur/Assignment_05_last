@@ -2,6 +2,7 @@ import {nullLoginError, raiseLoginError, setLoggedUser} from "../actions/login";
 import {getNavTree} from "./tree";
 import {openSocket} from "./socket";
 import axios from 'axios';
+import {loadAllUsers} from "./users";
 
 export function checkMatch(username, password) {
     return async function(dispatch) {
@@ -13,6 +14,7 @@ export function checkMatch(username, password) {
                 dispatch(setLoggedUser(username, res.id));
                 dispatch(openSocket());
                 dispatch(getNavTree(res.id));
+                dispatch(loadAllUsers());
                 return;
             }
             dispatch(raiseLoginError());
