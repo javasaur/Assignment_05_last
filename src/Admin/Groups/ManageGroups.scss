@@ -18,13 +18,21 @@
         padding: 20px;
     }
 
-    &-navitem {
-        margin-left: 15px;
-    }
-
     a, a:visited {
         text-decoration: none;
         color: #87888c;
+
+        &:hover {
+            color: #e6e9ee;
+        }
+
+        &.active {
+            color: #e6e9ee;
+        }
+    }
+
+    &-navitem {
+        margin-left: 15px;
     }
 
     .action-result {

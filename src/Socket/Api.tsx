@@ -34,8 +34,6 @@ export class SocketAPI {
         return SocketAPI.socket;
     }
 
-
-
     static subscribeToDialogues(uniqueGroupIDs) {
         for(let groupID of uniqueGroupIDs) {
             SocketAPI.socket.emit('groupSubscription', groupID, store.getState().loggedUserID);

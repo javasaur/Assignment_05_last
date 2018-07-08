@@ -18,12 +18,18 @@
   background: url("../../Images/messages_bg.jpg") repeat;
   padding: 20px; }
 
-.manage-groups-navitem {
-  margin-left: 15px; }
-
 .manage-groups a, .manage-groups a:visited {
   text-decoration: none;
   color: #87888c; }
+
+.manage-groups a:hover, .manage-groups a:visited:hover {
+  color: #e6e9ee; }
+
+.manage-groups a.active, .manage-groups a:visited.active {
+  color: #e6e9ee; }
+
+.manage-groups-navitem {
+  margin-left: 15px; }
 
 .manage-groups .action-result {
   padding: 10px;

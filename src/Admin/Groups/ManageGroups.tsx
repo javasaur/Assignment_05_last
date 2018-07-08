@@ -17,6 +17,7 @@ import RemoveGroup from "./RemoveGroup";
 
 interface ManageGroupsState {
     result: any,
+    isActive: Array<boolean>
 }
 
 interface ManageGroupsProps {
@@ -28,6 +29,7 @@ export class ManageGroups extends React.Component<ManageGroupsProps, ManageGroup
         super(props);
         this.state = {
             result: null,
+            isActive: [false, false, false, false, false]
         }
     }
 
@@ -73,11 +75,41 @@ export class ManageGroups extends React.Component<ManageGroupsProps, ManageGroup
                 <LeftNavAdminTree />
                 <div className="manage-groups-right-block">
                     <div className="manage-groups-header">
-                        <Link to={'/managegroups/addgroup/root'} className="manage-groups-navitem">Add root group</Link>
-                        <Link to={'/managegroups/addgroup/subgroup'} className="manage-groups-navitem">Add subgroup</Link>
-                        <Link to={'/managegroups/groupusers'} className="manage-groups-navitem">Group users</Link>
-                        <Link to={'/managegroups/addusers'} className="manage-groups-navitem">Associate users</Link>
-                        <Link to={'/managegroups/removegroup'} className="manage-groups-navitem">Remove group</Link>
+                        <Link
+                            to={'/managegroups/addgroup/root'}
+                            className={`manage-groups-navitem ${this.state.isActive[0] ? 'active' : ''}`}
+                            onClick={this.toggle.bind(null, 0)}
+                        >
+                            Add root group
+                        </Link>
+                        <Link
+                            to={'/managegroups/addgroup/subgroup'}
+                            className={`manage-groups-navitem ${this.state.isActive[1] ? 'active' : ''}`}
+                            onClick={this.toggle.bind(null, 1)}
+                        >
+                            Add subgroup
+                        </Link>
+                        <Link
+                            to={'/managegroups/groupusers'}
+                            className={`manage-groups-navitem ${this.state.isActive[2] ? 'active' : ''}`}
+                            onClick={this.toggle.bind(null, 2)}
+                        >
+                            Group users
+                        </Link>
+                        <Link
+                            to={'/managegroups/addusers'}
+                            className={`manage-groups-navitem ${this.state.isActive[3] ? 'active' : ''}`}
+                            onClick={this.toggle.bind(null, 3)}
+                        >
+                            Associate users
+                        </Link>
+                        <Link
+                            to={'/managegroups/removegroup'}
+                            className={`manage-groups-navitem ${this.state.isActive[4] ? 'active' : ''}`}
+                            onClick={this.toggle.bind(null, 4)}
+                        >
+                            Remove group
+                        </Link>
                     </div>
 
                     <Route path='/managegroups/addgroup/root' render={addRootGroup} />
@@ -134,6 +166,13 @@ export class ManageGroups extends React.Component<ManageGroupsProps, ManageGroup
 
     clearResult = () => {
         this.setState({result: null});
+    }
+
+    private toggle = (id) => {
+        let isActive = [...this.state.isActive];
+        isActive = isActive.map(elem => false);
+        isActive[id] = true;
+        this.setState({isActive});
     }
 
     private updateUser = async (user, cb) => {
