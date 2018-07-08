@@ -2,6 +2,7 @@ import socketIOClient from 'socket.io-client'
 import {store} from "../Store-Redux/store";
 import {loadMessages} from "../Store-Redux/thunks/dialogues";
 import {getAdminNavTree, getNavTree} from "../Store-Redux/thunks/tree";
+import {loadAllUsers} from "../Store-Redux/thunks/users";
 
 export class SocketAPI {
     static socket;
@@ -25,6 +26,10 @@ export class SocketAPI {
         SocketAPI.socket.on('admintreechange', () => {
             store.dispatch(getAdminNavTree());
         });
+
+        SocketAPI.socket.on('userschange', () => {
+            store.dispatch(loadAllUsers());
+        })
 
         return SocketAPI.socket;
     }
