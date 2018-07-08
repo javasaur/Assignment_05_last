@@ -19,9 +19,7 @@ class Users {
                 socket_1.default.notifyOnUsersChange();
                 res.status(200).send({});
             })
-                .catch(err => {
-                res.status(400).send(err.message);
-            });
+                .catch(err => res.status(400).send(err.message));
         });
     }
     static getAllUsers(req, res) {

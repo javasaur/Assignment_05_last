@@ -11,8 +11,8 @@ export default class Users {
             if(await Users.existsUserWithName(user.name)) {
                 throw new CustomError(`Username ${user.name} is busy `);
             }
-
-            const query = QueryBuilder.Users.addUser(escape(user.name), escape(user.password), escape(user.age));
+            escape(user);
+            const query = QueryBuilder.Users.addUser(user.name, user.password, user.age);
             await dbQuery(query);
             return true;
         } catch (err) {

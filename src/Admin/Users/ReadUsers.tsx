@@ -40,19 +40,19 @@ export class ReadUsers extends React.Component<ReadUsersProps, ReadUsersState> {
 
         const usersLI = this.state.users.map((u, index) => {
             const addToGroupIcon = this.props.associateUserWithGroup ?
-                <i onClick={this.addUserToGroup.bind(this, u.id)} className="fas fa-user-plus read-users-addtogroupicon" /> :
+                <i onClick={this.addUserToGroup.bind(this, u.user_id)} className="fas fa-user-plus read-users-addtogroupicon" /> :
                 null;
 
             const updateIcon = this.props.updateUser ?
-                <i onClick={this.passUpdateUserData.bind(this, {id: u.id, name: u.name, age: u.age})} className="fas fa-pen read-users-updateicon" /> :
+                <i onClick={this.passUpdateUserData.bind(this, {id: u.user_id, name: u.name, age: u.age})} className="fas fa-pen read-users-updateicon" /> :
                 null;
 
             const removeIcon = this.props.removeUser ?
-                <i onClick={this.removeUser.bind(null, u.id)} className="fas fa-trash-alt read-users-removeicon" /> :
+                <i onClick={this.removeUser.bind(null, u.user_id)} className="fas fa-trash-alt read-users-removeicon" /> :
                 null;
 
             const li = (
-                <li key={u.id}>[{u.id}] {u.name}, {u.age}
+                <li key={u.user_id}>[{u.user_id}] {u.name}, {u.age}
                     {addToGroupIcon}
                     {updateIcon}
                     {removeIcon}

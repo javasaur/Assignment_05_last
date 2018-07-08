@@ -47,7 +47,7 @@ export default class Talks {
     static async addPublicSubtalk(talkName: string, parentID: string) {
         try {
             if(await Talks.isNameDuplicateUnderTalk(talkName, parentID)) {
-                throw new CustomError(`A group with such name already exists under ${talkName}`);
+                throw new CustomError(`A group with such name already exists`);
             }
             const query = QueryBuilder.Talks.addPublicSubtalk(escape(talkName), escape(parentID));
             await dbQuery(query);

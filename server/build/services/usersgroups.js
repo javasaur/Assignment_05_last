@@ -16,6 +16,9 @@ class UsersGroups {
             if (yield DAL.Talks.hasSubtalks(groupID)) {
                 throw new CustomError_1.default(`Can't add user to group, which contains subgroups`);
             }
+            if (yield DAL.UsersTalks.isUserInTalk(userID, groupID)) {
+                throw new CustomError_1.default(`User already in group`);
+            }
             return DAL.UsersTalks.addUserToTalk(userID, groupID);
         });
     }

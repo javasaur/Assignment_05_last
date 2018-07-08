@@ -40,7 +40,6 @@ export default class UsersTalks {
     }
 
     static async isUserInTalk(userID: string, talkID: string) {
-        console.log(`checking isUserInTal: ${userID} and ${talkID}`);
         const query = QueryBuilder.UsersTalks.getUsersCountUnderTalkByUserID(escape(userID), escape(talkID));
         const res = await dbQuery(query);
         const count = res[0].userCount;

@@ -1,4 +1,4 @@
-// Dynamic queries
+    // Dynamic queries
 export const ADD_USER_TO_TALK = `INSERT INTO talks_users (\`talk_id\`, \`user_id\`) VALUES ($TALKID, $USERID);`;
 export const ADD_USERS_TO_PRIVATE_TALK = `START TRANSACTION;
                                           INSERT INTO talks_users(\`talk_id\`, \`user_id\`) VALUES ($TALKID, $USER1ID);

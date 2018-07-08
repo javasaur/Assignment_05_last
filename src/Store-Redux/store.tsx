@@ -30,7 +30,8 @@ export const initialState: AppState = {
     adminCurrentGroupID: null,
     activeDialogueID: null,
     messages: [],
-    socket: null
+    socket: null,
+    users: []
 };
 
 function rootReducer(state: AppState, action: AnyAction): AppState {

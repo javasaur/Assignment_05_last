@@ -8,6 +8,9 @@ export default class UsersGroups {
         if(await DAL.Talks.hasSubtalks(groupID)) {
             throw new CustomError(`Can't add user to group, which contains subgroups`)
         }
+        if(await DAL.UsersTalks.isUserInTalk(userID, groupID)) {
+            throw new CustomError(`User already in group`);
+        }
         return DAL.UsersTalks.addUserToTalk(userID, groupID);
     }
 

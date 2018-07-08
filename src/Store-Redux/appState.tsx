@@ -7,5 +7,6 @@ export interface AppState {
     adminCurrentGroupID: string | null,
     activeDialogueID: string | null,
     messages: Array<any>,
-    socket: any
+    socket: any,
+    users: Array<any>
 }

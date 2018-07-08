@@ -13,8 +13,8 @@ class Login {
     static checkMatch(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             services.Login.checkMatch(req.body.username, req.body.password)
-                .then((resObj) => { res.status(200).json(Object.assign({}, resObj)); })
-                .catch((error) => res.status(400).json({ error }));
+                .then(resObj => { res.status(200).json(resObj); })
+                .catch(err => res.status(400).send(err.message));
         });
     }
 }
