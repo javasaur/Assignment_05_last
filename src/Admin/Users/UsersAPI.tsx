@@ -1,4 +1,6 @@
 import axios from 'axios';
+import {loadAllUsers} from "../../Store-Redux/thunks/users";
+import {store} from "../../Store-Redux/store";
 
 export class UsersAPI {
     static async createUser(name, password, age) {
@@ -6,7 +8,7 @@ export class UsersAPI {
     }
 
     static async fetchAllUsers() {
-        return axios.get('http://localhost:4000/users/');
+        store.dispatch(loadAllUsers());
     }
 
     static async removeUser(id) {

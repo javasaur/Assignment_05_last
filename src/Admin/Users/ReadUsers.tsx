@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import {UpdateUser} from "./UpdateUser";
 
 interface ReadUsersState {
-    users: Array<any>
+    // users: Array<any>
     result: any,
     updateUser: any
 }
@@ -16,14 +16,15 @@ interface ReadUsersProps {
     fetchUsers?: Function,
     updateUser?: Function,
     removeUser?: Function,
-    associateUserWithGroup?: Function
+    associateUserWithGroup?: Function,
+    users: Array<any>
 }
 
 export class ReadUsers extends React.Component<ReadUsersProps, ReadUsersState> {
     constructor(props) {
         super(props);
         this.state = {
-            users: [],
+            // users: [],
             result: null,
             updateUser: null,
         }
@@ -38,7 +39,7 @@ export class ReadUsers extends React.Component<ReadUsersProps, ReadUsersState> {
         }
 
 
-        const usersLI = this.state.users.map((u, index) => {
+        const usersLI = this.props.users.map((u, index) => {
             const addToGroupIcon = this.props.associateUserWithGroup ?
                 <i onClick={this.addUserToGroup.bind(this, u.user_id)} className="fas fa-user-plus read-users-addtogroupicon" /> :
                 null;
@@ -59,7 +60,7 @@ export class ReadUsers extends React.Component<ReadUsersProps, ReadUsersState> {
                 </li>)
             return li;
         })
-        const users = this.state.users.length > 0 ? <div className="read-users-list">[ID] Name, age<ul>{usersLI}</ul></div> :
+        const users = this.props.users.length > 0 ? <div className="read-users-list">[ID] Name, age<ul>{usersLI}</ul></div> :
         <div className="read-users-list">No users to display</div>;
         return (
             <div className="read-users">
@@ -81,11 +82,11 @@ export class ReadUsers extends React.Component<ReadUsersProps, ReadUsersState> {
         if(clearResult) {
             this.props.clearResult();
         }
-        this.setState({users: []});
+        // this.setState({users: []});
 
-        this.props.fetchUsers()
-            .then(response => this.setState({users: response.data}))
-            .catch(err => console.log(err.response.data))
+        this.props.fetchUsers();
+            // .then(response => this.setState({users: response.data}))
+            // .catch(err => console.log(err.response.data))
     }
 
     private removeUser = (id, cb) => {
@@ -109,7 +110,8 @@ const mapStateToProps = (state: AppState, ownProps) => {
         fetchUsers: ownProps.fetchUsers,
         removeUser: ownProps.removeUser,
         updateUser: ownProps.updateUser,
-        associateUserWithGroup: ownProps.associateUserWithGroup
+        associateUserWithGroup: ownProps.associateUserWithGroup,
+        users: state.users
     }
 }
 

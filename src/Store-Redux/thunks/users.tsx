@@ -7,6 +7,7 @@ export function loadAllUsers() {
             const response = await axios.get('http://localhost:4000/users');
             const users = response.data;
             dispatch(setUsers(users))
+            return users;
         } catch (err) {
             throw new Error(`Failed to fetch all users`);
         }
