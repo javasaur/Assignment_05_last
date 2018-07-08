@@ -4,6 +4,9 @@
   background-color: $button_bg;
   color: $button_color;
   border: none;
+  &:hover {
+    cursor: $button_hover
+  }
 }
 
 @mixin inputStyles() {

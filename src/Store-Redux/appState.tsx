@@ -8,5 +8,6 @@ export interface AppState {
     activeDialogueID: string | null,
     messages: Array<any>,
     socket: any,
-    users: Array<any>
+    users: Array<any>,
+    usersBySelector: Array<any>
 }

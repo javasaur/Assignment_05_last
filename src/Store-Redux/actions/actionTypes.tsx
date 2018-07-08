@@ -8,5 +8,6 @@ export const SET_ADMIN_NAV_TREE = 'SET_ADMIN_NAV_TREE'
 export const SET_NAV_TREE = 'SET_NAV_TREE';
 export const SET_MESSAGES = 'SET_MESSAGES';
 export const SET_USERS = 'SET_USERS';
+export const SET_USERS_BY_SELECTOR = 'SET_USERS_BY_SELECTOR';
 export const SWITCH_DIALOGUE = 'SWITCH_DIALOGUE';
 

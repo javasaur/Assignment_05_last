@@ -1,4 +1,4 @@
-import {SET_USERS} from "./actionTypes";
+import {SET_USERS, SET_USERS_BY_SELECTOR} from "./actionTypes";
 
 export function setUsers(users) {
     return {
@@ -8,3 +8,14 @@ export function setUsers(users) {
         }
     }
 }
+
+export function setUsersBySelector(usersBySelector) {
+    return {
+        type: SET_USERS_BY_SELECTOR,
+        payload: {
+            usersBySelector
+        }
+    }
+}
+
+

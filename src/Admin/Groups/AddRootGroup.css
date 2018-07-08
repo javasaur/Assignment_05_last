@@ -16,3 +16,6 @@
   border: none;
   padding: 5px;
   margin-top: 5px; }
+
+.add-root-group-form button:hover {
+  cursor: pointer; }

@@ -35,6 +35,7 @@ export class ManageUsers extends React.Component<any, ManageUsersState> {
                     fetchUsers={UsersAPI.fetchAllUsers}
                     updateUser={this.updateUser}
                     removeUser={this.removeUser}
+                    flag={'all'}
                 />
             )
         }

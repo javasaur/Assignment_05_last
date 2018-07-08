@@ -8,6 +8,7 @@ import {setAdminCurrentGroupID} from "../../Store-Redux/actions/groups";
 import {store} from "../../Store-Redux/store";
 
 import "../../Navigation/LeftNavTree.css";
+import {loadUsersForCurrentGroup} from "../../Store-Redux/thunks/users";
 
 interface LeftNavAdminTreeProps {
     adminNavTree: any
@@ -46,6 +47,7 @@ class LeftNavAdminTree extends React.Component<LeftNavAdminTreeProps, any> {
 
     private setAdminCurrentGroupID = (id) => {
         store.dispatch(setAdminCurrentGroupID(id));
+        store.dispatch(loadUsersForCurrentGroup());
     }
 }
 

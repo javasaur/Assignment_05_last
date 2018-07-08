@@ -10,7 +10,7 @@ import {
     SET_LOGGED_USER,
     SET_MESSAGES,
     SET_NAV_TREE,
-    SET_SOCKET, SET_USERS,
+    SET_SOCKET, SET_USERS, SET_USERS_BY_SELECTOR,
     SWITCH_DIALOGUE
 } from "./actions/actionTypes";
 
@@ -20,7 +20,7 @@ import {setAdminNavTree, setNavTree} from "./reducers/tree";
 import {setMessages, switchDialogue} from "./reducers/dialogues";
 import {setSocket} from "./reducers/socket";
 import {setAdminCurrentGroupID} from "./reducers/groups";
-import {setUsers} from "./reducers/users";
+import {setUsers, setUsersBySelector} from "./reducers/users";
 
 export const initialState: AppState = {
     loggedUserID: null,
@@ -32,7 +32,8 @@ export const initialState: AppState = {
     activeDialogueID: null,
     messages: [],
     socket: null,
-    users: []
+    users: [],
+    usersBySelector: []
 };
 
 function rootReducer(state: AppState, action: AnyAction): AppState {
@@ -57,6 +58,8 @@ function rootReducer(state: AppState, action: AnyAction): AppState {
             return setSocket(state, action.payload);
         case SET_USERS:
             return setUsers(state, action.payload);
+        case SET_USERS_BY_SELECTOR:
+            return setUsersBySelector(state, action.payload);
         case SWITCH_DIALOGUE:
             return switchDialogue(state, action.payload);
         default:

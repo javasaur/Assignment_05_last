@@ -23,3 +23,6 @@
   border: none;
   padding: 5px;
   margin-top: 5px; }
+
+.update-user button:hover {
+  cursor: pointer; }

@@ -6,7 +6,6 @@ import {connect} from "react-redux";
 import {UpdateUser} from "./UpdateUser";
 
 interface ReadUsersState {
-    // users: Array<any>
     result: any,
     updateUser: any
 }
@@ -18,13 +17,13 @@ interface ReadUsersProps {
     removeUser?: Function,
     associateUserWithGroup?: Function,
     users: Array<any>
+    flag: string
 }
 
 export class ReadUsers extends React.Component<ReadUsersProps, ReadUsersState> {
     constructor(props) {
         super(props);
         this.state = {
-            // users: [],
             result: null,
             updateUser: null,
         }
@@ -105,14 +104,19 @@ export class ReadUsers extends React.Component<ReadUsersProps, ReadUsersState> {
 }
 
 const mapStateToProps = (state: AppState, ownProps) => {
-    return {
+    const res = {
         clearResult: ownProps.clearResult,
         fetchUsers: ownProps.fetchUsers,
         removeUser: ownProps.removeUser,
         updateUser: ownProps.updateUser,
-        associateUserWithGroup: ownProps.associateUserWithGroup,
-        users: state.users
+        associateUserWithGroup: ownProps.associateUserWithGroup
+    };
+    if(ownProps.flag === 'all') {
+        res['users'] = state.users;
+    } else {
+        res['users'] = state.usersBySelector;
     }
+    return res;
 }
 
 export default connect(mapStateToProps, {})(ReadUsers);

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {store} from "../../Store-Redux/store";
+import {loadUsersForCurrentGroup} from "../../Store-Redux/thunks/users";
 
 export class GroupsAPI {
     static async addRootGroup(name) {
@@ -16,8 +17,7 @@ export class GroupsAPI {
     }
 
     static async fetchUsersByAdminGroup() {
-        const groupID = store.getState().adminCurrentGroupID;
-        return axios.get('http://localhost:4000/users', {params: {group: groupID}})
+        store.dispatch(loadUsersForCurrentGroup());
     }
 
     static async removeUserFromAdminGroup(userID) {

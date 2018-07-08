@@ -10,7 +10,7 @@ export class UsersAPI {
     static async fetchAllUsers() {
         store.dispatch(loadAllUsers());
     }
-
+    
     static async removeUser(id) {
         return axios.delete('http://localhost:4000/users/', {params: {id}});
     }

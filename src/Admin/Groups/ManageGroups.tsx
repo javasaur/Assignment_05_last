@@ -44,6 +44,7 @@ export class ManageGroups extends React.Component<ManageGroupsProps, ManageGroup
                     clearResult={this.clearResult}
                     fetchUsers={UsersAPI.fetchAllUsers}
                     associateUserWithGroup={this.addUserToGroup}
+                    flag={'all'}
                 />);
         }
 
@@ -62,6 +63,7 @@ export class ManageGroups extends React.Component<ManageGroupsProps, ManageGroup
                     fetchUsers={GroupsAPI.fetchUsersByAdminGroup}
                     updateUser={this.updateUser}
                     removeUser={this.removeUser}
+                    flag={'group'}
                 />
             );
         }
