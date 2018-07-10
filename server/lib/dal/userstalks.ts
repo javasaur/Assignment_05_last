@@ -48,7 +48,7 @@ export default class UsersTalks {
 
     static async getPrivateTalks(userID: string) {
         try {
-            const query = QueryBuilder.UsersTalks.getPrivateTalksByUserID(userID);
+            const query = QueryBuilder.UsersTalks.getPrivateTalksByUserID(escape(userID));
             return await dbQuery(query);
         } catch (err) {
             Logger.log(`Failed to fetch private talks for user ${userID}, err: ${JSON.stringify(err)}`);
@@ -58,7 +58,7 @@ export default class UsersTalks {
 
     static async getUsersByTalkID(talkID: string) {
         try {
-            const query = QueryBuilder.UsersTalks.getUsersByTalkID(talkID);
+            const query = QueryBuilder.UsersTalks.getUsersByTalkID(escape(talkID));
             return await dbQuery(query);
         } catch (err) {
             Logger.log(`Failed to fetch users by talk id ${talkID}, err: ${JSON.stringify(err)}`);
@@ -68,7 +68,7 @@ export default class UsersTalks {
 
     static async removeUserFromTalk(talkID: string, userID: string) {
         try{
-            const query = QueryBuilder.UsersTalks.removeUserFromTalk(talkID, userID);
+            const query = QueryBuilder.UsersTalks.removeUserFromTalk(escape(talkID), escape(userID));
             await dbQuery(query);
             return true;
         } catch (err) {

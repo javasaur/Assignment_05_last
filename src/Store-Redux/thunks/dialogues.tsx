@@ -40,7 +40,6 @@ export function loadMessages(dialogueID) {
                 }
             });
             const messages = await httpResponse.json();
-            console.log(messages);
             dispatch(setMessages(messages));
         } catch (err) {
             console.log(err);

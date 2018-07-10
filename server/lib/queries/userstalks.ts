@@ -8,7 +8,7 @@ export const COUNT_USERS_UNDER_TALK = `SELECT COUNT(*) as userCount FROM talks_u
 export const COUNT_USERS_UNDER_TALK_BY_USERID = `SELECT COUNT(*) as userCount FROM talks_users 
                                                WHERE \`talk_id\`=$TALKID AND \`user_id\`=$USERID;`;
 export const GET_USERS_BY_TALK_ID = `SELECT u.user_id, u.name, u.age FROM talks_users 
-                                     AS tu JOIN users AS u ON u.user_id=tu.user_id WHERE tu.talk_id=$GROUPID;`;
+                                     AS tu JOIN users AS u ON u.user_id=tu.user_id WHERE tu.talk_id=$TALKID;`;
 export const GET_PRIVATE_TALKS_BY_USER_ID = `SELECT tu.talk_id, u.name, u2.name FROM talks_users AS tu
                                              JOIN talks_users AS tu2 ON tu.talk_id=tu2.talk_id
                                              JOIN users AS u ON u.user_id=tu.user_id

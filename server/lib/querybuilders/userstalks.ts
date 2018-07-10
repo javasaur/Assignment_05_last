@@ -40,9 +40,9 @@ export default class UsersTalks {
         return query.replace(/\$USERID/g, userID);
     }
 
-    static getUsersByTalkID(groupID: string) {
+    static getUsersByTalkID(talkID: string) {
         const query = GET_USERS_BY_TALK_ID;
-        return query.replace(/\$GROUPID/, groupID);
+        return query.replace(/\$TALKID/, talkID);
     }
 
     static removeUserFromTalk(talkID: string, userID: string) {

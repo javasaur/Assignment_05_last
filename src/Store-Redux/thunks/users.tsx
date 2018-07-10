@@ -21,6 +21,7 @@ export function loadUsersForCurrentGroup() {
             const groupID = store.getState().adminCurrentGroupID;
             const response = await axios.get('http://localhost:4000/users', {params: {group: groupID}});
             const users = response.data;
+            console.log(users);
             dispatch(setUsersBySelector(users))
             return users;
         } catch (err) {
