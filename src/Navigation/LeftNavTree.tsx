@@ -19,7 +19,7 @@ class LeftNavTree extends React.Component<LeftNavProps, any> {
     }
 
     public render() {
-        const elem = <ul className="left-nav-tree js-tree" tabIndex={0} />;
+        const elem = <div className="js-tree" />;
 
         return (
                 <div className="left-nav">
@@ -41,7 +41,7 @@ class LeftNavTree extends React.Component<LeftNavProps, any> {
 
     private loadNavTree() {
         if(!!this.props.navTree) {
-            const tree = ChatTree(document.querySelector('ul.js-tree'));
+            const tree = ChatTree(document.querySelector('.js-tree'));
             tree.subscribeToElementSwitch(this.switchDialogue);
             tree.load(this.props.navTree);
             tree.element.focus();

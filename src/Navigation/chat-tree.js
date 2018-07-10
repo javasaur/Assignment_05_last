@@ -1,4 +1,4 @@
-export function ChatTree(element) {
+export function ChatTree(wrapper) {
     // For left-right navigation
     let fullElemList = [];
 
@@ -6,12 +6,11 @@ export function ChatTree(element) {
     let elemList = [];
     let currIndex = 0;
 
-    // For mouse and keyboard events
-    let areEventListenersAttached = false;
-
+    let areEventListenersAttached = false; // For mouse and keyboard events
     let paddingPerLevel = 0.3; // em, for indendation
-
     let switchCurrentElementCallback; // passed by react
+
+    let element = createDomElement('ul', '');
 
     return {
         clear,
@@ -22,31 +21,26 @@ export function ChatTree(element) {
 
     // API functions
     function clear() {
-        element.innerHTML = "";
+        wrapper.innerHTML = "";
         fullElemList.length = 0;
         elemList.length = 0;
         currIndex = 0;
+        // removeEventListeners();
     }
 
     function load(items) {
         clear();
 
+        addClassesToElement(element, ['left-nav-tree']);
+        wrapper.appendChild(element);
+
         fullElemList = items;
         decompose(items, element);
 
         if(!areEventListenersAttached) {
-            this.element.addEventListener("keydown", function (e) {
-                handleKeyEvent(e);
-            });
-
-            this.element.addEventListener("click", function (e) {
-                handleMouseEvent(e);
-            });
-
-            this.element.addEventListener("dblclick", function (e) {
-                handleMouseEvent(e);
-            });
-
+            element.addEventListener("keydown", handleKeyEvent)
+            element.addEventListener("click", handleMouseEvent)
+            element.addEventListener("dblclick", handleMouseEvent)
             areEventListenersAttached = true;
         }
 
@@ -206,6 +200,7 @@ export function ChatTree(element) {
     }
 
     function handleMouseEvent(e) {
+        console.log(`clicked on`, e.target);
         // Filter clicks by predefined classname
         if(!e.target.classList.contains("left-tree-div")) {
             return;
@@ -253,6 +248,13 @@ export function ChatTree(element) {
         }
     }
 
+    // function removeEventListeners() {
+    //     console.log('removing event listeners');
+    //     element.removeEventListener('click', handleMouseEvent);
+    //     element.removeEventListener('dblclick', handleMouseEvent);
+    //     element.removeEventListener('keydown', handleKeyEvent);
+    // }
+
     function setNonExpandedIcon(elem) {
         const icon = elem.querySelector("i");
         icon.className = '';
@@ -270,6 +272,7 @@ export function ChatTree(element) {
     }
 
     function switchCurrenElementTo(elemIndex) {
+        console.log(`switching element to elemIndex ${elemIndex}`);
         let prevElem = getActiveElem();
         currIndex = elemIndex;
         toggleClasses(prevElem, getActiveElem(), "selected");

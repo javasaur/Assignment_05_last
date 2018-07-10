@@ -21,7 +21,7 @@ class LeftNavAdminTree extends React.Component<LeftNavAdminTreeProps, any> {
     }
 
     public render() {
-        const elem = <ul className="left-nav-tree js-admin-tree" tabIndex={0} />;
+        const elem = <div className="js-admin-tree" />;
 
         return (
             <div className="left-nav">
@@ -38,7 +38,7 @@ class LeftNavAdminTree extends React.Component<LeftNavAdminTreeProps, any> {
 
     private loadNavTree() {
         if(!!this.props.adminNavTree) {
-            const tree = ChatTree(document.querySelector('ul.js-admin-tree'));
+            const tree = ChatTree(document.querySelector('.js-admin-tree'));
             tree.subscribeToElementSwitch(this.setAdminCurrentGroupID);
             tree.load(this.props.adminNavTree);
             tree.element.focus();

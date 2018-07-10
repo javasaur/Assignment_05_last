@@ -16,7 +16,6 @@ export default class UsersGroups {
         return DAL.UsersTalks.getUsersByTalkID(talkID);
     }
 
-
     static async buildAdminJSONTree() {
         try {
             const hierarchy = await DAL.Talks.getTalksHierarchy();
