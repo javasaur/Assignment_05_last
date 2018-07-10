@@ -64,7 +64,7 @@ export default class Talks {
     }
 
     static async existsTalkWithID(talkID: string) {
-        return !!Talks.getTalkByID(talkID);
+        return !!(await Talks.getTalkByID(talkID));
     }
 
     static async getAllPublicTalks() {

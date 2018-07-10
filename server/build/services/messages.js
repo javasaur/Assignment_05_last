@@ -12,9 +12,13 @@ const DAL = require("../lib/dal");
 class Messages {
     static addMessageToDialogue(dialogueID, message) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log(`dialogueID is ${dialogueID}`);
+            console.log(typeof dialogueID);
             const privatePattern = /^\d{1,}_\d{1,}$/;
             if (dialogueID.match(privatePattern)) {
+                console.log('matched private pattern');
                 if (!(yield DAL.Talks.existsTalkWithID(dialogueID))) {
+                    console.log(`${dialogueID} doesn't existm creating talk`);
                     yield DAL.Talks.addPrivateTalk(dialogueID);
                     yield DAL.UsersTalks.addUsersToPrivateTalk(dialogueID);
                 }

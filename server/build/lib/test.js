@@ -8,11 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const services = require("../services");
+const DAL = require("./dal");
 (function () {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield services.Messages.addMessageToDialogue('1_5', { authorId: '1', content: 'hello there' });
+            console.log(yield DAL.Talks.existsTalkWithID('1_22'));
         }
         catch (err) {
             console.log("========USER SEES THIS============");
