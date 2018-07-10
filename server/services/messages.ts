@@ -25,30 +25,6 @@ export default class Messages {
         await DAL.UsersTalks.addUserToTalk(message.authorId, dialogueID);
         await DAL.Messages.addMessage(message.content, message.authorId,dialogueID);
         return;
-
-        // try {
-        //     let isPrivate = false;
-        //     const dialogue = await GroupsDB.getInstance().getGroupByID(dialogueID);
-        //     if(!dialogue) {
-        //         const regex = new RegExp(/\w+_\w+/);
-        //         if(!regex.test(dialogueID)) {
-        //             throw new Error(`Unknow dialogue format ${dialogueID}`)
-        //         }
-        //         isPrivate = true;
-        //         await GroupsDB.getInstance().addPrivateGroup(dialogueID);
-        //         await MessagesDB.getInstance().createMessageChunk(dialogueID);
-        //     }
-        //     await MessagesDB.getInstance().addMessageToDialogue(dialogueID, message);
-        //     if(isPrivate) {
-        //         const secondCompanion = await GroupsDB.getInstance().getSecondCompanionID(dialogueID, message.authorId);
-        //         console.log(`second companio is: ${secondCompanion}`);
-        //         await UsersDB.getInstance().addUserToDialogueRelation(secondCompanion, dialogueID);
-        //     }
-        //     await UsersDB.getInstance().addUserToDialogueRelation(message.authorId, dialogueID);
-        //    await GroupsDB.getInstance().addUserIfMissing(message.authorId, dialogueID);
-        // } catch (err) {
-        //     throw err;
-        // }
     }
 
     static async getAllDialogueMessages(talkID: string) {

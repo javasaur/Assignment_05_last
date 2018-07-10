@@ -22,7 +22,7 @@ export class Message extends React.Component<IMessageComponentProps, {}> {
     }
 
     public render() {
-        const date = moment.unix(this.props.message.dateTimestamp).fromNow();
+        const date = moment(this.props.message.date).utc().fromNow();
         let author;
         if(this.props.showAuthor) {
             const a = this.props.message.authorName;

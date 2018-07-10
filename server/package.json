@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node build/index.js",
-    "dev": "concurrently \"tsc -w\" \"nodemon build/index.js -w build/ --verbose --config 1200ms"
+    "tsc-watch": "tsc -w",
+    "nodemon": "nodemon build/index.js -w build/ --verbose"
   },
   "author": "",
   "license": "ISC",
