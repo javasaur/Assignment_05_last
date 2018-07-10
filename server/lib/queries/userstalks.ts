@@ -15,5 +15,6 @@ export const GET_PRIVATE_TALKS_BY_USER_ID = `SELECT tu.talk_id, u.name, u2.name 
                                              JOIN users AS u2 ON u2.user_id=tu2.user_id
                                              WHERE tu.user_id=$USERID 
                                              AND tu2.user_id!=$USERID  AND tu.talk_id LIKE '%\\_%';`;
+export const REMOVE_ALL_USERS_FROM_TALK = `DELETE FROM talks_users WHERE \`talk_id\`=$TALKID;`;
 export const REMOVE_USER_FROM_TALK = `DELETE FROM talks_users
                                       WHERE \`talk_id\`=$TALKID AND \`user_id\`=$USERID;`;

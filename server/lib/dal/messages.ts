@@ -25,4 +25,15 @@ export default class Messages {
             throw new Error(`DB request failed, try later!`);
         }
     }
+
+    static async removeAllMessagesFromTalk(talkID: string) {
+        try {
+            const query = QueryBuilder.Messages.removeAllMessagesFromTalk(escape(talkID));
+            await dbQuery(query);
+            return true;
+        } catch (err) {
+            Logger.log(`Failed to delete messages of talk ${talkID} , err: ${JSON.stringify(err)}`);
+            throw new Error(`DB request failed, try later!`);
+        }
+    }
 }

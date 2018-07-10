@@ -119,6 +119,22 @@ class UsersGroups {
             });
         });
     }
+    static removeGroup(talkID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!(yield DAL.Talks.existsTalkWithID(talkID))) {
+                throw new CustomError_1.default(`Group doesn't exist`);
+            }
+            // Delete users and messages
+            yield DAL.UsersTalks.removeAllUsersFromTalk(talkID);
+            yield DAL.Messages.removeAllMessagesFromTalk(talkID);
+            // No subtalks, plain remove
+            if (!(yield DAL.Talks.hasSubtalks(talkID))) {
+                yield DAL.Talks.removeTalkByID(talkID);
+                return;
+            }
+            // Subgroups, need to change reference and check for siblings name conflict
+        });
+    }
     static removeUserFromGroup(userID, talkID) {
         return __awaiter(this, void 0, void 0, function* () {
             return DAL.UsersTalks.removeUserFromTalk(talkID, userID);

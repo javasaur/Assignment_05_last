@@ -66,6 +66,17 @@ export default class UsersTalks {
         }
     }
 
+    static async removeAllUsersFromTalk(talkID: string) {
+        try{
+            const query = QueryBuilder.UsersTalks.removeAllUsersFromTalk(escape(talkID));
+            await dbQuery(query);
+            return true;
+        } catch (err) {
+            Logger.log(`Failed to remove all users by talk id ${talkID}, err: ${JSON.stringify(err)}`);
+            throw new Error(`DB request failed, try later!`);
+        }
+    }
+
     static async removeUserFromTalk(talkID: string, userID: string) {
         try{
             const query = QueryBuilder.UsersTalks.removeUserFromTalk(escape(talkID), escape(userID));

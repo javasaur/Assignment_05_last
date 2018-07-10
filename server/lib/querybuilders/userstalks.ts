@@ -2,7 +2,7 @@ import {
     ADD_USER_TO_TALK, ADD_USERS_TO_PRIVATE_TALK,
     COUNT_USERS_UNDER_TALK, COUNT_USERS_UNDER_TALK_BY_USERID,
     GET_PRIVATE_TALKS_BY_USER_ID,
-    GET_USERS_BY_TALK_ID,
+    GET_USERS_BY_TALK_ID, REMOVE_ALL_USERS_FROM_TALK,
     REMOVE_USER_FROM_TALK
 } from "../queries/userstalks";
 
@@ -42,6 +42,11 @@ export default class UsersTalks {
 
     static getUsersByTalkID(talkID: string) {
         const query = GET_USERS_BY_TALK_ID;
+        return query.replace(/\$TALKID/, talkID);
+    }
+
+    static removeAllUsersFromTalk(talkID: string) {
+        const query = REMOVE_ALL_USERS_FROM_TALK;
         return query.replace(/\$TALKID/, talkID);
     }
 

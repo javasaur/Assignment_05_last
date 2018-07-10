@@ -35,4 +35,13 @@ export default class Groups {
                 res.status(400).send(err.message);
             });
     }
+
+    static async removeGroup(req: Request, res: Response) {
+        UsersGroups.removeGroup(req.params.id)
+            .then(() => {
+                Socket.notifyOnAdminTreeChange();
+                res.status(200).send({})
+            })
+            .catch(err => res.status(400).send(err.message));
+    }
 }

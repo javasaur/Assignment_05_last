@@ -24,4 +24,8 @@ export class GroupsAPI {
         const groupID = store.getState().adminCurrentGroupID;
         return axios.delete('http://localhost:4000/users', {params: {id: userID, group: groupID}})
     }
+
+    static async removeGroup(id) {
+        return axios.delete(`http://localhost:4000/groups/${id}`);
+    }
 }

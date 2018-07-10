@@ -115,6 +115,25 @@ export default class UsersGroups {
         })
     }
 
+    static async removeGroup(talkID: string) {
+        if(!(await DAL.Talks.existsTalkWithID(talkID))) {
+            throw new CustomError(`Group doesn't exist`)
+        }
+
+        // Delete users and messages
+        await DAL.UsersTalks.removeAllUsersFromTalk(talkID);
+        await DAL.Messages.removeAllMessagesFromTalk(talkID);
+
+        // No subtalks, plain remove
+        if(!(await DAL.Talks.hasSubtalks(talkID))) {
+            await DAL.Talks.removeTalkByID(talkID);
+            return;
+        }
+
+        // Subgroups, need to change reference and check for siblings name conflict
+
+    }
+
     static async removeUserFromGroup(userID, talkID) {
         return DAL.UsersTalks.removeUserFromTalk(talkID, userID);
     }

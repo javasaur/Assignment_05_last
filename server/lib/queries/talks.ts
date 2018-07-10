@@ -27,3 +27,4 @@ export const COUNT_DUPLICATE_NAMES_UNDER_PARENT = `SELECT COUNT(*) AS namesCount
                                                    WHERE \`parent\`=$PARENTID AND \`name\`=$TALKNAME;`;
 export const COUNT_SUBTALKS = `SELECT COUNT(*) AS subtalkCount FROM talks WHERE \`parent\`=$PARENTID;`;
 export const GET_TALK_BY_ID = `SELECT * FROM talks WHERE \`talk_id\`=$TALKID;`;
+export const REMOVE_TALK_BY_ID = `DELETE FROM talks WHERE \`talk_id\`=$TALKID;`;

@@ -25,7 +25,6 @@ export function ChatTree(wrapper) {
         fullElemList.length = 0;
         elemList.length = 0;
         currIndex = 0;
-        // removeEventListeners();
     }
 
     function load(items) {
@@ -200,7 +199,6 @@ export function ChatTree(wrapper) {
     }
 
     function handleMouseEvent(e) {
-        console.log(`clicked on`, e.target);
         // Filter clicks by predefined classname
         if(!e.target.classList.contains("left-tree-div")) {
             return;
@@ -248,13 +246,6 @@ export function ChatTree(wrapper) {
         }
     }
 
-    // function removeEventListeners() {
-    //     console.log('removing event listeners');
-    //     element.removeEventListener('click', handleMouseEvent);
-    //     element.removeEventListener('dblclick', handleMouseEvent);
-    //     element.removeEventListener('keydown', handleKeyEvent);
-    // }
-
     function setNonExpandedIcon(elem) {
         const icon = elem.querySelector("i");
         icon.className = '';
@@ -272,7 +263,6 @@ export function ChatTree(wrapper) {
     }
 
     function switchCurrenElementTo(elemIndex) {
-        console.log(`switching element to elemIndex ${elemIndex}`);
         let prevElem = getActiveElem();
         currIndex = elemIndex;
         toggleClasses(prevElem, getActiveElem(), "selected");

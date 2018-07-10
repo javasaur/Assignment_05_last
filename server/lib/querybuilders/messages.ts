@@ -1,4 +1,4 @@
-import {ADD_MESSAGE, GET_ALL_MESSAGES_BY_TALKID} from "../queries/messages";
+import {ADD_MESSAGE, GET_ALL_MESSAGES_BY_TALKID, REMOVE_ALL_MESSAGES_FROM_TALK} from "../queries/messages";
 
 export default class Messages {
     static addMessage(content: string, userID: string, talkID: string) {
@@ -11,6 +11,11 @@ export default class Messages {
 
     static getAllMessagesByTalkID(talkID: string) {
         const query = GET_ALL_MESSAGES_BY_TALKID;
+        return query.replace(/\$TALKID/, talkID);
+    }
+
+    static removeAllMessagesFromTalk(talkID: string) {
+        const query = REMOVE_ALL_MESSAGES_FROM_TALK;
         return query.replace(/\$TALKID/, talkID);
     }
 }

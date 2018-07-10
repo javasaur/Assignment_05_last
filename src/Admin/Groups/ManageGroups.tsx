@@ -197,14 +197,15 @@ export class ManageGroups extends React.Component<ManageGroupsProps, ManageGroup
             .catch((err) => this.formError(err.response.data));
     }
 
-    private removeGroup = async (id, cb) => {
-        console.log(`removing group ${id}`);
-        // GroupsAPI.removeUserFromAdminGroup(id)
-        //     .then(() => {
-        //         this.formSuccess('Group removed');
-        //         cb();
-        //     })
-        //     .catch((err) => this.formError(err.response.data));
+    private removeGroup = async (id) => {
+        this.clearResult();
+        GroupsAPI.removeGroup(id)
+            .then(() => {
+                this.formSuccess('Group removed');
+            })
+            .catch(err => {
+                this.formError(err.response.data)
+            });
     }
 }
 

@@ -112,10 +112,21 @@ export default class Talks {
         return count > 0;
     }
 
-    static async isNameDuplicateUnderTalk(talkName, parentID) {
+    static async isNameDuplicateUnderTalk(talkName: string, parentID: string) {
         const query = QueryBuilder.Talks.countDuplicateNamesUnderParent(escape(talkName), escape(parentID));
         const res = await dbQuery(query);
         const count = res[0].namesCount;
         return count > 0;
+    }
+
+    static async removeTalkByID(talkID: string) {
+        try {
+            const query = QueryBuilder.Talks.removeTalkByID(escape(talkID));
+            await dbQuery(query);
+            return true;
+        } catch (err) {
+            Logger.log(`Failed to remove talk by id ${talkID}, err: ${JSON.stringify(err)}`);
+            throw new Error(`DB request failed, try later!`);
+        }
     }
 }

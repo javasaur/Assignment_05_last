@@ -3,7 +3,12 @@ import {
     ADD_PUBLIC_SUBTALK,
     ADD_PUBLIC_TALK,
     COUNT_DUPLICATE_NAMES_UNDER_PARENT,
-    COUNT_DUPLICATE_NAMES_UNDER_ROOT, COUNT_SUBTALKS, GET_ALL_PUBLIC_TALKS, GET_TALK_BY_ID, GET_TALKS_HIERARCHY
+    COUNT_DUPLICATE_NAMES_UNDER_ROOT,
+    COUNT_SUBTALKS,
+    GET_ALL_PUBLIC_TALKS,
+    GET_TALK_BY_ID,
+    GET_TALKS_HIERARCHY,
+    REMOVE_TALK_BY_ID
 } from "../queries/talks";
 
 export default class Talks {
@@ -52,5 +57,10 @@ export default class Talks {
 
     static getTalksHierarchy() {
         return GET_TALKS_HIERARCHY;
+    }
+
+    static removeTalkByID(talkID: string) {
+        const query = REMOVE_TALK_BY_ID;
+        return query.replace(/\$TALKID/, talkID);
     }
 }
