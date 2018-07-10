@@ -1,14 +1,8 @@
-import UsersDB from "../lib/usersdb";
 import HashService from "./hash";
-import {rethrow} from '../util/helpers';
 import * as Joi from 'joi';
 import * as DAL from '../lib/dal';
 
 export default class Users {
-    static async addUserToGroupRelation(userID, groupID) {
-        return UsersDB.getInstance().addUserToGroupRelation(userID, groupID);
-    }
-
     static async addUser(user) {
         const schema = Joi.object().keys({
             name: Joi.string().min(3).max(15).required()
@@ -34,20 +28,8 @@ export default class Users {
         return DAL.Users.getAllUsers('no-password');
     }
 
-    static async getAssociatedGroupsIDs(userID) {
-        return UsersDB.getInstance().getAssociatedGroupsIDs(userID).catch(rethrow);
-    }
-
     static async getUserByID(userID) {
         return DAL.Users.getUserByID(userID);
-    }
-
-    static async getPrivateGroupsIDs(userID) {
-        return UsersDB.getInstance().getPrivateGroupsIDs(userID).catch(rethrow);
-    }
-
-    static async getUsersByIDs(usersIDs) {
-        return UsersDB.getInstance().getUsersByIds(usersIDs).catch(rethrow);
     }
 
     static async updateUser(userID, user) {

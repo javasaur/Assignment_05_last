@@ -1,5 +1,3 @@
-import GroupsService from './groups';
-import UsersService from './users';
 import * as DAL from '../lib/dal';
 import CustomError from "../lib/CustomError";
 

@@ -1,6 +1,3 @@
-import MessagesDB from "../lib/messagesdb";
-import UsersDB from "../lib/usersdb";
-import GroupsDB from "../lib/groupsdb";
 import * as DAL from '../lib/dal';
 
 export default class Messages {

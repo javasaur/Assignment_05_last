@@ -8,17 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const usersdb_1 = require("../lib/usersdb");
 const hash_1 = require("./hash");
-const helpers_1 = require("../util/helpers");
 const Joi = require("joi");
 const DAL = require("../lib/dal");
 class Users {
-    static addUserToGroupRelation(userID, groupID) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return usersdb_1.default.getInstance().addUserToGroupRelation(userID, groupID);
-        });
-    }
     static addUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
             const schema = Joi.object().keys({
@@ -44,24 +37,9 @@ class Users {
             return DAL.Users.getAllUsers('no-password');
         });
     }
-    static getAssociatedGroupsIDs(userID) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return usersdb_1.default.getInstance().getAssociatedGroupsIDs(userID).catch(helpers_1.rethrow);
-        });
-    }
     static getUserByID(userID) {
         return __awaiter(this, void 0, void 0, function* () {
             return DAL.Users.getUserByID(userID);
-        });
-    }
-    static getPrivateGroupsIDs(userID) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return usersdb_1.default.getInstance().getPrivateGroupsIDs(userID).catch(helpers_1.rethrow);
-        });
-    }
-    static getUsersByIDs(usersIDs) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return usersdb_1.default.getInstance().getUsersByIds(usersIDs).catch(helpers_1.rethrow);
         });
     }
     static updateUser(userID, user) {
