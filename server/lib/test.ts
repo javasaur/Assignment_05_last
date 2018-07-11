@@ -4,7 +4,7 @@ import * as services from "../services";
 (async function() {
 
     try {
-        console.log(await DAL.Talks.existsTalkWithID('1_22'));
+        console.log(await DAL.Talks.moveSubtalksUp('27'));
 
     } catch (err) {
         console.log("========USER SEES THIS============");

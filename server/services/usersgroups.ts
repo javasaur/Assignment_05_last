@@ -120,18 +120,21 @@ export default class UsersGroups {
             throw new CustomError(`Group doesn't exist`)
         }
 
-        // Delete users and messages
-        await DAL.UsersTalks.removeAllUsersFromTalk(talkID);
-        await DAL.Messages.removeAllMessagesFromTalk(talkID);
-
-        // No subtalks, plain remove
+        // No subtalks, remove related users, messages and the group itself
         if(!(await DAL.Talks.hasSubtalks(talkID))) {
+            await DAL.UsersTalks.removeAllUsersFromTalk(talkID);
+            await DAL.Messages.removeAllMessagesFromTalk(talkID);
             await DAL.Talks.removeTalkByID(talkID);
             return;
         }
 
         // Subgroups, need to change reference and check for siblings name conflict
-
+        const nameConflict = await DAL.Talks.willCauseNameConflict(talkID);
+        if(nameConflict) {
+            throw new CustomError(`Name conflict on future sibling - ${nameConflict.name}`)
+        }
+        await DAL.Talks.moveSubtalksUp(talkID);
+        await DAL.Talks.removeTalkByID(talkID);
     }
 
     static async removeUserFromGroup(userID, talkID) {

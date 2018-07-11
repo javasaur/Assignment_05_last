@@ -5,9 +5,9 @@ import {
     COUNT_DUPLICATE_NAMES_UNDER_PARENT,
     COUNT_DUPLICATE_NAMES_UNDER_ROOT,
     COUNT_SUBTALKS,
-    GET_ALL_PUBLIC_TALKS,
+    GET_ALL_PUBLIC_TALKS, GET_SIBLING_TALKS, GET_SUBTALKS_BY_PARENTID,
     GET_TALK_BY_ID,
-    GET_TALKS_HIERARCHY,
+    GET_TALKS_HIERARCHY, MOVE_SUBTALKS_UP,
     REMOVE_TALK_BY_ID
 } from "../queries/talks";
 
@@ -55,8 +55,23 @@ export default class Talks {
         return query.replace(/\$TALKID/, talkID);
     }
 
+    static getSiblingTalks(talkID: string) {
+        const query = GET_SIBLING_TALKS;
+        return query.replace(/\$TALKID/g, talkID);
+    }
+
+    static getSubtalksByParentID(parentID: string) {
+        const query = GET_SUBTALKS_BY_PARENTID;
+        return query.replace(/\$PARENTID/, parentID);
+    }
+
     static getTalksHierarchy() {
         return GET_TALKS_HIERARCHY;
+    }
+
+    static moveSubtalksUp(talkID: string) {
+        const query = MOVE_SUBTALKS_UP;
+        return query.replace(/\$TALKID/, talkID);
     }
 
     static removeTalkByID(talkID: string) {

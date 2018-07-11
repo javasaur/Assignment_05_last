@@ -124,15 +124,20 @@ class UsersGroups {
             if (!(yield DAL.Talks.existsTalkWithID(talkID))) {
                 throw new CustomError_1.default(`Group doesn't exist`);
             }
-            // Delete users and messages
-            yield DAL.UsersTalks.removeAllUsersFromTalk(talkID);
-            yield DAL.Messages.removeAllMessagesFromTalk(talkID);
-            // No subtalks, plain remove
+            // No subtalks, remove related users, messages and the group itself
             if (!(yield DAL.Talks.hasSubtalks(talkID))) {
+                yield DAL.UsersTalks.removeAllUsersFromTalk(talkID);
+                yield DAL.Messages.removeAllMessagesFromTalk(talkID);
                 yield DAL.Talks.removeTalkByID(talkID);
                 return;
             }
             // Subgroups, need to change reference and check for siblings name conflict
+            const nameConflict = yield DAL.Talks.willCauseNameConflict(talkID);
+            if (nameConflict) {
+                throw new CustomError_1.default(`Name conflict on future sibling - ${nameConflict.name}`);
+            }
+            yield DAL.Talks.moveSubtalksUp(talkID);
+            yield DAL.Talks.removeTalkByID(talkID);
         });
     }
     static removeUserFromGroup(userID, talkID) {
