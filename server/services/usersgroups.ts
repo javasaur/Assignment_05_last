@@ -43,6 +43,15 @@ export default class UsersGroups {
             const hierarchy = await DAL.Talks.getTalksHierarchy();
             const flatArr = UsersGroups.__populateFlatArray(hierarchy);
 
+            const privateTalks = await DAL.UsersTalks.getPrivateTalks(userID);
+            for(let pm of privateTalks) {
+                flatArr.push({
+                    id: pm.talk_id,
+                    type: 'user',
+                    name: pm.name
+                })
+            }
+
             for(let t of flatArr) {
                 if(!t) {
                     continue;
@@ -52,20 +61,25 @@ export default class UsersGroups {
                     UsersGroups.__decomposeHierarchyPath(t, flatArr);
                 }
 
-                const users = await DAL.UsersTalks.getUsersByTalkID(t.id);
-                UsersGroups.__populateWithUsers(t, users, userID);
+                if(t.type === 'group') {
+                    const users = await DAL.UsersTalks.getUsersByTalkID(t.id);
+                    await UsersGroups.__populateWithUsers(t, users, userID);
+                }
+
+                const unread = await DAL.Messages.getUnreadMessagesCount(t.id, userID);
+                t.unread = unread;
             }
 
             const filtered = flatArr.filter(t => t !== undefined && !t.isSubtalk);
 
-            const privateTalks = await DAL.UsersTalks.getPrivateTalks(userID);
-            for(let pm of privateTalks) {
-                filtered.push({
-                    id: pm.talk_id,
-                    type: 'user',
-                    name: pm.name
-                })
-            }
+            // const privateTalks = await DAL.UsersTalks.getPrivateTalks(userID);
+            // for(let pm of privateTalks) {
+            //     filtered.push({
+            //         id: pm.talk_id,
+            //         type: 'user',
+            //         name: pm.name
+            //     })
+            // }
 
             return filtered;
         } catch (err) {
@@ -104,15 +118,18 @@ export default class UsersGroups {
         }
     }
 
-    static __populateWithUsers(talk, users, userID) {
-        users.forEach(u => {
+    static async __populateWithUsers(talk, users, userID) {
+        for(let u of users)
+        {
+            const unread = await DAL.Messages.getUnreadMessagesCount(talk.id, userID);
             talk.items.push({
                 id: Math.min(+u.user_id, +userID) + '_' + Math.max(+u.user_id, +userID),
                 type: 'user',
                 name: u.name,
-                age: u.age
+                age: u.age,
+                unread
             })
-        })
+        }
     }
 
     static async removeGroup(talkID: string) {

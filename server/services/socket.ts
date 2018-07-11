@@ -1,4 +1,5 @@
 import * as sio from "socket.io";
+import MessagesService from './messages';
 
 export default class Socket {
     static emit(channel, msg) {
@@ -14,6 +15,9 @@ export default class Socket {
                 socket.join(groupID);
             })
 
+            socket.on('nullUnreadMsgCounter', (talkID, userID) => {
+                MessagesService.nullDialogueMessages(talkID, userID);
+            })
 
         })
         return Socket.io

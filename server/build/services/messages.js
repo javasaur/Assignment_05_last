@@ -19,6 +19,7 @@ class Messages {
                     yield DAL.UsersTalks.addUsersToPrivateTalk(dialogueID);
                 }
                 yield DAL.Messages.addMessage(message.content, message.authorId, dialogueID);
+                yield DAL.Messages.incrementUnreadMessages(dialogueID);
                 return;
             }
             // If user already in a talk -> plain add message
@@ -35,6 +36,11 @@ class Messages {
     static getAllDialogueMessages(talkID) {
         return __awaiter(this, void 0, void 0, function* () {
             return DAL.Messages.getAllMessagesByTalkID(talkID);
+        });
+    }
+    static nullDialogueMessages(talkID, userID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return DAL.Messages.nullUnreadMessages(talkID, userID);
         });
     }
 }

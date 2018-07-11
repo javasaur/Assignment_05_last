@@ -4,7 +4,7 @@ import * as services from "../services";
 (async function() {
 
     try {
-        console.log(await DAL.Talks.moveSubtalksUp('27'));
+        console.log(await DAL.Messages.getUnreadMessagesCount('2', '1'));
 
     } catch (err) {
         console.log("========USER SEES THIS============");

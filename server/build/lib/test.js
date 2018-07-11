@@ -12,7 +12,7 @@ const DAL = require("./dal");
 (function () {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            console.log(yield DAL.Talks.moveSubtalksUp('27'));
+            console.log(yield DAL.Messages.getUnreadMessagesCount('2', '1'));
         }
         catch (err) {
             console.log("========USER SEES THIS============");

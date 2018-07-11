@@ -9,6 +9,7 @@ export default class Messages {
                 await DAL.UsersTalks.addUsersToPrivateTalk(dialogueID);
             }
             await DAL.Messages.addMessage(message.content, message.authorId, dialogueID);
+            await DAL.Messages.incrementUnreadMessages(dialogueID);
             return;
         }
 
@@ -26,5 +27,9 @@ export default class Messages {
 
     static async getAllDialogueMessages(talkID: string) {
         return DAL.Messages.getAllMessagesByTalkID(talkID);
+    }
+
+    static async nullDialogueMessages(talkID: string, userID: string) {
+        return DAL.Messages.nullUnreadMessages(talkID, userID);
     }
 }

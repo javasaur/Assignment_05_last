@@ -53,6 +53,14 @@ class UsersGroups {
             try {
                 const hierarchy = yield DAL.Talks.getTalksHierarchy();
                 const flatArr = UsersGroups.__populateFlatArray(hierarchy);
+                const privateTalks = yield DAL.UsersTalks.getPrivateTalks(userID);
+                for (let pm of privateTalks) {
+                    flatArr.push({
+                        id: pm.talk_id,
+                        type: 'user',
+                        name: pm.name
+                    });
+                }
                 for (let t of flatArr) {
                     if (!t) {
                         continue;
@@ -60,18 +68,22 @@ class UsersGroups {
                     if (t.isSubtalk) {
                         UsersGroups.__decomposeHierarchyPath(t, flatArr);
                     }
-                    const users = yield DAL.UsersTalks.getUsersByTalkID(t.id);
-                    UsersGroups.__populateWithUsers(t, users, userID);
+                    if (t.type === 'group') {
+                        const users = yield DAL.UsersTalks.getUsersByTalkID(t.id);
+                        yield UsersGroups.__populateWithUsers(t, users, userID);
+                    }
+                    const unread = yield DAL.Messages.getUnreadMessagesCount(t.id, userID);
+                    t.unread = unread;
                 }
                 const filtered = flatArr.filter(t => t !== undefined && !t.isSubtalk);
-                const privateTalks = yield DAL.UsersTalks.getPrivateTalks(userID);
-                for (let pm of privateTalks) {
-                    filtered.push({
-                        id: pm.talk_id,
-                        type: 'user',
-                        name: pm.name
-                    });
-                }
+                // const privateTalks = await DAL.UsersTalks.getPrivateTalks(userID);
+                // for(let pm of privateTalks) {
+                //     filtered.push({
+                //         id: pm.talk_id,
+                //         type: 'user',
+                //         name: pm.name
+                //     })
+                // }
                 return filtered;
             }
             catch (err) {
@@ -110,13 +122,17 @@ class UsersGroups {
         }
     }
     static __populateWithUsers(talk, users, userID) {
-        users.forEach(u => {
-            talk.items.push({
-                id: Math.min(+u.user_id, +userID) + '_' + Math.max(+u.user_id, +userID),
-                type: 'user',
-                name: u.name,
-                age: u.age
-            });
+        return __awaiter(this, void 0, void 0, function* () {
+            for (let u of users) {
+                const unread = yield DAL.Messages.getUnreadMessagesCount(talk.id, userID);
+                talk.items.push({
+                    id: Math.min(+u.user_id, +userID) + '_' + Math.max(+u.user_id, +userID),
+                    type: 'user',
+                    name: u.name,
+                    age: u.age,
+                    unread
+                });
+            }
         });
     }
     static removeGroup(talkID) {
