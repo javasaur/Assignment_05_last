@@ -16,6 +16,7 @@ export default class Messages {
 
     static async incrementUnreadMessages(talkID: string) {
         try {
+            console.log('inside increment');
             const query = QueryBuilder.Messages.incrementUnreadMessages(escape(talkID));
             await dbQuery(query);
             return true;

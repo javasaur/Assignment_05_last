@@ -16,12 +16,15 @@ export default class Messages {
         // If user already in a talk -> plain add message
         // No need to create relations
         if(await DAL.UsersTalks.isUserInTalk(message.authorId, dialogueID)) {
-            return DAL.Messages.addMessage(message.content, message.authorId, dialogueID);
+            await DAL.Messages.addMessage(message.content, message.authorId, dialogueID);
+            await DAL.Messages.incrementUnreadMessages(dialogueID);
+            return;
         }
 
         // First add user to talk, then create his message
         await DAL.UsersTalks.addUserToTalk(message.authorId, dialogueID);
         await DAL.Messages.addMessage(message.content, message.authorId,dialogueID);
+        await DAL.Messages.incrementUnreadMessages(dialogueID);
         return;
     }
 

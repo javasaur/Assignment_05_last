@@ -25,11 +25,14 @@ class Messages {
             // If user already in a talk -> plain add message
             // No need to create relations
             if (yield DAL.UsersTalks.isUserInTalk(message.authorId, dialogueID)) {
-                return DAL.Messages.addMessage(message.content, message.authorId, dialogueID);
+                yield DAL.Messages.addMessage(message.content, message.authorId, dialogueID);
+                yield DAL.Messages.incrementUnreadMessages(dialogueID);
+                return;
             }
             // First add user to talk, then create his message
             yield DAL.UsersTalks.addUserToTalk(message.authorId, dialogueID);
             yield DAL.Messages.addMessage(message.content, message.authorId, dialogueID);
+            yield DAL.Messages.incrementUnreadMessages(dialogueID);
             return;
         });
     }
