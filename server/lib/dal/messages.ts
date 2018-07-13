@@ -14,6 +14,18 @@ export default class Messages {
         }
     }
 
+    static async addUnreadMessagesCounter(talkID: string, userID: string) {
+        try {
+            console.log(`adding counter for user ${userID} to talk ${talkID}`);
+            const query = QueryBuilder.Messages.addUnreadMessagesCounter(escape(talkID), escape(userID));
+            await dbQuery(query);
+            return true;
+        } catch (err) {
+            Logger.log(`Failed to add unread messages counter to talk ${talkID} , err: ${JSON.stringify(err)}`);
+            throw new Error(`DB request failed, try later!`);
+        }
+    }
+
     static async incrementUnreadMessages(talkID: string) {
         try {
             console.log('inside increment');
@@ -59,6 +71,17 @@ export default class Messages {
         }
     }
 
+    static async removeAllCounters(userID: string) {
+        try {
+            const query = QueryBuilder.Messages.removeAllCounters(escape(userID));
+            await dbQuery(query);
+            return true;
+        } catch (err) {
+            Logger.log(`Failed to remove counters for user ${userID} , err: ${JSON.stringify(err)}`);
+            throw new Error(`DB request failed, try later!`);
+        }
+    }
+
     static async removeAllMessagesFromTalk(talkID: string) {
         try {
             const query = QueryBuilder.Messages.removeAllMessagesFromTalk(escape(talkID));
@@ -66,6 +89,17 @@ export default class Messages {
             return true;
         } catch (err) {
             Logger.log(`Failed to delete messages of talk ${talkID} , err: ${JSON.stringify(err)}`);
+            throw new Error(`DB request failed, try later!`);
+        }
+    }
+
+    static async removeUnreadMessagesCounter(talkID: string, userID: string) {
+        try {
+            const query = QueryBuilder.Messages.removeUnreadMessagesCounter(escape(talkID), escape(userID));
+            await dbQuery(query);
+            return true;
+        } catch (err) {
+            Logger.log(`Failed to remove unread messages counter to talk ${talkID} , err: ${JSON.stringify(err)}`);
             throw new Error(`DB request failed, try later!`);
         }
     }

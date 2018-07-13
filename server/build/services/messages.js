@@ -32,6 +32,7 @@ class Messages {
             // First add user to talk, then create his message
             yield DAL.UsersTalks.addUserToTalk(message.authorId, dialogueID);
             yield DAL.Messages.addMessage(message.content, message.authorId, dialogueID);
+            yield DAL.Messages.addUnreadMessagesCounter(dialogueID, message.authorId);
             yield DAL.Messages.incrementUnreadMessages(dialogueID);
             return;
         });

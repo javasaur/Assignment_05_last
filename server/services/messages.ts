@@ -24,6 +24,7 @@ export default class Messages {
         // First add user to talk, then create his message
         await DAL.UsersTalks.addUserToTalk(message.authorId, dialogueID);
         await DAL.Messages.addMessage(message.content, message.authorId,dialogueID);
+        await DAL.Messages.addUnreadMessagesCounter(dialogueID, message.authorId);
         await DAL.Messages.incrementUnreadMessages(dialogueID);
         return;
     }

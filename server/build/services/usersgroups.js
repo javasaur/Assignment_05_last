@@ -19,7 +19,8 @@ class UsersGroups {
             if (yield DAL.UsersTalks.isUserInTalk(userID, groupID)) {
                 throw new CustomError_1.default(`User already in group`);
             }
-            return DAL.UsersTalks.addUserToTalk(userID, groupID);
+            yield DAL.UsersTalks.addUserToTalk(userID, groupID);
+            yield DAL.Messages.addUnreadMessagesCounter(groupID, userID);
         });
     }
     static getUsersByGroupID(talkID) {
@@ -91,9 +92,11 @@ class UsersGroups {
             }
         });
     }
-    static removeUser(id) {
+    static removeUser(userID) {
         return __awaiter(this, void 0, void 0, function* () {
-            return DAL.Users.removeUser({ id });
+            yield DAL.UsersTalks.removeUserFromAllTalks(userID);
+            yield DAL.Messages.removeAllCounters(userID);
+            yield DAL.Users.removeUser({ id: userID });
         });
     }
     static __populateFlatArray(hierarchy) {
@@ -158,7 +161,8 @@ class UsersGroups {
     }
     static removeUserFromGroup(userID, talkID) {
         return __awaiter(this, void 0, void 0, function* () {
-            return DAL.UsersTalks.removeUserFromTalk(talkID, userID);
+            yield DAL.UsersTalks.removeUserFromTalk(talkID, userID);
+            yield DAL.Messages.removeUnreadMessagesCounter(talkID, userID);
         });
     }
 }

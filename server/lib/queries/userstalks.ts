@@ -18,3 +18,4 @@ export const GET_PRIVATE_TALKS_BY_USER_ID = `SELECT tu.talk_id, u.name, u2.name 
 export const REMOVE_ALL_USERS_FROM_TALK = `DELETE FROM talks_users WHERE \`talk_id\`=$TALKID;`;
 export const REMOVE_USER_FROM_TALK = `DELETE FROM talks_users
                                       WHERE \`talk_id\`=$TALKID AND \`user_id\`=$USERID;`;
+export const REMOVE_USER_FROM_ALL_TALKS = `DELETE FROM talks_users WHERE \`user_id\`=$USERID;`;

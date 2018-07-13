@@ -9,7 +9,9 @@ export default class UsersGroups {
         if(await DAL.UsersTalks.isUserInTalk(userID, groupID)) {
             throw new CustomError(`User already in group`);
         }
-        return DAL.UsersTalks.addUserToTalk(userID, groupID);
+
+        await DAL.UsersTalks.addUserToTalk(userID, groupID);
+        await DAL.Messages.addUnreadMessagesCounter(groupID, userID);
     }
 
     static async getUsersByGroupID(talkID) {
@@ -87,8 +89,10 @@ export default class UsersGroups {
         }
     }
 
-    static async removeUser(id) {
-        return DAL.Users.removeUser({id});
+    static async removeUser(userID) {
+        await DAL.UsersTalks.removeUserFromAllTalks(userID);
+        await DAL.Messages.removeAllCounters(userID);
+        await DAL.Users.removeUser({id: userID});
     }
 
     static __populateFlatArray(hierarchy) {
@@ -155,6 +159,7 @@ export default class UsersGroups {
     }
 
     static async removeUserFromGroup(userID, talkID) {
-        return DAL.UsersTalks.removeUserFromTalk(talkID, userID);
+        await DAL.UsersTalks.removeUserFromTalk(talkID, userID);
+        await DAL.Messages.removeUnreadMessagesCounter(talkID, userID);
     }
 }

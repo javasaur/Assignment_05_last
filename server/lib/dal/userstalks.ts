@@ -83,7 +83,19 @@ export default class UsersTalks {
             await dbQuery(query);
             return true;
         } catch (err) {
-            Logger.log(`Failed to fetch users by talk id ${talkID}, err: ${JSON.stringify(err)}`);
+            Logger.log(`Failed to remove user ${userID} from talk ${talkID}, err: ${JSON.stringify(err)}`);
+            throw new Error(`DB request failed, try later!`);
+        }
+    }
+
+    static async removeUserFromAllTalks(userID: string) {
+        try{
+            const query = QueryBuilder.UsersTalks.removeUserfromAllTalks(escape(userID));
+            console.log(query);
+            await dbQuery(query);
+            return true;
+        } catch (err) {
+            Logger.log(`Failed to remove user ${userID} from all talks, err: ${JSON.stringify(err)}`);
             throw new Error(`DB request failed, try later!`);
         }
     }
