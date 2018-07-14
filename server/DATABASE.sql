@@ -151,7 +151,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Feo',25,'$2b$10$M684OmfKbu.o3LkcuQO6mei2iQgsjVqjrFGXsJLxEvlfWt1vCwMLK'),(2,'Geralt',106,'$2b$10$M684OmfKbu.o3LkcuQO6mei2iQgsjVqjrFGXsJLxEvlfWt1vCwMLK'),(3,'Ciri',23,'$2b$10$M684OmfKbu.o3LkcuQO6mei2iQgsjVqjrFGXsJLxEvlfWt1vCwMLK'),(4,'Udi',28,'$2b$10$M684OmfKbu.o3LkcuQO6mei2iQgsjVqjrFGXsJLxEvlfWt1vCwMLK'),(5,'Ori',25,'$2b$10$M684OmfKbu.o3LkcuQO6mei2iQgsjVqjrFGXsJLxEvlfWt1vCwMLK'),(17,'Roni',31,'$2b$10$M684OmfKbu.o3LkcuQO6mei2iQgsjVqjrFGXsJLxEvlfWt1vCwMLK'),(21,'Vernon Roshe',31,'$2b$10$k41HA3cS9nHgdniHcvNYguTS7/w/GsZQ6sfdD.actknE3RO0tg/bq'),(22,'Ves',25,'$2b$10$Bm1GZAJVIDcQ6qojSOwPlePxhESGv9Av6XPUKcbofTYYQiEkvnMDe');
+INSERT INTO `users` VALUES (1,'Feo',25,'$2b$10$M684OmfKbu.o3LkcuQO6mei2iQgsjVqjrFGXsJLxEvlfWt1vCwMLK'),(2,'Geralt',106,'$2b$10$M684OmfKbu.o3LkcuQO6mei2iQgsjVqjrFGXsJLxEvlfWt1vCwMLK'),(3,'Ciri',23,'$2b$10$M684OmfKbu.o3LkcuQO6mei2iQgsjVqjrFGXsJLxEvlfWt1vCwMLK'),(4,'Udi',28,'$2b$10$M684OmfKbu.o3LkcuQO6mei2iQgsjVqjrFGXsJLxEvlfWt1vCwMLK'),(5,'Ori',25,'$2b$10$M684OmfKbu.o3LkcuQO6mei2iQgsjVqjrFGXsJLxEvlfWt1vCwMLK'),(17,'Roni',31,'$2b$10$M684OmfKbu.o3LkcuQO6mei2iQgsjVqjrFGXsJLxEvlfWt1vCwMLK'),(18,'test',25,'$2b$10$M684OmfKbu.o3LkcuQO6mei2iQgsjVqjrFGXsJLxEvlfWt1vCwMLK'),(19,'Itay',25,'$2b$10$M684OmfKbu.o3LkcuQO6mei2iQgsjVqjrFGXsJLxEvlfWt1vCwMLK'),(20,'Evgeniy',25,'$2b$10$M684OmfKbu.o3LkcuQO6mei2iQgsjVqjrFGXsJLxEvlfWt1vCwMLK');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

@@ -34,3 +34,7 @@ Config file is located at
 ```
 PROJECT_ROOT_FOLDER/server/config.ts
 ```
+
+## Accessing the application
+Access the chat with 'test' user or any other mock user available
+Password: '1'
