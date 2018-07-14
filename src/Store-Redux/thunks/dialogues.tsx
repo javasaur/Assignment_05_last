@@ -17,7 +17,7 @@ export function sendMessage(dialogueID, authorId, message) {
             });
             dispatch(loadMessages(dialogueID));
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     }
 }
@@ -42,7 +42,7 @@ export function loadMessages(dialogueID) {
             const messages = await httpResponse.json();
             dispatch(setMessages(messages));
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     }
 }

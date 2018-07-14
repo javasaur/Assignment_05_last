@@ -91,7 +91,6 @@ export default class UsersTalks {
     static async removeUserFromAllTalks(userID: string) {
         try{
             const query = QueryBuilder.UsersTalks.removeUserfromAllTalks(escape(userID));
-            console.log(query);
             await dbQuery(query);
             return true;
         } catch (err) {

@@ -16,7 +16,6 @@ export default class Messages {
 
     static async addUnreadMessagesCounter(talkID: string, userID: string) {
         try {
-            console.log(`adding counter for user ${userID} to talk ${talkID}`);
             const query = QueryBuilder.Messages.addUnreadMessagesCounter(escape(talkID), escape(userID));
             await dbQuery(query);
             return true;
@@ -28,7 +27,6 @@ export default class Messages {
 
     static async incrementUnreadMessages(talkID: string) {
         try {
-            console.log('inside increment');
             const query = QueryBuilder.Messages.incrementUnreadMessages(escape(talkID));
             await dbQuery(query);
             return true;

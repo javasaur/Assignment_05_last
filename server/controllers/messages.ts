@@ -1,5 +1,6 @@
 import * as services from '../services';
 import {Request, Response} from 'express';
+import Logger from "../lib/logger";
 
 export default class Messages {
     static async addMessage(req: Request, res: Response) {
@@ -9,7 +10,7 @@ export default class Messages {
                 res.status(200).send({});
             })
             .catch((error) => {
-                console.log(error);
+                Logger.log(error);
                 res.status(400).send(error)
             })
     }
@@ -18,7 +19,7 @@ export default class Messages {
         services.Messages.getAllDialogueMessages(req.body.dialogueID)
             .then(messages => res.status(200).json(messages))
             .catch((error) => {
-                console.log(error);
+                Logger.log(error);
                 res.status(400).send(error)
             })
     }

@@ -24,9 +24,7 @@ export default class Socket {
     }
 
     static notifyByMessagesUpdate(dialogueID) {
-        // console.log(`inside notifyByMessagesUpdate ${dialogueID}`);
         Socket.io.to(dialogueID).emit('groupSubscription', dialogueID);
-        // console.log(`after notifyByMessagesUpdate`);
     }
 
     static notifyOnTreeChange() {

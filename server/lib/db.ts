@@ -1,13 +1,14 @@
+import {CONFIG} from '../config';
 const db = require('mysql');
 
 let conn;
 
 function initConnection() {
     conn = db.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'abc123',
-        database: 'chat',
+        host: CONFIG.DATABASE.host,
+        user: CONFIG.DATABASE.user,
+        password: CONFIG.DATABASE.password,
+        database: CONFIG.DATABASE.database,
         multipleStatements: true
     });
 

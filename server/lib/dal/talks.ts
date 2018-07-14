@@ -163,7 +163,6 @@ export default class Talks {
     }
 
     static async willCauseNameConflict(talkID: string) {
-        console.log(`checking naming conflict for ${talkID}`);
         const subtalks = await this.getSubtalksByParentID(talkID);
         const siblings = await this.getSiblingTalks(talkID);
 

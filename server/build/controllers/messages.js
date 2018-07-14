@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const services = require("../services");
+const logger_1 = require("../lib/logger");
 class Messages {
     static addMessage(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -18,7 +19,7 @@ class Messages {
                 res.status(200).send({});
             })
                 .catch((error) => {
-                console.log(error);
+                logger_1.default.log(error);
                 res.status(400).send(error);
             });
         });
@@ -28,7 +29,7 @@ class Messages {
             services.Messages.getAllDialogueMessages(req.body.dialogueID)
                 .then(messages => res.status(200).json(messages))
                 .catch((error) => {
-                console.log(error);
+                logger_1.default.log(error);
                 res.status(400).send(error);
             });
         });

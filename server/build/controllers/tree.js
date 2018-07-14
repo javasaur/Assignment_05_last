@@ -9,13 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const services = require("../services");
+const logger_1 = require("../lib/logger");
 class Tree {
     static buildJSONTree(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             services.UsersGroups.buildJSONTree(req.body.userID)
                 .then((tree) => res.status(200).json(tree))
                 .catch((error) => {
-                console.log(error);
+                logger_1.default.log(error);
                 res.status(400).send(error.message);
             });
         });
@@ -24,7 +25,10 @@ class Tree {
         return __awaiter(this, void 0, void 0, function* () {
             services.UsersGroups.buildAdminJSONTree()
                 .then((tree) => res.status(200).json(tree))
-                .catch((error) => res.status(400).send(error.message));
+                .catch(error => {
+                logger_1.default.log(error);
+                res.status(400).send(error.message);
+            });
         });
     }
 }

@@ -1,11 +1,12 @@
 import * as http from 'http';
 import app from './app';
 import * as services from "./services/";
+import Logger from "./lib/logger";
 
 const server = http.createServer(app);
 const port = 4000;
 services.Socket.init(server);
 
 server.listen(port, () => {
-    console.log(`Listening on port ${port}`);
+    Logger.log(`Server up, listening on port ${port}`);
 });

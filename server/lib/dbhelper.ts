@@ -1,4 +1,4 @@
-import {connection} from './mysql';
+import {connection} from './db';
 import * as util from "util";
 const dbConnection = connection();
 
