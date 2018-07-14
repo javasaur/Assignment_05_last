@@ -11,18 +11,14 @@ export default class Groups {
                     Socket.notifyOnAdminTreeChange();
                     res.status(200).send({})
                 })
-                .catch(err => {
-                    res.status(400).send(err.message);
-                });
+                .catch(err => res.status(400).send(err.message));
         } else {
             services.Groups.addGroupUnderParent(req.body.name, req.body.parent)
                 .then(() => {
                     Socket.notifyOnAdminTreeChange();
                     res.status(200).send({})
                 })
-                .catch(err => {
-                    res.status(400).send(err.message);
-                });
+                .catch(err => res.status(400).send(err.message));
         }
     }
 
@@ -31,9 +27,7 @@ export default class Groups {
             .then(() => {
                 res.status(200).send({});
             })
-            .catch(err => {
-                res.status(400).send(err.message);
-            });
+            .catch(err => res.status(400).send(err.message));
     }
 
     static async removeGroup(req: Request, res: Response) {

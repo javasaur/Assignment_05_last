@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const DAL = require("../lib/dal");
-const CustomError_1 = require("../lib/CustomError");
+const CustomError_1 = require("../helpers/CustomError");
 class UsersGroups {
     static addUserToGroup(userID, groupID) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -21,11 +21,6 @@ class UsersGroups {
             }
             yield DAL.UsersTalks.addUserToTalk(userID, groupID);
             yield DAL.Messages.addUnreadMessagesCounter(groupID, userID);
-        });
-    }
-    static getUsersByGroupID(talkID) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return DAL.UsersTalks.getUsersByTalkID(talkID);
         });
     }
     static buildAdminJSONTree() {
@@ -92,12 +87,26 @@ class UsersGroups {
             }
         });
     }
+    static getUsersByGroupID(talkID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return DAL.UsersTalks.getUsersByTalkID(talkID);
+        });
+    }
     static removeUser(userID) {
         return __awaiter(this, void 0, void 0, function* () {
             yield DAL.UsersTalks.removeUserFromAllTalks(userID);
             yield DAL.Messages.removeAllCounters(userID);
             yield DAL.Users.removeUser({ id: userID });
         });
+    }
+    static __decomposeHierarchyPath(talk, flatArr) {
+        for (let i = talk.path.length - 1; i >= 1; i--) {
+            const subTalk = flatArr[talk.path[i]];
+            const parent = flatArr[talk.path[i - 1]];
+            if (!parent.items.includes(subTalk)) {
+                parent.items.push(subTalk);
+            }
+        }
     }
     static __populateFlatArray(hierarchy) {
         const flatArr = [];
@@ -114,15 +123,6 @@ class UsersGroups {
             };
         });
         return flatArr;
-    }
-    static __decomposeHierarchyPath(talk, flatArr) {
-        for (let i = talk.path.length - 1; i >= 1; i--) {
-            const subTalk = flatArr[talk.path[i]];
-            const parent = flatArr[talk.path[i - 1]];
-            if (!parent.items.includes(subTalk)) {
-                parent.items.push(subTalk);
-            }
-        }
     }
     static __populateWithUsers(talk, users, userID) {
         return __awaiter(this, void 0, void 0, function* () {

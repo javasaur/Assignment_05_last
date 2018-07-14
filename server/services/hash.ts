@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt';
-import Logger from "../lib/logger";
+import Logger from "../helpers/logger";
 
 export default class Hash {
     static async hash(str) {

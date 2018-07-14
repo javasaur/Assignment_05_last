@@ -1,6 +1,6 @@
 import * as QueryBuilder from '../querybuilders';
-import {dbQuery, escape} from "../dbhelper";
-import Logger from "../logger";
+import {dbQuery, escape} from "../../helpers/db";
+import Logger from "../../helpers/logger";
 
 export default class UsersTalks {
     static async addUsersToPrivateTalk(talkID) {
@@ -77,17 +77,6 @@ export default class UsersTalks {
         }
     }
 
-    static async removeUserFromTalk(talkID: string, userID: string) {
-        try{
-            const query = QueryBuilder.UsersTalks.removeUserFromTalk(escape(talkID), escape(userID));
-            await dbQuery(query);
-            return true;
-        } catch (err) {
-            Logger.log(`Failed to remove user ${userID} from talk ${talkID}, err: ${JSON.stringify(err)}`);
-            throw new Error(`DB request failed, try later!`);
-        }
-    }
-
     static async removeUserFromAllTalks(userID: string) {
         try{
             const query = QueryBuilder.UsersTalks.removeUserfromAllTalks(escape(userID));
@@ -95,6 +84,17 @@ export default class UsersTalks {
             return true;
         } catch (err) {
             Logger.log(`Failed to remove user ${userID} from all talks, err: ${JSON.stringify(err)}`);
+            throw new Error(`DB request failed, try later!`);
+        }
+    }
+
+    static async removeUserFromTalk(talkID: string, userID: string) {
+        try{
+            const query = QueryBuilder.UsersTalks.removeUserFromTalk(escape(talkID), escape(userID));
+            await dbQuery(query);
+            return true;
+        } catch (err) {
+            Logger.log(`Failed to remove user ${userID} from talk ${talkID}, err: ${JSON.stringify(err)}`);
             throw new Error(`DB request failed, try later!`);
         }
     }

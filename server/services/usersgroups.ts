@@ -1,5 +1,5 @@
 import * as DAL from '../lib/dal';
-import CustomError from "../lib/CustomError";
+import CustomError from "../helpers/CustomError";
 
 export default class UsersGroups {
     static async addUserToGroup(userID, groupID) {
@@ -12,10 +12,6 @@ export default class UsersGroups {
 
         await DAL.UsersTalks.addUserToTalk(userID, groupID);
         await DAL.Messages.addUnreadMessagesCounter(groupID, userID);
-    }
-
-    static async getUsersByGroupID(talkID) {
-        return DAL.UsersTalks.getUsersByTalkID(talkID);
     }
 
     static async buildAdminJSONTree() {
@@ -89,10 +85,24 @@ export default class UsersGroups {
         }
     }
 
+    static async getUsersByGroupID(talkID) {
+        return DAL.UsersTalks.getUsersByTalkID(talkID);
+    }
+
     static async removeUser(userID) {
         await DAL.UsersTalks.removeUserFromAllTalks(userID);
         await DAL.Messages.removeAllCounters(userID);
         await DAL.Users.removeUser({id: userID});
+    }
+
+    static __decomposeHierarchyPath(talk, flatArr) {
+        for(let i = talk.path.length - 1; i >= 1; i--) {
+            const subTalk = flatArr[talk.path[i]];
+            const parent = flatArr[talk.path[i-1]];
+            if(!parent.items.includes(subTalk)) {
+                parent.items.push(subTalk);
+            }
+        }
     }
 
     static __populateFlatArray(hierarchy) {
@@ -110,16 +120,6 @@ export default class UsersGroups {
             }
         });
         return flatArr;
-    }
-
-    static __decomposeHierarchyPath(talk, flatArr) {
-        for(let i = talk.path.length - 1; i >= 1; i--) {
-            const subTalk = flatArr[talk.path[i]];
-            const parent = flatArr[talk.path[i-1]];
-            if(!parent.items.includes(subTalk)) {
-                parent.items.push(subTalk);
-            }
-        }
     }
 
     static async __populateWithUsers(talk, users, userID) {

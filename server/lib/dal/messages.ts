@@ -1,6 +1,6 @@
-import Logger from "../logger";
+import Logger from "../../helpers/logger"
 import * as QueryBuilder from '../querybuilders';
-import {dbQuery, escape} from "../dbhelper";
+import {dbQuery, escape} from "../../helpers/db";
 
 export default class Messages {
     static async addMessage(content: string, userID: string, talkID: string) {

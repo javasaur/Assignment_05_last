@@ -1,7 +1,8 @@
-import {contains, dbQuery, escape} from '../dbhelper';
-import Logger from "../logger";
+import {contains} from "../../helpers/common";
+import {dbQuery, escape} from '../../helpers/db';
+import Logger from "../../helpers/logger";
 import * as QueryBuilder from '../querybuilders';
-import CustomError from "../CustomError";
+import CustomError from "../../helpers/CustomError";
 
 export default class Users {
     static allowedColumns = ['name', 'user_id'];

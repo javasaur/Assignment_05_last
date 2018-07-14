@@ -1,9 +1,9 @@
     // Dynamic queries
-export const ADD_USER_TO_TALK = `INSERT INTO talks_users (\`talk_id\`, \`user_id\`) VALUES ($TALKID, $USERID);`;
 export const ADD_USERS_TO_PRIVATE_TALK = `START TRANSACTION;
                                           INSERT INTO talks_users(\`talk_id\`, \`user_id\`) VALUES ($TALKID, $USER1ID);
                                           INSERT INTO talks_users(\`talk_id\`, \`user_id\`) VALUES ($TALKID, $USER2ID);
                                           COMMIT;`;
+export const ADD_USER_TO_TALK = `INSERT INTO talks_users (\`talk_id\`, \`user_id\`) VALUES ($TALKID, $USERID);`;
 export const COUNT_USERS_UNDER_TALK = `SELECT COUNT(*) as userCount FROM talks_users WHERE \`talk_id\`=$TALKID;`;
 export const COUNT_USERS_UNDER_TALK_BY_USERID = `SELECT COUNT(*) as userCount FROM talks_users 
                                                WHERE \`talk_id\`=$TALKID AND \`user_id\`=$USERID;`;
@@ -16,6 +16,6 @@ export const GET_PRIVATE_TALKS_BY_USER_ID = `SELECT tu.talk_id, u.name, u2.name 
                                              WHERE tu.user_id=$USERID 
                                              AND tu2.user_id!=$USERID  AND tu.talk_id LIKE '%\\_%';`;
 export const REMOVE_ALL_USERS_FROM_TALK = `DELETE FROM talks_users WHERE \`talk_id\`=$TALKID;`;
+export const REMOVE_USER_FROM_ALL_TALKS = `DELETE FROM talks_users WHERE \`user_id\`=$USERID;`;
 export const REMOVE_USER_FROM_TALK = `DELETE FROM talks_users
                                       WHERE \`talk_id\`=$TALKID AND \`user_id\`=$USERID;`;
-export const REMOVE_USER_FROM_ALL_TALKS = `DELETE FROM talks_users WHERE \`user_id\`=$USERID;`;

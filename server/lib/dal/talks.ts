@@ -1,7 +1,8 @@
 import * as QueryBuilder from '../querybuilders';
-import {contains, dbQuery, escape} from "../dbhelper";
-import CustomError from "../CustomError";
-import Logger from "../logger";
+import {contains} from "../../helpers/common";
+import {dbQuery, escape} from "../../helpers/db";
+import CustomError from "../../helpers/CustomError";
+import Logger from "../../helpers/logger";
 
 export default class Talks {
     static async addPrivateTalk(talkID: string) {
@@ -11,17 +12,6 @@ export default class Talks {
             return true;
         } catch (err) {
             Logger.log(`Failed to add a private talk ${talkID} , err: ${JSON.stringify(err)}`);
-            throw new Error(`DB request failed, try later!`);
-        }
-    }
-
-    static async addPublicTalk(talkName: string) {
-        try {
-            const query = QueryBuilder.Talks.addPublicTalk(escape(talkName));
-            await dbQuery(query);
-            return true;
-        } catch (err) {
-            Logger.log(`Failed to add a new talk ${talkName} , err: ${JSON.stringify(err)}`);
             throw new Error(`DB request failed, try later!`);
         }
     }
@@ -63,6 +53,17 @@ export default class Talks {
         }
     }
 
+    static async addPublicTalk(talkName: string) {
+        try {
+            const query = QueryBuilder.Talks.addPublicTalk(escape(talkName));
+            await dbQuery(query);
+            return true;
+        } catch (err) {
+            Logger.log(`Failed to add a new talk ${talkName} , err: ${JSON.stringify(err)}`);
+            throw new Error(`DB request failed, try later!`);
+        }
+    }
+
     static async existsTalkWithID(talkID: string) {
         return !!(await Talks.getTalkByID(talkID));
     }
@@ -73,17 +74,6 @@ export default class Talks {
             return await dbQuery(query);
         } catch (err) {
             Logger.log(`Failed to fetch all public groups , err: ${JSON.stringify(err)}`);
-            throw new Error(`DB request failed, try later!`);
-        }
-    }
-
-    static async getTalkByID(talkID: string) {
-        try {
-            const query = QueryBuilder.Talks.getTalkByID(escape(talkID));
-            const talks = await dbQuery(query);
-            return talks.length > 0 ? talks[0] : null;
-        } catch (err) {
-            Logger.log(`Failed to fetch talk by id ${talkID} , err: ${JSON.stringify(err)}`);
             throw new Error(`DB request failed, try later!`);
         }
     }
@@ -104,6 +94,17 @@ export default class Talks {
             return await dbQuery(query);
         } catch (err) {
             Logger.log(`Failed to fetch subtalks for ${parentID}, err: ${JSON.stringify(err)}`);
+            throw new Error(`DB request failed, try later!`);
+        }
+    }
+
+    static async getTalkByID(talkID: string) {
+        try {
+            const query = QueryBuilder.Talks.getTalkByID(escape(talkID));
+            const talks = await dbQuery(query);
+            return talks.length > 0 ? talks[0] : null;
+        } catch (err) {
+            Logger.log(`Failed to fetch talk by id ${talkID} , err: ${JSON.stringify(err)}`);
             throw new Error(`DB request failed, try later!`);
         }
     }
@@ -149,7 +150,6 @@ export default class Talks {
             throw new Error(`DB request failed, try later!`);
         }
     }
-
 
     static async removeTalkByID(talkID: string) {
         try {

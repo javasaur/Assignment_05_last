@@ -31,15 +31,6 @@ export default class Users {
             .catch(err => res.status(400).send(err.message));
     }
 
-    static async updateUser(req: Request, res: Response) {
-        services.Users.updateUser(req.query.id, req.body)
-            .then(() => {
-                Socket.notifyOnUsersChange();
-                res.status(200).send({})
-            })
-            .catch(err => res.status(400).send(err.message));
-    }
-
     static async removeUser(req: Request, res: Response) {
         if(req.query.group) {
             services.UsersGroups.removeUserFromGroup(req.query.id, req.query.group)
@@ -53,5 +44,14 @@ export default class Users {
                 .then(() => res.status(200).send({}))
                 .catch(err => res.status(400).send(err.message));
         }
+    }
+
+    static async updateUser(req: Request, res: Response) {
+        services.Users.updateUser(req.query.id, req.body)
+            .then(() => {
+                Socket.notifyOnUsersChange();
+                res.status(200).send({})
+            })
+            .catch(err => res.status(400).send(err.message));
     }
 }

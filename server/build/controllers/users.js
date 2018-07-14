@@ -43,16 +43,6 @@ class Users {
                 .catch(err => res.status(400).send(err.message));
         });
     }
-    static updateUser(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            services.Users.updateUser(req.query.id, req.body)
-                .then(() => {
-                socket_1.default.notifyOnUsersChange();
-                res.status(200).send({});
-            })
-                .catch(err => res.status(400).send(err.message));
-        });
-    }
     static removeUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             if (req.query.group) {
@@ -68,6 +58,16 @@ class Users {
                     .then(() => res.status(200).send({}))
                     .catch(err => res.status(400).send(err.message));
             }
+        });
+    }
+    static updateUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            services.Users.updateUser(req.query.id, req.body)
+                .then(() => {
+                socket_1.default.notifyOnUsersChange();
+                res.status(200).send({});
+            })
+                .catch(err => res.status(400).send(err.message));
         });
     }
 }

@@ -2,10 +2,6 @@ import * as sio from "socket.io";
 import MessagesService from './messages';
 
 export default class Socket {
-    static emit(channel, msg) {
-
-    }
-
     static init(server) {
         const io = sio(server);
         Socket.io = io;
