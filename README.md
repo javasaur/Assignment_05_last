@@ -10,26 +10,26 @@ The project uses MySQL database, so be sure you have MySQL installed and databas
 
 ## Installation
 
-##### 1. Clone the repo
+#### 1. Clone the repo
 
 ```
 git clone https://github.com/javasaur/Assignment_05_last.git
 ```
 
-##### 2. Install the dependencies
+#### 2. Install the dependencies
 At the project's root level run
 ```
 npm i
 ```
 It will install dependencies for both client and server sides
 
-##### 3. Create database schema and populate it with mock data.
+#### 3. Create database schema and populate it with mock data.
 The self-contained file is located at
 ```
 PROJECT_ROOT_FOLDER/server/DATABASE.sql
 ```
 
-##### 4. Set up the project configuration
+#### 4. Set up the project configuration
 Config file is located at
 ```
 PROJECT_ROOT_FOLDER/server/config.ts
