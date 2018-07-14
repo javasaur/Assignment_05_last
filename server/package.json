@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
+    "prestart": "npm run build",
     "start": "node build/index.js",
     "tsc-watch": "tsc -w",
     "nodemon": "nodemon build/index.js -w build/ --verbose"
