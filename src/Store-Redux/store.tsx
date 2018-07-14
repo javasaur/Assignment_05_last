@@ -29,7 +29,7 @@ export const initialState: AppState = {
     navTree: null,
     adminNavTree: null,
     adminCurrentGroupID: null,
-    activeDialogueID: null,
+    activeDialogue: null,
     messages: [],
     socket: null,
     users: [],

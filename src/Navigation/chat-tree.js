@@ -31,6 +31,7 @@ export function ChatTree(wrapper) {
         clear();
 
         addClassesToElement(element, ['left-nav-tree']);
+        element.setAttribute('tabIndex', 0);
         wrapper.appendChild(element);
 
         fullElemList = items;
@@ -43,9 +44,9 @@ export function ChatTree(wrapper) {
             areEventListenersAttached = true;
         }
 
-        if(getActiveElem()) {
-            switchCurrenElementTo(0);
-        }
+        // if(getActiveElem()) {
+        //     switchCurrenElementTo(0);
+        // }
     }
 
     // Internal functions
@@ -84,7 +85,7 @@ export function ChatTree(wrapper) {
         for(let [index, item] of items.entries()) {
             // Create and configure the li and div elements
             let li = createDomElement("li", "");
-            let div = createDomElement("div", item.name);
+            let div = createDomElement(`div`, item.name);
             let icon = createDomElement("i", "");
             addClassesToElement(icon, ["icon", "fas"])
             if(item.type === 'user') {
@@ -216,10 +217,6 @@ export function ChatTree(wrapper) {
         }
     }
 
-    function hasChildren(elem) {
-
-    }
-
     function isExpandable(elem) {
         return elem.querySelector("div").classList.contains("group");
     }
@@ -269,9 +266,10 @@ export function ChatTree(wrapper) {
 
         // Provide the parent with new element details
         const id = getActiveElem().getAttribute('id');
-        // const type = getActiveElem().getAttribute('type');
+        const type = getActiveElem().getAttribute('type');
+        const name = getActiveElem().innerText
         if(switchCurrentElementCallback) {
-            switchCurrentElementCallback.apply(null, [id]);
+            switchCurrentElementCallback.apply(null, [id, type, name]);
         }
     }
 

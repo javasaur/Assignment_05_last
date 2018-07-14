@@ -14,7 +14,7 @@ export class SocketAPI {
     static initSocket() {
         SocketAPI.socket = socketIOClient('http://localhost:4000');
         SocketAPI.socket.on('groupSubscription', (dialogueID) => {
-            if(store.getState().activeDialogueID == dialogueID) {
+            if(store.getState().activeDialogue.id == dialogueID) {
                 store.dispatch(loadMessages(dialogueID));
             }
         })

@@ -9,7 +9,12 @@ import { Scrollbars } from 'react-custom-scrollbars';
 
 interface IOScreenProps {
     messages: Array<any>,
-    loggedUserID: any
+    loggedUserID: any,
+    activeDialogue: {
+        id: string,
+        name: string,
+        type: string
+    }
 }
 
 class IOScreen extends React.Component<IOScreenProps, any> {
@@ -29,7 +34,16 @@ class IOScreen extends React.Component<IOScreenProps, any> {
     }
 
     public render() {
+
         let res;
+        let header = null;
+        if(this.props.activeDialogue) {
+            if(this.props.activeDialogue.type === 'group') {
+                header = <div className="io-screen-header">{this.props.activeDialogue.name} (Public)</div>
+            } else if(this.props.activeDialogue.type === 'user') {
+                header = <div className="io-screen-header">{this.props.activeDialogue.name} (Private)</div>
+            }
+        }
         const messages = this.props.messages;
         const messagesLI: any[] = [];
         if(messages.length < 0) {
@@ -46,6 +60,7 @@ class IOScreen extends React.Component<IOScreenProps, any> {
 
             res = (
                 <div className="io-screen">
+                    {header}
                     <Scrollbars autoHide={true} >
                         <div className="io-screen-messages">{messagesLI}</div>
                     </Scrollbars>
@@ -53,6 +68,8 @@ class IOScreen extends React.Component<IOScreenProps, any> {
                 </div>
             )
         }
+
+
         return res;
     }
 
@@ -67,6 +84,7 @@ class IOScreen extends React.Component<IOScreenProps, any> {
 
 const mapStateToProps = (state: AppState) => {
     return {
+        activeDialogue: state.activeDialogue,
         loggedUserID: state.loggedUserID,
         messages: state.messages,
     }

@@ -22,9 +22,13 @@ export function sendMessage(dialogueID, authorId, message) {
     }
 }
 
-export function switchDialogue(dialogueID) {
+export function switchDialogue(dialogueID, dialogueType, dialogueName) {
     return function(dispatch) {
-        dispatch(switchDialogueAction(dialogueID));
+        dispatch(switchDialogueAction({
+            id: dialogueID,
+            name: dialogueName,
+            type: dialogueType
+        }));
         dispatch(loadMessages(dialogueID));
     }
 }

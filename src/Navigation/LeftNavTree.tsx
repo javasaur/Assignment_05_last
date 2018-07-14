@@ -48,8 +48,8 @@ class LeftNavTree extends React.Component<LeftNavProps, any> {
         }
     }
 
-    private switchDialogue(id) {
-        store.dispatch(switchDialogue(id));
+    private switchDialogue(id, type, name) {
+        store.dispatch(switchDialogue(id, type, name));
     }
 }
 

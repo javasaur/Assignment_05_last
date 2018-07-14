@@ -10,6 +10,6 @@ export function setMessages(state: AppState, payload): AppState {
 export function switchDialogue(state: AppState, payload): AppState {
     return {
         ...state,
-        activeDialogueID: payload.dialogueID
+        activeDialogue: payload.activeDialogue
     }
 }

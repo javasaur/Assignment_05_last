@@ -7,9 +7,9 @@ export function setMessages(messages) {
     }
 }
 
-export function switchDialogueAction(dialogueID) {
+export function switchDialogueAction(activeDialogue) {
     return {
         type: SWITCH_DIALOGUE,
-        payload: {dialogueID}
+        payload: {activeDialogue}
     }
 }

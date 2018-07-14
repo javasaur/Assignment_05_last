@@ -7,7 +7,11 @@ import {connect} from "react-redux";
 import {AppState} from "../Store-Redux/appState";
 
 interface InputBlockProps {
-    activeDialogueID: string;
+    activeDialogue: {
+        id: string,
+        name: string,
+        type: string
+    }
     loggedUserID: number;
     operation: Function;
 }
@@ -36,7 +40,7 @@ class InputBlock extends React.Component<InputBlockProps, any> {
         this.setState({
             message: ''
         });
-        store.dispatch(sendMessage(this.props.activeDialogueID, this.props.loggedUserID, this.state.message));
+        store.dispatch(sendMessage(this.props.activeDialogue.id, this.props.loggedUserID, this.state.message));
     }
 
     public render() {
@@ -58,7 +62,7 @@ class InputBlock extends React.Component<InputBlockProps, any> {
 const mapStateToProps = (state: AppState, ownProps) => {
     return {
         loggedUserID: state.loggedUserID,
-        activeDialogueID: state.activeDialogueID,
+        activeDialogue: state.activeDialogue,
         operation: ownProps.operation
     }
 }

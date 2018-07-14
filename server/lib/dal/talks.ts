@@ -5,62 +5,75 @@ import CustomError from "../../helpers/CustomError";
 import Logger from "../../helpers/logger";
 
 export default class Talks {
-    static async addPrivateTalk(talkID: string) {
-        try {
-            const query = QueryBuilder.Talks.addPrivateTalk(escape(talkID));
-            await dbQuery(query);
-            return true;
-        } catch (err) {
-            Logger.log(`Failed to add a private talk ${talkID} , err: ${JSON.stringify(err)}`);
-            throw new Error(`DB request failed, try later!`);
+    static addPrivateTalk(talkID: string) {
+        const query = QueryBuilder.Talks.addPrivateTalk(escape(talkID));
+        return {
+            query,
+            execute: async () => {
+                try {
+                    await dbQuery(query);
+                    return true;
+                } catch (err) {
+                    Logger.log(`Failed to add a private talk ${talkID} , err: ${JSON.stringify(err)}`);
+                    throw new Error(`DB request failed, try later!`);
+                }
+            }
         }
     }
 
     static async addPublicRootTalk(talkName: string) {
-        try {
-            if (await Talks.isNameDuplicateUnderRoot(talkName)) {
-                throw new CustomError(`A group with such name already exists`);
-            }
-            await Talks.addPublicTalk(talkName);
-            return true;
-        } catch (err) {
-            if (err instanceof CustomError) {
-                throw err;
-            }
+        if (await Talks.isNameDuplicateUnderRoot(talkName)) {
+            throw new CustomError(`A group with such name already exists`);
+        }
 
-            // DB errors
-            Logger.log(`Failed to create a root group ${talkName} , err: ${JSON.stringify(err)}`);
-            throw new Error(`DB request failed, try later!`);
+        const query = Talks.addPublicTalk(talkName).query;
+        return {
+            query,
+            execute: async () => {
+                try {
+                    await Talks.addPublicTalk(talkName);
+                    return true;
+                } catch (err) {
+                    Logger.log(`Failed to create a root group ${talkName} , err: ${JSON.stringify(err)}`);
+                    throw new Error(`DB request failed, try later!`);
+                }
+            }
         }
     }
 
     static async addPublicSubtalk(talkName: string, parentID: string) {
-        try {
-            if (await Talks.isNameDuplicateUnderTalk(talkName, parentID)) {
-                throw new CustomError(`A group with such name already exists`);
-            }
-            const query = QueryBuilder.Talks.addPublicSubtalk(escape(talkName), escape(parentID));
-            await dbQuery(query);
-            return true;
-        } catch (err) {
-            if (err instanceof CustomError) {
-                throw err;
-            }
+        if (await Talks.isNameDuplicateUnderTalk(talkName, parentID)) {
+            throw new CustomError(`A group with such name already exists`);
+        }
 
-            // DB errors
-            Logger.log(`Failed to create a root group ${talkName} , err: ${JSON.stringify(err)}`);
-            throw new Error(`DB request failed, try later!`);
+        const query = QueryBuilder.Talks.addPublicSubtalk(escape(talkName), escape(parentID));
+        return {
+            query,
+            execute: async () => {
+                try {
+                    await dbQuery(query);
+                    return true;
+                } catch (err) {
+                    Logger.log(`Failed to create a root group ${talkName} , err: ${JSON.stringify(err)}`);
+                    throw new Error(`DB request failed, try later!`);
+                }
+            }
         }
     }
 
-    static async addPublicTalk(talkName: string) {
-        try {
-            const query = QueryBuilder.Talks.addPublicTalk(escape(talkName));
-            await dbQuery(query);
-            return true;
-        } catch (err) {
-            Logger.log(`Failed to add a new talk ${talkName} , err: ${JSON.stringify(err)}`);
-            throw new Error(`DB request failed, try later!`);
+    static addPublicTalk(talkName: string) {
+        const query = QueryBuilder.Talks.addPublicTalk(escape(talkName));
+        return {
+            query,
+            execute: async () => {
+                try {
+                    await dbQuery(query);
+                    return true;
+                } catch (err) {
+                    Logger.log(`Failed to add a new talk ${talkName} , err: ${JSON.stringify(err)}`);
+                    throw new Error(`DB request failed, try later!`);
+                }
+            }
         }
     }
 
@@ -68,54 +81,79 @@ export default class Talks {
         return !!(await Talks.getTalkByID(talkID));
     }
 
-    static async getAllPublicTalks() {
-        try {
-            const query = QueryBuilder.Talks.getAllPublicTalks();
-            return await dbQuery(query);
-        } catch (err) {
-            Logger.log(`Failed to fetch all public groups , err: ${JSON.stringify(err)}`);
-            throw new Error(`DB request failed, try later!`);
+    static getAllPublicTalks() {
+        const query = QueryBuilder.Talks.getAllPublicTalks();
+        return {
+            query,
+            execute: async () => {
+                try {
+                    return await dbQuery(query);
+                } catch (err) {
+                    Logger.log(`Failed to fetch all public groups , err: ${JSON.stringify(err)}`);
+                    throw new Error(`DB request failed, try later!`);
+                }
+            }
         }
     }
 
-    static async getSiblingTalks(talkID: string) {
-        try {
-            const query = QueryBuilder.Talks.getSiblingTalks(talkID);
-            return await dbQuery(query);
-        } catch (err) {
-            Logger.log(`Failed to fetch sibling talks for ${talkID}, err: ${JSON.stringify(err)}`);
-            throw new Error(`DB request failed, try later!`);
+    static getSiblingTalks(talkID: string) {
+        const query = QueryBuilder.Talks.getSiblingTalks(talkID);
+        return {
+            query,
+            execute: async () => {
+                try {
+                    return await dbQuery(query);
+                } catch (err) {
+                    Logger.log(`Failed to fetch sibling talks for ${talkID}, err: ${JSON.stringify(err)}`);
+                    throw new Error(`DB request failed, try later!`);
+                }
+            }
         }
     }
 
-    static async getSubtalksByParentID(parentID: string) {
-        try {
-            const query = QueryBuilder.Talks.getSubtalksByParentID(parentID);
-            return await dbQuery(query);
-        } catch (err) {
-            Logger.log(`Failed to fetch subtalks for ${parentID}, err: ${JSON.stringify(err)}`);
-            throw new Error(`DB request failed, try later!`);
+    static getSubtalksByParentID(parentID: string) {
+        const query = QueryBuilder.Talks.getSubtalksByParentID(parentID);
+        return {
+            query,
+            execute: async () => {
+                try {
+                    return await dbQuery(query);
+                } catch (err) {
+                    Logger.log(`Failed to fetch subtalks for ${parentID}, err: ${JSON.stringify(err)}`);
+                    throw new Error(`DB request failed, try later!`);
+                }
+            }
         }
     }
 
-    static async getTalkByID(talkID: string) {
-        try {
-            const query = QueryBuilder.Talks.getTalkByID(escape(talkID));
-            const talks = await dbQuery(query);
-            return talks.length > 0 ? talks[0] : null;
-        } catch (err) {
-            Logger.log(`Failed to fetch talk by id ${talkID} , err: ${JSON.stringify(err)}`);
-            throw new Error(`DB request failed, try later!`);
+    static getTalkByID(talkID: string) {
+        const query = QueryBuilder.Talks.getTalkByID(escape(talkID));
+        return {
+            query,
+            execute: async () => {
+                try {
+                    const talks = await dbQuery(query);
+                    return talks.length > 0 ? talks[0] : null;
+                } catch (err) {
+                    Logger.log(`Failed to fetch talk by id ${talkID} , err: ${JSON.stringify(err)}`);
+                    throw new Error(`DB request failed, try later!`);
+                }
+            }
         }
     }
 
-    static async getTalksHierarchy() {
-        try {
-            const query = QueryBuilder.Talks.getTalksHierarchy();
-            return await dbQuery(query);
-        } catch (err) {
-            Logger.log(`Failed to fetch groups hierarchy , err: ${JSON.stringify(err)}`);
-            throw new Error(`DB request failed, try later!`);
+    static getTalksHierarchy() {
+        const query = QueryBuilder.Talks.getTalksHierarchy();
+        return {
+            query,
+            execute: async () => {
+                try {
+                    return await dbQuery(query);
+                } catch (err) {
+                    Logger.log(`Failed to fetch groups hierarchy , err: ${JSON.stringify(err)}`);
+                    throw new Error(`DB request failed, try later!`);
+                }
+            }
         }
     }
 
@@ -140,31 +178,41 @@ export default class Talks {
         return count > 0;
     }
 
-    static async moveSubtalksUp(talkID: string) {
-        try {
-            const query = QueryBuilder.Talks.moveSubtalksUp(escape(talkID));
-            await dbQuery(query);
-            return true;
-        } catch (err) {
-            Logger.log(`Failed to move  up subtalks of talk ${talkID}, err: ${JSON.stringify(err)}`);
-            throw new Error(`DB request failed, try later!`);
+    static moveSubtalksUp(talkID: string) {
+        const query = QueryBuilder.Talks.moveSubtalksUp(escape(talkID));
+        return {
+            query,
+            execute: async () => {
+                try {
+                    await dbQuery(query);
+                    return true;
+                } catch (err) {
+                    Logger.log(`Failed to move  up subtalks of talk ${talkID}, err: ${JSON.stringify(err)}`);
+                    throw new Error(`DB request failed, try later!`);
+                }
+            }
         }
     }
 
-    static async removeTalkByID(talkID: string) {
-        try {
-            const query = QueryBuilder.Talks.removeTalkByID(escape(talkID));
-            await dbQuery(query);
-            return true;
-        } catch (err) {
-            Logger.log(`Failed to remove talk by id ${talkID}, err: ${JSON.stringify(err)}`);
-            throw new Error(`DB request failed, try later!`);
+    static removeTalkByID(talkID: string) {
+        const query = QueryBuilder.Talks.removeTalkByID(escape(talkID));
+        return {
+            query,
+            execute: async () => {
+                try {
+                    await dbQuery(query);
+                    return true;
+                } catch (err) {
+                    Logger.log(`Failed to remove talk by id ${talkID}, err: ${JSON.stringify(err)}`);
+                    throw new Error(`DB request failed, try later!`);
+                }
+            }
         }
     }
 
     static async willCauseNameConflict(talkID: string) {
-        const subtalks = await this.getSubtalksByParentID(talkID);
-        const siblings = await this.getSiblingTalks(talkID);
+        const subtalks = await this.getSubtalksByParentID(talkID).execute();
+        const siblings = await this.getSiblingTalks(talkID).execute();
 
         const subNames = subtalks.map(s => s.name);
         const sibNames = siblings.map(s => s.name);

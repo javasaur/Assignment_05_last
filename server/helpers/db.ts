@@ -3,6 +3,14 @@ import * as util from "util";
 
 const dbConnection = connection();
 
+export async function execAsTransaction(...queries) {
+    let query = ``;
+    query += `START TRANSACTION;`;
+    queries.forEach(q => query += q);
+    query += `COMMIT;`;
+    return dbQuery(query);
+}
+
 export const dbQuery = util.promisify(dbConnection.query.bind(dbConnection));
 
 export function escape(queryPart) {
@@ -15,3 +23,4 @@ export function escape(queryPart) {
 
     return dbConnection.escape(queryPart);
 }
+

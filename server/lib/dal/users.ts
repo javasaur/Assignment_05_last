@@ -8,22 +8,23 @@ export default class Users {
     static allowedColumns = ['name', 'user_id'];
 
     static async addUser(user) {
-        try {
-            if(await Users.existsUserWithName(user.name)) {
-                throw new CustomError(`Username ${user.name} is busy `);
-            }
-            escape(user);
-            const query = QueryBuilder.Users.addUser(user.name, user.password, user.age);
-            await dbQuery(query);
-            return true;
-        } catch (err) {
-            if(err instanceof CustomError) {
-                throw err;
-            }
+        if(await Users.existsUserWithName(user.name)) {
+            throw new CustomError(`Username ${user.name} is busy `);
+        }
 
-            // DB errors
-            Logger.log(`Failed to add user ${user.name} , err: ${JSON.stringify(err)}`);
-            throw new Error(`DB request failed, try later!`);
+        escape(user);
+        const query = QueryBuilder.Users.addUser(user.name, user.password, user.age);
+        return {
+            query,
+            execute: async () => {
+                try {
+                    await dbQuery(query);
+                    return true;
+                } catch (err) {
+                    Logger.log(`Failed to add user ${user.name} , err: ${JSON.stringify(err)}`);
+                    throw new Error(`DB request failed, try later!`);
+                }
+            }
         }
     }
 
@@ -44,15 +45,20 @@ export default class Users {
         return !!res;
     }
 
-    static async getAllUsers(...options: string[]) {
-        try {
-            const query = contains(options, 'no-password') ?
-                QueryBuilder.Users.getAllUsersOmitPassword() :
-                QueryBuilder.Users.getAllUsers();
-            return await dbQuery(query);
-        } catch (err) {
-            Logger.log(`Failed to fetch all users, err: ${JSON.stringify(err)}`);
-            throw new Error(`DB request failed, try later!`);
+    static getAllUsers(...options: string[]) {
+        const query = contains(options, 'no-password') ?
+            QueryBuilder.Users.getAllUsersOmitPassword() :
+            QueryBuilder.Users.getAllUsers();
+        return {
+            query,
+            execute: async () => {
+                try {
+                    return await dbQuery(query);
+                } catch (err) {
+                    Logger.log(`Failed to fetch all users, err: ${JSON.stringify(err)}`);
+                    throw new Error(`DB request failed, try later!`);
+                }
+            }
         }
     }
 
@@ -65,6 +71,7 @@ export default class Users {
     }
 
     static async getUserByProp(propName: string, propValue: string, ...options: string[]) {
+
         try {
             if(!contains(this.allowedColumns, propName)) {
                 Logger.log(`Trying to pass unsafe column, possible injection`);
@@ -82,41 +89,45 @@ export default class Users {
         }
     }
 
-    static async removeUser(user) {
-        try {
-            if(!user.id) {
-                throw new CustomError(`Provide a valid user object with id property`)
-            }
+    static removeUser(user) {
+        if(!user.id) {
+            throw new CustomError(`Provide a valid user object with id property`)
+        }
 
-            const query = QueryBuilder.Users.removeUserByID(user.id);
-            await dbQuery(query);
-            return true;
-        } catch (err) {
-            if(err instanceof CustomError) {
-                throw err;
+        escape(user);
+        const query = QueryBuilder.Users.removeUserByID(user.id);
+        return {
+            query,
+            execute: async () => {
+                try {
+                    await dbQuery(query);
+                    return true;
+                } catch (err) {
+                    Logger.log(`Failed to delete user with id ${user.id}, err: ${JSON.stringify(err)}`);
+                    throw new Error(`DB request failed, try later!`);
+                }
             }
-
-            Logger.log(`Failed to delete user with id ${user.id}, err: ${JSON.stringify(err)}`);
-            throw new Error(`DB request failed, try later!`);
         }
     }
 
-    static async updateUser(user) {
-        try {
-            if(!user.id) {
-                throw new CustomError(`Provide a valid user object with id property`)
-            }
-            escape(user);
-            const query = QueryBuilder.Users.updateUserByID(user.id, user);
-            await dbQuery(query);
-            return true;
-        } catch (err) {
-            if(err instanceof CustomError) {
-                throw err;
-            }
+    static updateUser(user) {
+        if(!user.id) {
+            throw new CustomError(`Provide a valid user object with id property`)
+        }
 
-            Logger.log(`Failed to update user with id ${user.id}, err: ${JSON.stringify(err)}`);
-            throw new Error(`DB request failed, try later!`);
+        escape(user);
+        const query = QueryBuilder.Users.updateUserByID(user.id, user);
+        return {
+            query,
+            execute: async () => {
+                try {
+                    await dbQuery(query);
+                    return true;
+                } catch (err) {
+                    Logger.log(`Failed to update user with id ${user.id}, err: ${JSON.stringify(err)}`);
+                    throw new Error(`DB request failed, try later!`);
+                }
+            }
         }
     }
 }

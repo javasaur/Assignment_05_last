@@ -19,16 +19,18 @@
 
         li {
             padding: 1em 1em;
-            color: #e3e4e8;
+            color: #64656a;
             background-color: #212226;
             margin-bottom: 0.1em;
 
             &:hover {
+                color: #e6e9ee;
                 cursor: pointer;
                 background-color: #42464f;
             }
 
             &.selected {
+                color: #e6e9ee;
                 background-color: #42464f;
 
                 & > div.group {

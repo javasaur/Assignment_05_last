@@ -12,10 +12,10 @@
         font-size: 16px;
         background: #303136;
         padding: 15px 30px 15px 30px;
-        border: 1px solid #212226;
+        border: 1px solid #2c2d32;
         display: flex;
         flex-direction: column;
-        box-shadow: 5px 5px 8px 8px;
+        box-shadow: 1px 1px 1px 1px;
 
 
         ::placeholder {
@@ -33,20 +33,20 @@
             &[type=text], &[type=password] {
                 background: transparent;
                 border: none;
-                border-bottom: 1px solid #bebfc3;
+                border-bottom: 1px solid #222326;
                 width: 300px;
                 outline: none;
                 padding: 10px 0;
-                font-style: italic;
+                //font-style: italic;
                 text-align: center;
 
                 &:focus {
-                    border-bottom: 1px solid #212226;
+                    border-bottom: 2px solid #1b1c1f;
                 }
             }
 
             &[type=submit] {
-                background: #42464f;
+                background: #222327;
                 border: none;
                 padding: 8px 10px 8px 10px;
                 border-radius: 5px;
@@ -54,7 +54,7 @@
                 margin-top: 15px;
 
                 &:hover {
-                    background: #212226;
+                    background: #1b1c1f;
                     cursor: pointer;
                 }
             }

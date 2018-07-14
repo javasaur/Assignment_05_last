@@ -5,7 +5,11 @@ export interface AppState {
     navTree: any // not precise,
     adminNavTree: any,
     adminCurrentGroupID: string | null,
-    activeDialogueID: string | null,
+    activeDialogue: {
+        id: string,
+        name: string,
+        type: string
+    } | null,
     messages: Array<any>,
     socket: any,
     users: Array<any>,
