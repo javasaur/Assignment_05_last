@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const DAL = require("../lib/dal");
+const services = require("../services");
 class Messages {
     static addMessageToDialogue(dialogueID, message) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -20,6 +21,7 @@ class Messages {
                 }
                 yield DAL.Messages.addMessage(message.content, message.authorId, dialogueID);
                 yield DAL.Messages.incrementUnreadMessages(dialogueID);
+                services.Socket.notifyOnTreeChange();
                 return;
             }
             // If user already in a talk -> plain add message
@@ -34,6 +36,7 @@ class Messages {
             yield DAL.Messages.addMessage(message.content, message.authorId, dialogueID);
             yield DAL.Messages.addUnreadMessagesCounter(dialogueID, message.authorId);
             yield DAL.Messages.incrementUnreadMessages(dialogueID);
+            services.Socket.notifyOnTreeChange();
             return;
         });
     }

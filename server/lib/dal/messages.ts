@@ -69,9 +69,20 @@ export default class Messages {
         }
     }
 
-    static async removeAllCounters(userID: string) {
+    static async removeAllCountersForTalk(talkID: string) {
         try {
-            const query = QueryBuilder.Messages.removeAllCounters(escape(userID));
+            const query = QueryBuilder.Messages.removeAllCountersForTalk(escape(talkID));
+            await dbQuery(query);
+            return true;
+        } catch (err) {
+            Logger.log(`Failed to remove counters for talk ${talkID} , err: ${JSON.stringify(err)}`);
+            throw new Error(`DB request failed, try later!`);
+        }
+    }
+
+    static async removeAllCountersForUser(userID: string) {
+        try {
+            const query = QueryBuilder.Messages.removeAllCountersForUser(escape(userID));
             await dbQuery(query);
             return true;
         } catch (err) {

@@ -1,4 +1,5 @@
 import * as DAL from '../lib/dal';
+import * as services from '../services';
 
 export default class Messages {
     static async addMessageToDialogue(dialogueID, message) {
@@ -10,6 +11,7 @@ export default class Messages {
             }
             await DAL.Messages.addMessage(message.content, message.authorId, dialogueID);
             await DAL.Messages.incrementUnreadMessages(dialogueID);
+            services.Socket.notifyOnTreeChange();
             return;
         }
 
@@ -26,6 +28,7 @@ export default class Messages {
         await DAL.Messages.addMessage(message.content, message.authorId,dialogueID);
         await DAL.Messages.addUnreadMessagesCounter(dialogueID, message.authorId);
         await DAL.Messages.incrementUnreadMessages(dialogueID);
+        services.Socket.notifyOnTreeChange();
         return;
     }
 

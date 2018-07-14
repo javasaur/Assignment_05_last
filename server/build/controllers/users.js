@@ -46,6 +46,7 @@ class Users {
     static removeUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             if (req.query.group) {
+                services.Socket.notifyOnTreeChange();
                 services.UsersGroups.removeUserFromGroup(req.query.id, req.query.group)
                     .then(() => {
                     socket_1.default.notifyOnUsersChange();
@@ -54,6 +55,7 @@ class Users {
                     .catch(err => res.status(400).send(err.message));
             }
             else {
+                services.Socket.notifyOnTreeChange();
                 services.UsersGroups.removeUser(req.query.id)
                     .then(() => res.status(200).send({}))
                     .catch(err => res.status(400).send(err.message));

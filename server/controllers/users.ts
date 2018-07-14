@@ -33,6 +33,7 @@ export default class Users {
 
     static async removeUser(req: Request, res: Response) {
         if(req.query.group) {
+            services.Socket.notifyOnTreeChange();
             services.UsersGroups.removeUserFromGroup(req.query.id, req.query.group)
                 .then(() => {
                     Socket.notifyOnUsersChange();
@@ -40,6 +41,7 @@ export default class Users {
                 })
                 .catch(err => res.status(400).send(err.message));
         } else {
+            services.Socket.notifyOnTreeChange();
             services.UsersGroups.removeUser(req.query.id)
                 .then(() => res.status(200).send({}))
                 .catch(err => res.status(400).send(err.message));

@@ -91,7 +91,7 @@ export default class UsersGroups {
 
     static async removeUser(userID) {
         await DAL.UsersTalks.removeUserFromAllTalks(userID);
-        await DAL.Messages.removeAllCounters(userID);
+        await DAL.Messages.removeAllCountersForUser(userID);
         await DAL.Users.removeUser({id: userID});
     }
 
@@ -145,7 +145,9 @@ export default class UsersGroups {
         if(!(await DAL.Talks.hasSubtalks(talkID))) {
             await DAL.UsersTalks.removeAllUsersFromTalk(talkID);
             await DAL.Messages.removeAllMessagesFromTalk(talkID);
+            await DAL.Messages.removeAllCountersForTalk(talkID);
             await DAL.Talks.removeTalkByID(talkID);
+
             return;
         }
 

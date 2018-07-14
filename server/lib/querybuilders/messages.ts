@@ -1,7 +1,7 @@
 import {
     ADD_MESSAGE, ADD_UNREAD_MESSAGES_COUNTER,
     GET_ALL_MESSAGES_BY_TALKID, GET_UNREAD_MESSAGES_COUNT,
-    INCREMENT_UNREAD_MESSAGES, NULL_UNREAD_MESSAGES, REMOVE_ALL_COUNTERS,
+    INCREMENT_UNREAD_MESSAGES, NULL_UNREAD_MESSAGES, REMOVE_ALL_COUNTERS_FOR_TALK, REMOVE_ALL_COUNTERS_FOR_USER,
     REMOVE_ALL_MESSAGES_FROM_TALK, REMOVE_UNREAD_MESSAGES_COUNTER
 } from "../queries/messages";
 
@@ -46,8 +46,13 @@ export default class Messages {
             .replace(/\$USERID/, userID)
     }
 
-    static removeAllCounters(userID: string) {
-        const query = REMOVE_ALL_COUNTERS;
+    static removeAllCountersForTalk(talkID: string) {
+        const query = REMOVE_ALL_COUNTERS_FOR_TALK;
+        return query.replace(/\$TALKID/, talkID);
+    }
+
+    static removeAllCountersForUser(userID: string) {
+        const query = REMOVE_ALL_COUNTERS_FOR_USER;
         return query.replace(/\$USERID/, userID);
     }
 

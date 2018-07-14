@@ -95,7 +95,7 @@ class UsersGroups {
     static removeUser(userID) {
         return __awaiter(this, void 0, void 0, function* () {
             yield DAL.UsersTalks.removeUserFromAllTalks(userID);
-            yield DAL.Messages.removeAllCounters(userID);
+            yield DAL.Messages.removeAllCountersForUser(userID);
             yield DAL.Users.removeUser({ id: userID });
         });
     }
@@ -147,6 +147,7 @@ class UsersGroups {
             if (!(yield DAL.Talks.hasSubtalks(talkID))) {
                 yield DAL.UsersTalks.removeAllUsersFromTalk(talkID);
                 yield DAL.Messages.removeAllMessagesFromTalk(talkID);
+                yield DAL.Messages.removeAllCountersForTalk(talkID);
                 yield DAL.Talks.removeTalkByID(talkID);
                 return;
             }
