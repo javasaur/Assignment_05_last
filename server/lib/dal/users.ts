@@ -7,11 +7,7 @@ import CustomError from "../../helpers/CustomError";
 export default class Users {
     static allowedColumns = ['name', 'user_id'];
 
-    static async addUser(user) {
-        if(await Users.existsUserWithName(user.name)) {
-            throw new CustomError(`Username ${user.name} is busy `);
-        }
-
+    static addUser(user) {
         escape(user);
         const query = QueryBuilder.Users.addUser(user.name, user.password, user.age);
         return {
@@ -41,7 +37,7 @@ export default class Users {
             Logger.log(`Trying to pass unsafe column, possible injection`);
             throw new Error(`DB request failed, try later!`);
         }
-        const res = await Users.getUserByProp(propName, escape(propValue), 'no-password');
+        const res = await Users.getUserByProp(propName, escape(propValue), 'no-password').execute();
         return !!res;
     }
 
@@ -62,30 +58,34 @@ export default class Users {
         }
     }
 
-    static async getUserByID(id: string) {
+    static getUserByID(id: string) {
         return this.getUserByProp('user_id', id, 'no-password');
     }
 
-    static async getUserByName(name: string) {
+    static getUserByName(name: string) {
         return this.getUserByProp('name', name);
     }
 
-    static async getUserByProp(propName: string, propValue: string, ...options: string[]) {
-
-        try {
-            if(!contains(this.allowedColumns, propName)) {
-                Logger.log(`Trying to pass unsafe column, possible injection`);
-                throw new Error(`DB request failed, try later!`);
-            }
-
-            const query = contains(options, 'no-password') ?
-                QueryBuilder.Users.getFirstUserByPropOmitPassword(propName, escape(propValue)) :
-                QueryBuilder.Users.getFirstUserByProp(propName, escape(propValue));
-            const users = await dbQuery(query);
-            return users.length > 0 ? users[0] : null;
-        } catch (err) {
-            Logger.log(`Failed to fetch user by prop ${propName} - ${propValue}, err: ${JSON.stringify(err)}`);
+    static getUserByProp(propName: string, propValue: string, ...options: string[]) {
+        if(!contains(this.allowedColumns, propName)) {
+            Logger.log(`Trying to pass unsafe column, possible injection`);
             throw new Error(`DB request failed, try later!`);
+        }
+
+        const query = contains(options, 'no-password') ?
+            QueryBuilder.Users.getFirstUserByPropOmitPassword(propName, escape(propValue)) :
+            QueryBuilder.Users.getFirstUserByProp(propName, escape(propValue));
+        return {
+            query,
+            execute: async () => {
+                try {
+                    const users = await dbQuery(query);
+                    return users.length > 0 ? users[0] : null;
+                } catch (err) {
+                    Logger.log(`Failed to fetch user by prop ${propName} - ${propValue}, err: ${JSON.stringify(err)}`);
+                    throw new Error(`DB request failed, try later!`);
+                }
+            }
         }
     }
 

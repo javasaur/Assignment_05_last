@@ -9,15 +9,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const DAL = require("../lib/dal");
+const talks_1 = require("../lib/dal/talks");
+const CustomError_1 = require("../helpers/CustomError");
 class Groups {
     static addRootGroup(name) {
         return __awaiter(this, void 0, void 0, function* () {
-            return DAL.Talks.addPublicRootTalk(name);
+            if (yield talks_1.default.isNameDuplicateUnderRoot(name)) {
+                throw new CustomError_1.default(`A group with such name already exists`);
+            }
+            return DAL.Talks.addPublicRootTalk(name).execute();
         });
     }
     static addGroupUnderParent(name, parentID) {
         return __awaiter(this, void 0, void 0, function* () {
-            return DAL.Talks.addPublicSubtalk(name, parentID);
+            if (yield talks_1.default.isNameDuplicateUnderTalk(name, parentID)) {
+                throw new CustomError_1.default(`A group with such name already exists`);
+            }
+            return DAL.Talks.addPublicSubtalk(name, parentID).execute();
         });
     }
 }

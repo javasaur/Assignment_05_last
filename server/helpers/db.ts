@@ -3,6 +3,35 @@ import * as util from "util";
 
 const dbConnection = connection();
 
+export function transaction() {
+    let query = `START TRANSACTION;`;
+
+    function append(str) {
+        query += str;
+    }
+
+    function build() {
+        query += `COMMIT;`;
+    }
+
+    async function buildAndExecute() {
+        build();
+        return execute();
+    }
+
+    async function execute() {
+        return dbQuery(query);
+    }
+
+    return {
+        append,
+        build,
+        buildAndExecute,
+        execute,
+        query
+    }
+}
+
 export async function execAsTransaction(...queries) {
     let query = ``;
     query += `START TRANSACTION;`;

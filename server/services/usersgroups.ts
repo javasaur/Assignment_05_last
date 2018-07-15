@@ -1,5 +1,6 @@
 import * as DAL from '../lib/dal';
 import CustomError from "../helpers/CustomError";
+import {execAsTransaction} from "../helpers/db";
 
 export default class UsersGroups {
     static async addUserToGroup(userID, groupID) {
@@ -10,13 +11,15 @@ export default class UsersGroups {
             throw new CustomError(`User already in group`);
         }
 
-        await DAL.UsersTalks.addUserToTalk(userID, groupID);
-        await DAL.Messages.addUnreadMessagesCounter(groupID, userID);
+        await execAsTransaction(
+            DAL.UsersTalks.addUserToTalk(userID, groupID).query,
+            DAL.Messages.addUnreadMessagesCounter(groupID, userID).query
+        )
     }
 
     static async buildAdminJSONTree() {
         try {
-            const hierarchy = await DAL.Talks.getTalksHierarchy();
+            const hierarchy = await DAL.Talks.getTalksHierarchy().execute();
             const flatArr = UsersGroups.__populateFlatArray(hierarchy);
 
             for(let t of flatArr) {
@@ -38,10 +41,10 @@ export default class UsersGroups {
 
     static async buildJSONTree(userID) {
         try {
-            const hierarchy = await DAL.Talks.getTalksHierarchy();
+            const hierarchy = await DAL.Talks.getTalksHierarchy().execute();
             const flatArr = UsersGroups.__populateFlatArray(hierarchy);
 
-            const privateTalks = await DAL.UsersTalks.getPrivateTalks(userID);
+            const privateTalks = await DAL.UsersTalks.getPrivateTalks(userID).execute();
             for(let pm of privateTalks) {
                 flatArr.push({
                     id: pm.talk_id,
@@ -60,24 +63,15 @@ export default class UsersGroups {
                 }
 
                 if(t.type === 'group') {
-                    const users = await DAL.UsersTalks.getUsersByTalkID(t.id);
+                    const users = await DAL.UsersTalks.getUsersByTalkID(t.id).execute();
                     await UsersGroups.__populateWithUsers(t, users, userID);
                 }
 
-                const unread = await DAL.Messages.getUnreadMessagesCount(t.id, userID);
+                const unread = await DAL.Messages.getUnreadMessagesCount(t.id, userID).execute();
                 t.unread = unread;
             }
 
             const filtered = flatArr.filter(t => t !== undefined && !t.isSubtalk);
-
-            // const privateTalks = await DAL.UsersTalks.getPrivateTalks(userID);
-            // for(let pm of privateTalks) {
-            //     filtered.push({
-            //         id: pm.talk_id,
-            //         type: 'user',
-            //         name: pm.name
-            //     })
-            // }
 
             return filtered;
         } catch (err) {
@@ -86,13 +80,15 @@ export default class UsersGroups {
     }
 
     static async getUsersByGroupID(talkID) {
-        return DAL.UsersTalks.getUsersByTalkID(talkID);
+        return DAL.UsersTalks.getUsersByTalkID(talkID).execute();
     }
 
     static async removeUser(userID) {
-        await DAL.UsersTalks.removeUserFromAllTalks(userID);
-        await DAL.Messages.removeAllCountersForUser(userID);
-        await DAL.Users.removeUser({id: userID});
+        await execAsTransaction(
+            DAL.UsersTalks.removeUserFromAllTalks(userID).query,
+            DAL.Messages.removeAllCountersForUser(userID).query,
+            DAL.Users.removeUser({id: userID}).query
+        )
     }
 
     static __decomposeHierarchyPath(talk, flatArr) {
@@ -125,7 +121,7 @@ export default class UsersGroups {
     static async __populateWithUsers(talk, users, userID) {
         for(let u of users)
         {
-            const unread = await DAL.Messages.getUnreadMessagesCount(talk.id, userID);
+            const unread = await DAL.Messages.getUnreadMessagesCount(talk.id, userID).execute();
             talk.items.push({
                 id: Math.min(+u.user_id, +userID) + '_' + Math.max(+u.user_id, +userID),
                 type: 'user',
@@ -143,11 +139,12 @@ export default class UsersGroups {
 
         // No subtalks, remove related users, messages and the group itself
         if(!(await DAL.Talks.hasSubtalks(talkID))) {
-            await DAL.UsersTalks.removeAllUsersFromTalk(talkID);
-            await DAL.Messages.removeAllMessagesFromTalk(talkID);
-            await DAL.Messages.removeAllCountersForTalk(talkID);
-            await DAL.Talks.removeTalkByID(talkID);
-
+            await execAsTransaction(
+                DAL.UsersTalks.removeAllUsersFromTalk(talkID).query,
+                DAL.Messages.removeAllMessagesFromTalk(talkID).query,
+                DAL.Messages.removeAllCountersForTalk(talkID).query,
+                DAL.Talks.removeTalkByID(talkID).query
+            )
             return;
         }
 
@@ -156,12 +153,17 @@ export default class UsersGroups {
         if(nameConflict) {
             throw new CustomError(`Name conflict on future sibling - ${nameConflict.name}`)
         }
-        await DAL.Talks.moveSubtalksUp(talkID);
-        await DAL.Talks.removeTalkByID(talkID);
+
+        await execAsTransaction(
+            DAL.Talks.moveSubtalksUp(talkID).query,
+            DAL.Talks.removeTalkByID(talkID).query
+        )
     }
 
     static async removeUserFromGroup(userID, talkID) {
-        await DAL.UsersTalks.removeUserFromTalk(talkID, userID);
-        await DAL.Messages.removeUnreadMessagesCounter(talkID, userID);
+        await execAsTransaction(
+            DAL.UsersTalks.removeUserFromTalk(talkID, userID).query,
+            DAL.Messages.removeUnreadMessagesCounter(talkID, userID).query
+        )
     }
 }

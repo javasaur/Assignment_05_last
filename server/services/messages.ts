@@ -1,16 +1,20 @@
 import * as DAL from '../lib/dal';
 import * as services from '../services';
+import {execAsTransaction, transaction} from "../helpers/db";
 
 export default class Messages {
     static async addMessageToDialogue(dialogueID, message) {
         const privatePattern = /^\d{1,}_\d{1,}$/;
         if(dialogueID.match(privatePattern)) {
+            let t = transaction();
             if(!(await DAL.Talks.existsTalkWithID(dialogueID))) {
-                await DAL.Talks.addPrivateTalk(dialogueID);
-                await DAL.UsersTalks.addUsersToPrivateTalk(dialogueID);
+                t.append(DAL.Talks.addPrivateTalk(dialogueID).query);
+                t.append(DAL.UsersTalks.addUsersToPrivateTalk(dialogueID).query);
             }
-            await DAL.Messages.addMessage(message.content, message.authorId, dialogueID);
-            await DAL.Messages.incrementUnreadMessages(dialogueID);
+            t.append(DAL.Messages.addMessage(message.content, message.authorId, dialogueID).query);
+            t.append(DAL.Messages.incrementUnreadMessages(dialogueID).query);
+
+            await t.buildAndExecute();
             services.Socket.notifyOnTreeChange();
             return;
         }
@@ -18,25 +22,29 @@ export default class Messages {
         // If user already in a talk -> plain add message
         // No need to create relations
         if(await DAL.UsersTalks.isUserInTalk(message.authorId, dialogueID)) {
-            await DAL.Messages.addMessage(message.content, message.authorId, dialogueID);
-            await DAL.Messages.incrementUnreadMessages(dialogueID);
+            await execAsTransaction(
+                DAL.Messages.addMessage(message.content, message.authorId, dialogueID).query,
+                DAL.Messages.incrementUnreadMessages(dialogueID).query
+            )
             return;
         }
 
         // First add user to talk, then create his message
-        await DAL.UsersTalks.addUserToTalk(message.authorId, dialogueID);
-        await DAL.Messages.addMessage(message.content, message.authorId,dialogueID);
-        await DAL.Messages.addUnreadMessagesCounter(dialogueID, message.authorId);
-        await DAL.Messages.incrementUnreadMessages(dialogueID);
+        await execAsTransaction(
+            DAL.UsersTalks.addUserToTalk(message.authorId, dialogueID).query,
+            DAL.Messages.addMessage(message.content, message.authorId,dialogueID).query,
+            DAL.Messages.addUnreadMessagesCounter(dialogueID, message.authorId).query,
+            DAL.Messages.incrementUnreadMessages(dialogueID).query
+        )
         services.Socket.notifyOnTreeChange();
         return;
     }
 
     static async getAllDialogueMessages(talkID: string) {
-        return DAL.Messages.getAllMessagesByTalkID(talkID);
+        return DAL.Messages.getAllMessagesByTalkID(talkID).execute();
     }
 
     static async nullDialogueMessages(talkID: string, userID: string) {
-        return DAL.Messages.nullUnreadMessages(talkID, userID);
+        return DAL.Messages.nullUnreadMessages(talkID, userID).execute();
     }
 }

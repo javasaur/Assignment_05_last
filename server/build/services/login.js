@@ -14,7 +14,7 @@ class Login {
     static checkMatch(username, password) {
         return __awaiter(this, void 0, void 0, function* () {
             let accessAllowed = false;
-            const user = yield DAL.Users.getUserByName(username);
+            const user = yield DAL.Users.getUserByName(username).execute();
             if (!!user) {
                 const userHash = user.password;
                 const compare = yield hash_1.default.compare(password, userHash);

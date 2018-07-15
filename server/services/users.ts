@@ -1,6 +1,7 @@
 import HashService from "./hash";
 import * as Joi from 'joi';
 import * as DAL from '../lib/dal';
+import CustomError from "../helpers/CustomError";
 
 export default class Users {
     static async addUser(user) {
@@ -19,17 +20,21 @@ export default class Users {
             }
         });
 
+        if(await DAL.Users.existsUserWithName(user.name)) {
+            throw new CustomError(`Username ${user.name} is busy `);
+        }
+
         const hash = await HashService.hash(user.password);
         user.password = hash;
-        return DAL.Users.addUser(user);
+        return DAL.Users.addUser(user).execute();
     }
 
     static async getAllUsers() {
-        return DAL.Users.getAllUsers('no-password');
+        return DAL.Users.getAllUsers('no-password').execute();
     }
 
     static async getUserByID(userID) {
-        return DAL.Users.getUserByID(userID);
+        return DAL.Users.getUserByID(userID).execute();
     }
 
     static async updateUser(userID, user) {
@@ -45,10 +50,10 @@ export default class Users {
             }
         });
         user.id = userID;
-        return DAL.Users.updateUser(user);
+        return DAL.Users.updateUser(user).execute();
     }
 
     static async removeUser(userID) {
-        return DAL.Users.removeUser({id: userID});
+        return DAL.Users.removeUser({id: userID}).execute();
     }
 }

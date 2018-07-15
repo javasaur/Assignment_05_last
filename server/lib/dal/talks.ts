@@ -21,11 +21,7 @@ export default class Talks {
         }
     }
 
-    static async addPublicRootTalk(talkName: string) {
-        if (await Talks.isNameDuplicateUnderRoot(talkName)) {
-            throw new CustomError(`A group with such name already exists`);
-        }
-
+    static addPublicRootTalk(talkName: string) {
         const query = Talks.addPublicTalk(talkName).query;
         return {
             query,
@@ -41,11 +37,7 @@ export default class Talks {
         }
     }
 
-    static async addPublicSubtalk(talkName: string, parentID: string) {
-        if (await Talks.isNameDuplicateUnderTalk(talkName, parentID)) {
-            throw new CustomError(`A group with such name already exists`);
-        }
-
+    static addPublicSubtalk(talkName: string, parentID: string) {
         const query = QueryBuilder.Talks.addPublicSubtalk(escape(talkName), escape(parentID));
         return {
             query,

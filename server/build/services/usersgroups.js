@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const DAL = require("../lib/dal");
 const CustomError_1 = require("../helpers/CustomError");
+const db_1 = require("../helpers/db");
 class UsersGroups {
     static addUserToGroup(userID, groupID) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -19,14 +20,13 @@ class UsersGroups {
             if (yield DAL.UsersTalks.isUserInTalk(userID, groupID)) {
                 throw new CustomError_1.default(`User already in group`);
             }
-            yield DAL.UsersTalks.addUserToTalk(userID, groupID);
-            yield DAL.Messages.addUnreadMessagesCounter(groupID, userID);
+            yield db_1.execAsTransaction(DAL.UsersTalks.addUserToTalk(userID, groupID).query, DAL.Messages.addUnreadMessagesCounter(groupID, userID).query);
         });
     }
     static buildAdminJSONTree() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const hierarchy = yield DAL.Talks.getTalksHierarchy();
+                const hierarchy = yield DAL.Talks.getTalksHierarchy().execute();
                 const flatArr = UsersGroups.__populateFlatArray(hierarchy);
                 for (let t of flatArr) {
                     if (!t) {
@@ -47,9 +47,9 @@ class UsersGroups {
     static buildJSONTree(userID) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const hierarchy = yield DAL.Talks.getTalksHierarchy();
+                const hierarchy = yield DAL.Talks.getTalksHierarchy().execute();
                 const flatArr = UsersGroups.__populateFlatArray(hierarchy);
-                const privateTalks = yield DAL.UsersTalks.getPrivateTalks(userID);
+                const privateTalks = yield DAL.UsersTalks.getPrivateTalks(userID).execute();
                 for (let pm of privateTalks) {
                     flatArr.push({
                         id: pm.talk_id,
@@ -65,21 +65,13 @@ class UsersGroups {
                         UsersGroups.__decomposeHierarchyPath(t, flatArr);
                     }
                     if (t.type === 'group') {
-                        const users = yield DAL.UsersTalks.getUsersByTalkID(t.id);
+                        const users = yield DAL.UsersTalks.getUsersByTalkID(t.id).execute();
                         yield UsersGroups.__populateWithUsers(t, users, userID);
                     }
-                    const unread = yield DAL.Messages.getUnreadMessagesCount(t.id, userID);
+                    const unread = yield DAL.Messages.getUnreadMessagesCount(t.id, userID).execute();
                     t.unread = unread;
                 }
                 const filtered = flatArr.filter(t => t !== undefined && !t.isSubtalk);
-                // const privateTalks = await DAL.UsersTalks.getPrivateTalks(userID);
-                // for(let pm of privateTalks) {
-                //     filtered.push({
-                //         id: pm.talk_id,
-                //         type: 'user',
-                //         name: pm.name
-                //     })
-                // }
                 return filtered;
             }
             catch (err) {
@@ -89,14 +81,12 @@ class UsersGroups {
     }
     static getUsersByGroupID(talkID) {
         return __awaiter(this, void 0, void 0, function* () {
-            return DAL.UsersTalks.getUsersByTalkID(talkID);
+            return DAL.UsersTalks.getUsersByTalkID(talkID).execute();
         });
     }
     static removeUser(userID) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield DAL.UsersTalks.removeUserFromAllTalks(userID);
-            yield DAL.Messages.removeAllCountersForUser(userID);
-            yield DAL.Users.removeUser({ id: userID });
+            yield db_1.execAsTransaction(DAL.UsersTalks.removeUserFromAllTalks(userID).query, DAL.Messages.removeAllCountersForUser(userID).query, DAL.Users.removeUser({ id: userID }).query);
         });
     }
     static __decomposeHierarchyPath(talk, flatArr) {
@@ -127,7 +117,7 @@ class UsersGroups {
     static __populateWithUsers(talk, users, userID) {
         return __awaiter(this, void 0, void 0, function* () {
             for (let u of users) {
-                const unread = yield DAL.Messages.getUnreadMessagesCount(talk.id, userID);
+                const unread = yield DAL.Messages.getUnreadMessagesCount(talk.id, userID).execute();
                 talk.items.push({
                     id: Math.min(+u.user_id, +userID) + '_' + Math.max(+u.user_id, +userID),
                     type: 'user',
@@ -145,10 +135,7 @@ class UsersGroups {
             }
             // No subtalks, remove related users, messages and the group itself
             if (!(yield DAL.Talks.hasSubtalks(talkID))) {
-                yield DAL.UsersTalks.removeAllUsersFromTalk(talkID);
-                yield DAL.Messages.removeAllMessagesFromTalk(talkID);
-                yield DAL.Messages.removeAllCountersForTalk(talkID);
-                yield DAL.Talks.removeTalkByID(talkID);
+                yield db_1.execAsTransaction(DAL.UsersTalks.removeAllUsersFromTalk(talkID).query, DAL.Messages.removeAllMessagesFromTalk(talkID).query, DAL.Messages.removeAllCountersForTalk(talkID).query, DAL.Talks.removeTalkByID(talkID).query);
                 return;
             }
             // Subgroups, need to change reference and check for siblings name conflict
@@ -156,14 +143,12 @@ class UsersGroups {
             if (nameConflict) {
                 throw new CustomError_1.default(`Name conflict on future sibling - ${nameConflict.name}`);
             }
-            yield DAL.Talks.moveSubtalksUp(talkID);
-            yield DAL.Talks.removeTalkByID(talkID);
+            yield db_1.execAsTransaction(DAL.Talks.moveSubtalksUp(talkID).query, DAL.Talks.removeTalkByID(talkID).query);
         });
     }
     static removeUserFromGroup(userID, talkID) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield DAL.UsersTalks.removeUserFromTalk(talkID, userID);
-            yield DAL.Messages.removeUnreadMessagesCounter(talkID, userID);
+            yield db_1.execAsTransaction(DAL.UsersTalks.removeUserFromTalk(talkID, userID).query, DAL.Messages.removeUnreadMessagesCounter(talkID, userID).query);
         });
     }
 }

@@ -11,6 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const hash_1 = require("./hash");
 const Joi = require("joi");
 const DAL = require("../lib/dal");
+const CustomError_1 = require("../helpers/CustomError");
 class Users {
     static addUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -27,19 +28,22 @@ class Users {
                     throw err;
                 }
             });
+            if (yield DAL.Users.existsUserWithName(user.name)) {
+                throw new CustomError_1.default(`Username ${user.name} is busy `);
+            }
             const hash = yield hash_1.default.hash(user.password);
             user.password = hash;
-            return DAL.Users.addUser(user);
+            return DAL.Users.addUser(user).execute();
         });
     }
     static getAllUsers() {
         return __awaiter(this, void 0, void 0, function* () {
-            return DAL.Users.getAllUsers('no-password');
+            return DAL.Users.getAllUsers('no-password').execute();
         });
     }
     static getUserByID(userID) {
         return __awaiter(this, void 0, void 0, function* () {
-            return DAL.Users.getUserByID(userID);
+            return DAL.Users.getUserByID(userID).execute();
         });
     }
     static updateUser(userID, user) {
@@ -55,12 +59,12 @@ class Users {
                 }
             });
             user.id = userID;
-            return DAL.Users.updateUser(user);
+            return DAL.Users.updateUser(user).execute();
         });
     }
     static removeUser(userID) {
         return __awaiter(this, void 0, void 0, function* () {
-            return DAL.Users.removeUser({ id: userID });
+            return DAL.Users.removeUser({ id: userID }).execute();
         });
     }
 }
