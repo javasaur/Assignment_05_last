@@ -174,7 +174,7 @@ export class ManageGroups extends React.Component<ManageGroupsProps, ManageGroup
         let isActive = [...this.state.isActive];
         isActive = isActive.map(elem => false);
         isActive[id] = true;
-        this.setState({isActive});
+        this.setState({isActive, result: null});
     }
 
     private updateUser = async (user, cb) => {
