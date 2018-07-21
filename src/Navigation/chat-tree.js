@@ -267,7 +267,7 @@ export function ChatTree(wrapper) {
         // Provide the parent with new element details
         const id = getActiveElem().getAttribute('id');
         const type = getActiveElem().getAttribute('type');
-        const name = getActiveElem().innerText
+        const name = getActiveElem().querySelector("div").innerText;
         if(switchCurrentElementCallback) {
             switchCurrentElementCallback.apply(null, [id, type, name]);
         }
