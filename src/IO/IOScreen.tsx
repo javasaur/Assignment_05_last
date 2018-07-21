@@ -18,23 +18,18 @@ interface IOScreenProps {
 }
 
 class IOScreen extends React.Component<IOScreenProps, any> {
+    scrollRef;
+
     constructor(props: any) {
         super(props);
+        this.scrollRef = React.createRef();
     }
 
     scrollDown = () => {
-        // const self = this;
-        // window.requestAnimationFrame(() => {
-        //     const element = document.querySelector("io-screen-messages");
-        //     if(!!element) {
-        //         console.log('found element, scrolling');
-        //         element.scrollTop = element.scrollHeight;
-        //     }
-        // })
+        this.scrollRef.current.scrollToBottom();
     }
 
     public render() {
-
         let res;
         let header = null;
         if(this.props.activeDialogue) {
@@ -61,7 +56,7 @@ class IOScreen extends React.Component<IOScreenProps, any> {
             res = (
                 <div className="io-screen">
                     {header}
-                    <Scrollbars autoHide={true} >
+                    <Scrollbars autoHide={true} ref={this.scrollRef}>
                         <div className="io-screen-messages">{messagesLI}</div>
                     </Scrollbars>
                     <InputBlock operation={this.scrollDown}/>
@@ -71,10 +66,6 @@ class IOScreen extends React.Component<IOScreenProps, any> {
 
 
         return res;
-    }
-
-    componentDidMount() {
-        this.scrollDown();
     }
 
     componentDidUpdate() {
