@@ -10,13 +10,8 @@ export default class Talks {
         return {
             query,
             execute: async () => {
-                try {
                     await dbQuery(query);
                     return true;
-                } catch (err) {
-                    Logger.log(`Failed to add a private talk ${talkID} , err: ${JSON.stringify(err)}`);
-                    throw new Error(`DB request failed, try later!`);
-                }
             }
         }
     }
@@ -26,13 +21,8 @@ export default class Talks {
         return {
             query,
             execute: async () => {
-                try {
-                    await Talks.addPublicTalk(talkName);
+                    await Talks.addPublicTalk(talkName).execute();
                     return true;
-                } catch (err) {
-                    Logger.log(`Failed to create a root group ${talkName} , err: ${JSON.stringify(err)}`);
-                    throw new Error(`DB request failed, try later!`);
-                }
             }
         }
     }
@@ -42,13 +32,8 @@ export default class Talks {
         return {
             query,
             execute: async () => {
-                try {
                     await dbQuery(query);
                     return true;
-                } catch (err) {
-                    Logger.log(`Failed to create a root group ${talkName} , err: ${JSON.stringify(err)}`);
-                    throw new Error(`DB request failed, try later!`);
-                }
             }
         }
     }
@@ -70,7 +55,7 @@ export default class Talks {
     }
 
     static async existsTalkWithID(talkID: string) {
-        return !!(await Talks.getTalkByID(talkID));
+        return !!(await Talks.getTalkByID(talkID).execute());
     }
 
     static getAllPublicTalks() {
@@ -175,13 +160,8 @@ export default class Talks {
         return {
             query,
             execute: async () => {
-                try {
                     await dbQuery(query);
                     return true;
-                } catch (err) {
-                    Logger.log(`Failed to move  up subtalks of talk ${talkID}, err: ${JSON.stringify(err)}`);
-                    throw new Error(`DB request failed, try later!`);
-                }
             }
         }
     }
@@ -191,13 +171,8 @@ export default class Talks {
         return {
             query,
             execute: async () => {
-                try {
                     await dbQuery(query);
                     return true;
-                } catch (err) {
-                    Logger.log(`Failed to remove talk by id ${talkID}, err: ${JSON.stringify(err)}`);
-                    throw new Error(`DB request failed, try later!`);
-                }
             }
         }
     }

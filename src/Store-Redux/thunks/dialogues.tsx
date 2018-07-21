@@ -1,4 +1,5 @@
 import {setMessages, switchDialogueAction} from '../actions/dialogues';
+import axios from 'axios';
 
 export function sendMessage(dialogueID, authorId, message) {
     return async function(dispatch) {
@@ -36,17 +37,11 @@ export function switchDialogue(dialogueID, dialogueType, dialogueName) {
 export function loadMessages(dialogueID) {
     return async function(dispatch) {
         try {
-            const httpResponse = await fetch('http://localhost:4000/messages', {
-                method: "POST",
-                body: JSON.stringify({dialogueID}),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-            const messages = await httpResponse.json();
+            const res = await axios.post('http://localhost:4000/messages', {dialogueID});
+            const messages = res.data;
             dispatch(setMessages(messages));
         } catch (err) {
-            // console.log(err);
+            console.log('Failed to fetch messages');
         }
     }
 }

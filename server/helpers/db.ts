@@ -3,6 +3,8 @@ import * as util from "util";
 
 const dbConnection = connection();
 
+export const DEFAULT_SQL_ERROR = `DB request failed, try later!`;
+
 export function transaction() {
     let query = `START TRANSACTION;`;
 
@@ -52,4 +54,6 @@ export function escape(queryPart) {
 
     return dbConnection.escape(queryPart);
 }
+
+
 

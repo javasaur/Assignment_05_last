@@ -8,13 +8,8 @@ export default class Messages {
         return {
             query,
             execute: async () => {
-                try {
                     await dbQuery(query);
                     return true;
-                } catch (err) {
-                    Logger.log(`Failed to add message to talk ${talkID} , err: ${JSON.stringify(err)}`);
-                    throw new Error(`DB request failed, try later!`);
-                }
             }
         }
     }
@@ -24,13 +19,8 @@ export default class Messages {
         return {
             query,
             execute: async () => {
-                try {
                     await dbQuery(query);
                     return true;
-                } catch (err) {
-                    Logger.log(`Failed to add unread messages counter to talk ${talkID} , err: ${JSON.stringify(err)}`);
-                    throw new Error(`DB request failed, try later!`);
-                }
             }
         }
     }
@@ -40,13 +30,8 @@ export default class Messages {
         return {
             query,
             execute: async () => {
-                try {
                     await dbQuery(query);
                     return true;
-                } catch (err) {
-                    Logger.log(`Failed to increment unread message count for ${talkID} , err: ${JSON.stringify(err)}`);
-                    throw new Error(`DB request failed, try later!`);
-                }
             }
         }
     }
@@ -56,13 +41,8 @@ export default class Messages {
         return {
             query,
             execute: async () => {
-                try {
                     const messages = await dbQuery(query);
                     return messages;
-                } catch (err) {
-                    Logger.log(`Failed to fetch messages of talk ${talkID} , err: ${JSON.stringify(err)}`);
-                    throw new Error(`DB request failed, try later!`);
-                }
             }
         }
     }
@@ -104,13 +84,8 @@ export default class Messages {
         return {
             query,
             execute: async () => {
-                try {
                     await dbQuery(query);
                     return true;
-                } catch (err) {
-                    Logger.log(`Failed to remove counters for talk ${talkID} , err: ${JSON.stringify(err)}`);
-                    throw new Error(`DB request failed, try later!`);
-                }
             }
         }
     }
@@ -136,13 +111,8 @@ export default class Messages {
         return {
             query,
             execute: async () => {
-                try {
                     await dbQuery(query);
                     return true;
-                } catch (err) {
-                    Logger.log(`Failed to delete messages of talk ${talkID} , err: ${JSON.stringify(err)}`);
-                    throw new Error(`DB request failed, try later!`);
-                }
             }
         }
     }

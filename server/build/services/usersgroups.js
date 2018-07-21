@@ -11,16 +11,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const DAL = require("../lib/dal");
 const CustomError_1 = require("../helpers/CustomError");
 const db_1 = require("../helpers/db");
+const common_1 = require("../helpers/common");
 class UsersGroups {
     static addUserToGroup(userID, groupID) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (yield DAL.Talks.hasSubtalks(groupID)) {
-                throw new CustomError_1.default(`Can't add user to group, which contains subgroups`);
+            try {
+                if (yield DAL.Talks.hasSubtalks(groupID)) {
+                    throw new CustomError_1.default(`Can't add user to group, which contains subgroups`);
+                }
+                if (yield DAL.UsersTalks.isUserInTalk(userID, groupID)) {
+                    throw new CustomError_1.default(`User already in group`);
+                }
+                yield db_1.execAsTransaction(DAL.UsersTalks.addUserToTalk(userID, groupID).query, DAL.Messages.addUnreadMessagesCounter(groupID, userID).query);
             }
-            if (yield DAL.UsersTalks.isUserInTalk(userID, groupID)) {
-                throw new CustomError_1.default(`User already in group`);
+            catch (err) {
+                err instanceof CustomError_1.default ? common_1._throw(err) : common_1.logAndThrow(err, db_1.DEFAULT_SQL_ERROR);
             }
-            yield db_1.execAsTransaction(DAL.UsersTalks.addUserToTalk(userID, groupID).query, DAL.Messages.addUnreadMessagesCounter(groupID, userID).query);
         });
     }
     static buildAdminJSONTree() {
@@ -81,12 +87,17 @@ class UsersGroups {
     }
     static getUsersByGroupID(talkID) {
         return __awaiter(this, void 0, void 0, function* () {
-            return DAL.UsersTalks.getUsersByTalkID(talkID).execute();
+            return yield DAL.UsersTalks.getUsersByTalkID(talkID).execute();
         });
     }
     static removeUser(userID) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield db_1.execAsTransaction(DAL.UsersTalks.removeUserFromAllTalks(userID).query, DAL.Messages.removeAllCountersForUser(userID).query, DAL.Users.removeUser({ id: userID }).query);
+            try {
+                yield db_1.execAsTransaction(DAL.UsersTalks.removeUserFromAllTalks(userID).query, DAL.Messages.removeAllCountersForUser(userID).query, DAL.Users.removeUser({ id: userID }).query);
+            }
+            catch (err) {
+                common_1.logAndThrow(err, db_1.DEFAULT_SQL_ERROR);
+            }
         });
     }
     static __decomposeHierarchyPath(talk, flatArr) {
@@ -130,25 +141,35 @@ class UsersGroups {
     }
     static removeGroup(talkID) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!(yield DAL.Talks.existsTalkWithID(talkID))) {
-                throw new CustomError_1.default(`Group doesn't exist`);
+            try {
+                if (!(yield DAL.Talks.existsTalkWithID(talkID))) {
+                    throw new CustomError_1.default(`Group doesn't exist`);
+                }
+                // No subtalks, remove related users, messages and the group itself
+                if (!(yield DAL.Talks.hasSubtalks(talkID))) {
+                    yield db_1.execAsTransaction(DAL.UsersTalks.removeAllUsersFromTalk(talkID).query, DAL.Messages.removeAllMessagesFromTalk(talkID).query, DAL.Messages.removeAllCountersForTalk(talkID).query, DAL.Talks.removeTalkByID(talkID).query);
+                    return;
+                }
+                // Subgroups, need to change reference and check for siblings name conflict
+                const nameConflict = yield DAL.Talks.willCauseNameConflict(talkID);
+                if (nameConflict) {
+                    throw new CustomError_1.default(`Name conflict on future sibling - ${nameConflict.name}`);
+                }
+                yield db_1.execAsTransaction(DAL.Talks.moveSubtalksUp(talkID).query, DAL.Talks.removeTalkByID(talkID).query);
             }
-            // No subtalks, remove related users, messages and the group itself
-            if (!(yield DAL.Talks.hasSubtalks(talkID))) {
-                yield db_1.execAsTransaction(DAL.UsersTalks.removeAllUsersFromTalk(talkID).query, DAL.Messages.removeAllMessagesFromTalk(talkID).query, DAL.Messages.removeAllCountersForTalk(talkID).query, DAL.Talks.removeTalkByID(talkID).query);
-                return;
+            catch (err) {
+                err instanceof CustomError_1.default ? common_1._throw(err) : common_1.logAndThrow(err, db_1.DEFAULT_SQL_ERROR);
             }
-            // Subgroups, need to change reference and check for siblings name conflict
-            const nameConflict = yield DAL.Talks.willCauseNameConflict(talkID);
-            if (nameConflict) {
-                throw new CustomError_1.default(`Name conflict on future sibling - ${nameConflict.name}`);
-            }
-            yield db_1.execAsTransaction(DAL.Talks.moveSubtalksUp(talkID).query, DAL.Talks.removeTalkByID(talkID).query);
         });
     }
     static removeUserFromGroup(userID, talkID) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield db_1.execAsTransaction(DAL.UsersTalks.removeUserFromTalk(talkID, userID).query, DAL.Messages.removeUnreadMessagesCounter(talkID, userID).query);
+            try {
+                yield db_1.execAsTransaction(DAL.UsersTalks.removeUserFromTalk(talkID, userID).query, DAL.Messages.removeUnreadMessagesCounter(talkID, userID).query);
+            }
+            catch (err) {
+                common_1.logAndThrow(err, db_1.DEFAULT_SQL_ERROR);
+            }
         });
     }
 }

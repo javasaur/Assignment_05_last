@@ -13,13 +13,8 @@ export default class Users {
         return {
             query,
             execute: async () => {
-                try {
                     await dbQuery(query);
                     return true;
-                } catch (err) {
-                    Logger.log(`Failed to add user ${user.name} , err: ${JSON.stringify(err)}`);
-                    throw new Error(`DB request failed, try later!`);
-                }
             }
         }
     }
@@ -37,7 +32,7 @@ export default class Users {
             Logger.log(`Trying to pass unsafe column, possible injection`);
             throw new Error(`DB request failed, try later!`);
         }
-        const res = await Users.getUserByProp(propName, escape(propValue), 'no-password').execute();
+        const res = await Users.getUserByProp(propName, propValue, 'no-password').execute();
         return !!res;
     }
 
@@ -78,13 +73,8 @@ export default class Users {
         return {
             query,
             execute: async () => {
-                try {
                     const users = await dbQuery(query);
                     return users.length > 0 ? users[0] : null;
-                } catch (err) {
-                    Logger.log(`Failed to fetch user by prop ${propName} - ${propValue}, err: ${JSON.stringify(err)}`);
-                    throw new Error(`DB request failed, try later!`);
-                }
             }
         }
     }

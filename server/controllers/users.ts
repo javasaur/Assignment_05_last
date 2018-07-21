@@ -6,7 +6,7 @@ export default class Users {
     static async addUser(req: Request, res: Response) {
         services.Users.addUser(req.body)
             .then(() => {
-                Socket.notifyOnTreeChange();
+                // Socket.notifyOnTreeChange();
                 Socket.notifyOnUsersChange();
                 res.status(200).send({})
             })

@@ -11,42 +11,65 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const DAL = require("../lib/dal");
 const services = require("../services");
 const db_1 = require("../helpers/db");
+const common_1 = require("../helpers/common");
 class Messages {
     static addMessageToDialogue(dialogueID, message) {
         return __awaiter(this, void 0, void 0, function* () {
-            const privatePattern = /^\d{1,}_\d{1,}$/;
-            if (dialogueID.match(privatePattern)) {
-                let t = db_1.transaction();
-                if (!(yield DAL.Talks.existsTalkWithID(dialogueID))) {
-                    t.append(DAL.Talks.addPrivateTalk(dialogueID).query);
-                    t.append(DAL.UsersTalks.addUsersToPrivateTalk(dialogueID).query);
+            try {
+                // Private talks
+                const privatePattern = /^\d{1,}_\d{1,}$/;
+                if (dialogueID.match(privatePattern)) {
+                    let t = db_1.transaction();
+                    let treeChanged = false;
+                    // Update the tree in case new private talk was created
+                    if (!(yield DAL.Talks.existsTalkWithID(dialogueID))) {
+                        t.append(DAL.Talks.addPrivateTalk(dialogueID).query);
+                        t.append(DAL.UsersTalks.addUsersToPrivateTalk(dialogueID).query);
+                        treeChanged = true;
+                    }
+                    t.append(DAL.Messages.addMessage(message.content, message.authorId, dialogueID).query);
+                    t.append(DAL.Messages.incrementUnreadMessages(dialogueID).query);
+                    yield t.buildAndExecute();
+                    if (treeChanged) {
+                        services.Socket.notifyOnTreeChange();
+                    }
+                    return;
                 }
-                t.append(DAL.Messages.addMessage(message.content, message.authorId, dialogueID).query);
-                t.append(DAL.Messages.incrementUnreadMessages(dialogueID).query);
-                yield t.buildAndExecute();
+                // Public talks (groups)
+                // If user already in a talk -> plain add message
+                // No need to create relations
+                if (yield DAL.UsersTalks.isUserInTalk(message.authorId, dialogueID)) {
+                    yield db_1.execAsTransaction(DAL.Messages.addMessage(message.content, message.authorId, dialogueID).query, DAL.Messages.incrementUnreadMessages(dialogueID).query);
+                    return;
+                }
+                // First add user to talk, then create his message
+                yield db_1.execAsTransaction(DAL.UsersTalks.addUserToTalk(message.authorId, dialogueID).query, DAL.Messages.addMessage(message.content, message.authorId, dialogueID).query, DAL.Messages.addUnreadMessagesCounter(dialogueID, message.authorId).query, DAL.Messages.incrementUnreadMessages(dialogueID).query);
                 services.Socket.notifyOnTreeChange();
                 return;
             }
-            // If user already in a talk -> plain add message
-            // No need to create relations
-            if (yield DAL.UsersTalks.isUserInTalk(message.authorId, dialogueID)) {
-                yield db_1.execAsTransaction(DAL.Messages.addMessage(message.content, message.authorId, dialogueID).query, DAL.Messages.incrementUnreadMessages(dialogueID).query);
-                return;
+            catch (err) {
+                common_1.logAndThrow(err, db_1.DEFAULT_SQL_ERROR);
             }
-            // First add user to talk, then create his message
-            yield db_1.execAsTransaction(DAL.UsersTalks.addUserToTalk(message.authorId, dialogueID).query, DAL.Messages.addMessage(message.content, message.authorId, dialogueID).query, DAL.Messages.addUnreadMessagesCounter(dialogueID, message.authorId).query, DAL.Messages.incrementUnreadMessages(dialogueID).query);
-            services.Socket.notifyOnTreeChange();
-            return;
         });
     }
     static getAllDialogueMessages(talkID) {
         return __awaiter(this, void 0, void 0, function* () {
-            return DAL.Messages.getAllMessagesByTalkID(talkID).execute();
+            try {
+                return yield DAL.Messages.getAllMessagesByTalkID(talkID).execute();
+            }
+            catch (err) {
+                common_1.logAndThrow(err, db_1.DEFAULT_SQL_ERROR);
+            }
         });
     }
     static nullDialogueMessages(talkID, userID) {
         return __awaiter(this, void 0, void 0, function* () {
-            return DAL.Messages.nullUnreadMessages(talkID, userID).execute();
+            try {
+                return DAL.Messages.nullUnreadMessages(talkID, userID).execute();
+            }
+            catch (err) {
+                common_1.logAndThrow(err, db_1.DEFAULT_SQL_ERROR);
+            }
         });
     }
 }

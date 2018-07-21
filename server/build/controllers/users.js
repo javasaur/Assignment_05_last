@@ -15,7 +15,7 @@ class Users {
         return __awaiter(this, void 0, void 0, function* () {
             services.Users.addUser(req.body)
                 .then(() => {
-                socket_1.default.notifyOnTreeChange();
+                // Socket.notifyOnTreeChange();
                 socket_1.default.notifyOnUsersChange();
                 res.status(200).send({});
             })

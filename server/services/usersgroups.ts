@@ -1,20 +1,25 @@
 import * as DAL from '../lib/dal';
 import CustomError from "../helpers/CustomError";
-import {execAsTransaction} from "../helpers/db";
+import {DEFAULT_SQL_ERROR, execAsTransaction} from "../helpers/db";
+import {_throw, logAndThrow} from "../helpers/common";
 
 export default class UsersGroups {
     static async addUserToGroup(userID, groupID) {
-        if(await DAL.Talks.hasSubtalks(groupID)) {
-            throw new CustomError(`Can't add user to group, which contains subgroups`)
-        }
-        if(await DAL.UsersTalks.isUserInTalk(userID, groupID)) {
-            throw new CustomError(`User already in group`);
-        }
+        try {
+            if(await DAL.Talks.hasSubtalks(groupID)) {
+                throw new CustomError(`Can't add user to group, which contains subgroups`)
+            }
+            if(await DAL.UsersTalks.isUserInTalk(userID, groupID)) {
+                throw new CustomError(`User already in group`);
+            }
 
-        await execAsTransaction(
-            DAL.UsersTalks.addUserToTalk(userID, groupID).query,
-            DAL.Messages.addUnreadMessagesCounter(groupID, userID).query
-        )
+            await execAsTransaction(
+                DAL.UsersTalks.addUserToTalk(userID, groupID).query,
+                DAL.Messages.addUnreadMessagesCounter(groupID, userID).query
+            )
+        } catch (err) {
+            err instanceof CustomError ? _throw(err) : logAndThrow(err, DEFAULT_SQL_ERROR);
+        }
     }
 
     static async buildAdminJSONTree() {
@@ -80,15 +85,19 @@ export default class UsersGroups {
     }
 
     static async getUsersByGroupID(talkID) {
-        return DAL.UsersTalks.getUsersByTalkID(talkID).execute();
+        return await DAL.UsersTalks.getUsersByTalkID(talkID).execute();
     }
 
     static async removeUser(userID) {
-        await execAsTransaction(
-            DAL.UsersTalks.removeUserFromAllTalks(userID).query,
-            DAL.Messages.removeAllCountersForUser(userID).query,
-            DAL.Users.removeUser({id: userID}).query
-        )
+        try {
+            await execAsTransaction(
+                DAL.UsersTalks.removeUserFromAllTalks(userID).query,
+                DAL.Messages.removeAllCountersForUser(userID).query,
+                DAL.Users.removeUser({id: userID}).query
+            )
+        } catch (err) {
+            logAndThrow(err, DEFAULT_SQL_ERROR);
+        }
     }
 
     static __decomposeHierarchyPath(talk, flatArr) {
@@ -133,37 +142,45 @@ export default class UsersGroups {
     }
 
     static async removeGroup(talkID: string) {
-        if(!(await DAL.Talks.existsTalkWithID(talkID))) {
-            throw new CustomError(`Group doesn't exist`)
-        }
+        try {
+            if(!(await DAL.Talks.existsTalkWithID(talkID))) {
+                throw new CustomError(`Group doesn't exist`)
+            }
 
-        // No subtalks, remove related users, messages and the group itself
-        if(!(await DAL.Talks.hasSubtalks(talkID))) {
+            // No subtalks, remove related users, messages and the group itself
+            if(!(await DAL.Talks.hasSubtalks(talkID))) {
+                await execAsTransaction(
+                    DAL.UsersTalks.removeAllUsersFromTalk(talkID).query,
+                    DAL.Messages.removeAllMessagesFromTalk(talkID).query,
+                    DAL.Messages.removeAllCountersForTalk(talkID).query,
+                    DAL.Talks.removeTalkByID(talkID).query
+                )
+                return;
+            }
+
+            // Subgroups, need to change reference and check for siblings name conflict
+            const nameConflict = await DAL.Talks.willCauseNameConflict(talkID);
+            if(nameConflict) {
+                throw new CustomError(`Name conflict on future sibling - ${nameConflict.name}`)
+            }
+
             await execAsTransaction(
-                DAL.UsersTalks.removeAllUsersFromTalk(talkID).query,
-                DAL.Messages.removeAllMessagesFromTalk(talkID).query,
-                DAL.Messages.removeAllCountersForTalk(talkID).query,
+                DAL.Talks.moveSubtalksUp(talkID).query,
                 DAL.Talks.removeTalkByID(talkID).query
             )
-            return;
+        } catch (err) {
+            err instanceof CustomError ? _throw(err) : logAndThrow(err, DEFAULT_SQL_ERROR);
         }
-
-        // Subgroups, need to change reference and check for siblings name conflict
-        const nameConflict = await DAL.Talks.willCauseNameConflict(talkID);
-        if(nameConflict) {
-            throw new CustomError(`Name conflict on future sibling - ${nameConflict.name}`)
-        }
-
-        await execAsTransaction(
-            DAL.Talks.moveSubtalksUp(talkID).query,
-            DAL.Talks.removeTalkByID(talkID).query
-        )
     }
 
     static async removeUserFromGroup(userID, talkID) {
-        await execAsTransaction(
-            DAL.UsersTalks.removeUserFromTalk(talkID, userID).query,
-            DAL.Messages.removeUnreadMessagesCounter(talkID, userID).query
-        )
+        try {
+            await execAsTransaction(
+                DAL.UsersTalks.removeUserFromTalk(talkID, userID).query,
+                DAL.Messages.removeUnreadMessagesCounter(talkID, userID).query
+            )
+        } catch (err) {
+            logAndThrow(err, DEFAULT_SQL_ERROR);
+        }
     }
 }

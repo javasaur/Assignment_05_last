@@ -10,13 +10,8 @@ export default class UsersTalks {
         return {
             query,
             execute: async () => {
-                try {
                     await dbQuery(query);
                     return true;
-                } catch (err) {
-                    Logger.log(`Failed to add users to private talk ${talkID}, err: ${JSON.stringify(err)}`);
-                    throw new Error(`DB request failed, try later!`);
-                }
             }
         }
     }
@@ -26,13 +21,8 @@ export default class UsersTalks {
         return {
             query,
             execute: async () => {
-                try {
                     await dbQuery(query);
                     return true;
-                } catch (err) {
-                    Logger.log(`Failed to add user ${userID} to talk ${talkID}, err: ${JSON.stringify(err)}`);
-                    throw new Error(`DB request failed, try later!`);
-                }
             }
         }
     }
@@ -47,6 +37,10 @@ export default class UsersTalks {
             Logger.log(`Failed to count users for talk ${talkID}, err: ${JSON.stringify(err)}`);
             throw new Error(`DB request failed, try later!`);
         }
+    }
+
+    static async hasUsers(talkID: string) {
+        return await this.countUsersUnderTalk(talkID) > 0;
     }
 
     static async isUserInTalk(userID: string, talkID: string) {
@@ -76,12 +70,7 @@ export default class UsersTalks {
         return {
             query,
             execute: async () => {
-                try {
                     return await dbQuery(query);
-                } catch (err) {
-                    Logger.log(`Failed to fetch users by talk id ${talkID}, err: ${JSON.stringify(err)}`);
-                    throw new Error(`DB request failed, try later!`);
-                }
             }
         }
     }
@@ -91,13 +80,8 @@ export default class UsersTalks {
         return {
             query,
             execute: async () => {
-                try{
                     await dbQuery(query);
                     return true;
-                } catch (err) {
-                    Logger.log(`Failed to remove all users by talk id ${talkID}, err: ${JSON.stringify(err)}`);
-                    throw new Error(`DB request failed, try later!`);
-                }
             }
         }
     }

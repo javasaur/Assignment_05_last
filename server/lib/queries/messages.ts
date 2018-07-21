@@ -16,7 +16,7 @@ export const NULL_UNREAD_MESSAGES = `UPDATE unread_messages_counter SET \`counte
                                      WHERE \`talk_id\`=$TALKID AND \`user_id\`=$USERID;`;
 export const REMOVE_ALL_COUNTERS_FOR_USER = `DELETE FROM unread_messages_counter WHERE \`user_id\`=$USERID;`;
 export const REMOVE_ALL_COUNTERS_FOR_TALK = `DELETE FROM unread_messages_counter WHERE \`talk_id\`=$TALKID;`;
-export const REMOVE_ALL_MESSAGES_FROM_TALK = `DELETE FROM messages WHERE \`talk_id\`=$TALKID`;
+export const REMOVE_ALL_MESSAGES_FROM_TALK = `DELETE FROM messages WHERE \`talk_id\`=$TALKID;`;
 export const REMOVE_UNREAD_MESSAGES_COUNTER = `DELETE FROM unread_messages_counter 
                                                WHERE \`user_id\`=$USERID AND \`talk_id\`=$TALKID;`;
 

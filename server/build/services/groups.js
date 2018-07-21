@@ -9,23 +9,37 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const DAL = require("../lib/dal");
-const talks_1 = require("../lib/dal/talks");
 const CustomError_1 = require("../helpers/CustomError");
+const db_1 = require("../helpers/db");
+const common_1 = require("../helpers/common");
 class Groups {
     static addRootGroup(name) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (yield talks_1.default.isNameDuplicateUnderRoot(name)) {
-                throw new CustomError_1.default(`A group with such name already exists`);
+            try {
+                if (yield DAL.Talks.isNameDuplicateUnderRoot(name)) {
+                    throw new CustomError_1.default(`A group with such name already exists`);
+                }
+                return yield DAL.Talks.addPublicRootTalk(name).execute();
             }
-            return DAL.Talks.addPublicRootTalk(name).execute();
+            catch (err) {
+                err instanceof CustomError_1.default ? common_1._throw(err) : common_1.logAndThrow(err, db_1.DEFAULT_SQL_ERROR);
+            }
         });
     }
     static addGroupUnderParent(name, parentID) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (yield talks_1.default.isNameDuplicateUnderTalk(name, parentID)) {
-                throw new CustomError_1.default(`A group with such name already exists`);
+            try {
+                if (yield DAL.Talks.isNameDuplicateUnderTalk(name, parentID)) {
+                    throw new CustomError_1.default(`A group with such name already exists`);
+                }
+                if (yield DAL.UsersTalks.hasUsers(parentID)) {
+                    throw new CustomError_1.default(`Parent group has users, can't add subgroup`);
+                }
+                return yield DAL.Talks.addPublicSubtalk(name, parentID).execute();
             }
-            return DAL.Talks.addPublicSubtalk(name, parentID).execute();
+            catch (err) {
+                err instanceof CustomError_1.default ? common_1._throw(err) : common_1.logAndThrow(err, db_1.DEFAULT_SQL_ERROR);
+            }
         });
     }
 }
